@@ -63,8 +63,8 @@ bool SwitchableButton::initWithPatterns(std::vector<SwitchPattern> patterns)
     SwitchPattern firstPattern = patterns.at(0);
     if (!this->Button::initWithFiles(firstPattern.imageFile, firstPattern.imageFile, true, true, true)) return false;
     
-//    _switchPatterns = patterns;
-//    _currentPattern = firstPattern;
+//    _switchPatterns = std::vector<SwitchPattern>(patterns);
+//    _currentPattern = SwitchPattern(firstPattern);
     
     return true;
 }

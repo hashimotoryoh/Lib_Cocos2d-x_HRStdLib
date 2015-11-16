@@ -18,7 +18,6 @@ class HRFileHelper
 public:
     /**
      * @brief  ファイルパスからファイル名を取得する
-     *
      * @param  path      ファイルパス
      * @param  extension 拡張子を付けるか(デフォルト true)
      * @return ファイル名

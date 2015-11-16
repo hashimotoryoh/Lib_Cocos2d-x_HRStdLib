@@ -34,7 +34,6 @@ class HRJsonHelper
 public:
     /**
      * @brief JSON文字列を解析してcocos2d::Valueに落としこむ。
-     *
      * @param  jsonString JSON文字列
      * @return 解析したJSON
      */
@@ -42,7 +41,6 @@ public:
     
     /**
      * @brief JSONファイルを解析してcocos2d::Valueに落としこむ。
-     *
      * @param  jsonFilePath JSONファイルのパス
      * @return 解析したJSON
      */
@@ -50,7 +48,6 @@ public:
     
     /**
      * @brief JSON値をcocos2d::Valueに変換する。
-     *
      * @param  jsonValue JSON値
      * @return 変換したValue
      */
@@ -58,7 +55,6 @@ public:
     
     /**
      * @brief JSON値のタイプを取得する。
-     *
      * @param  jsonValue JSON値
      * @return タイプ
      */
