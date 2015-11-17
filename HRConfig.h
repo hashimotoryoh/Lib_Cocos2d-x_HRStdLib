@@ -16,7 +16,6 @@ const int           INTEGER_UNSET          = -1;
 const unsigned int  UNSIGNED_INTEGER_UNSET = 0;
 const float         FLOAT_UNSET            = 0.0f;
 const double        DOUBLE_UNSET           = 0.0;
-const char         *CHAR_UNSET             = "";
 const std::string   STRING_UNSET           = std::string("");
 
 
