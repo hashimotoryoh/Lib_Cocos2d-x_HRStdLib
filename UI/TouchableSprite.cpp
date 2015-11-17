@@ -128,7 +128,7 @@ void TouchableSprite::enable()
     _eventDispatcher->addEventListenerWithFixedPriority(_listener, 1);
     _isEnable = true;
     
-    this->setTexture(_enabledImage);
+    this->Sprite::setTexture(_enabledImage);
 }
 
 void TouchableSprite::disable()
@@ -138,7 +138,7 @@ void TouchableSprite::disable()
     _eventDispatcher->removeEventListener(_listener);
     _isEnable = false;
     
-    this->setTexture(_disabledImage);
+    this->Sprite::setTexture(_disabledImage);
 }
 
 void TouchableSprite::enableContinuousTap()
@@ -169,6 +169,22 @@ void TouchableSprite::disableLongTap()
     if (!_isEnableLongTap) { HRLOG("既にdisableです。"); return; }
     
     _isEnableLongTap = false;
+}
+
+void TouchableSprite::setTexture(const std::string &current)
+{
+    if (_isEnable) _enabledImage  = current;
+    else           _disabledImage = current;
+    
+    this->Sprite::setTexture(current);
+}
+
+void TouchableSprite::setTexture(const std::string &enabled, const std::string &disabled)
+{
+    _enabledImage  = enabled;
+    _disabledImage = disabled;
+    
+    this->Sprite::setTexture(_isEnable ? _enabledImage : _disabledImage);
 }
 
 

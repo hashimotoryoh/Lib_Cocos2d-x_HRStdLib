@@ -109,6 +109,18 @@ public:
      */
     virtual void disableLongTap();
     
+    /**
+     * @brief 現在の状態(有効/無効)のテクスチャを変更する
+     * @param current 画像ファイル
+     */
+    void setTexture(const std::string &current);
+    /**
+     * @brief テクスチャを変更する
+     * @param enabled  有効時の画像ファイル
+     * @param disabled 無効時の画像ファイル
+     */
+    void setTexture(const std::string &enabled, const std::string &disabled);
+    
     
 #pragma mark - Members
 #pragma mark Public Members
