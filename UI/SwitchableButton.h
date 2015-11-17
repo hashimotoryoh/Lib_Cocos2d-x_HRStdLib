@@ -17,11 +17,11 @@
 namespace HR {
 
 
-//    typedef struct {
-//        std::string   key;
-//        std::string   imageFile;
-//        SBTapCallback callback;
-//    } P;
+    typedef struct {
+        std::string   key;
+        std::string   imageFile;
+        SBTapCallback callback;
+    } SwitchPattern;
     
     
 class SwitchableButton : public HR::Button
@@ -31,16 +31,16 @@ CC_CONSTRUCTOR_ACCESS:
     virtual ~SwitchableButton();
     
     virtual bool init() override;
-    virtual bool initWithPatterns(std::vector<HR::SBSwitchPattern> patterns);
-    virtual bool initWithPatterns(HR::SBSwitchPattern pattern1, HR::SBSwitchPattern pattern2, ...);
+    virtual bool initWithPatterns(std::vector<HR::SwitchPattern> patterns);
+    virtual bool initWithPatterns(HR::SwitchPattern pattern1, HR::SwitchPattern pattern2, ...);
     
     
 #pragma mark - Create Methods
 public:
     static SwitchableButton *create();
-    static SwitchableButton *createWithPatterns(std::vector<HR::SBSwitchPattern> patterns);
-    static SwitchableButton *createWithPatterns(HR::SBSwitchPattern pattern1,
-                                                HR::SBSwitchPattern pattern2,
+    static SwitchableButton *createWithPatterns(std::vector<HR::SwitchPattern> patterns);
+    static SwitchableButton *createWithPatterns(HR::SwitchPattern pattern1,
+                                                HR::SwitchPattern pattern2,
                                                 ...);
     
     
@@ -48,12 +48,11 @@ public:
 #pragma mark Protected Members
 protected:
     /* スイッチするパターン群 */
-    std::vector<HR::SBSwitchPattern> _switchPatterns;
-    /* 現在のパターン */
-    HR::SBSwitchPattern _currentPattern;
+    std::vector<HR::SwitchPattern> _switchPatterns;
+    /* 現在のパターンの番号 */
+    HR::SwitchPattern _currentPattern;
+    std::vector<HR::SwitchPattern>::iterator _currentPatternIter;
     
-//    std::vector<HR::P> _Ps;
-//    HR::P _curP;
     
     
 #pragma mark - Control Methods
@@ -69,13 +68,13 @@ protected:
     HR_DISABLE_SUPER_METHOD(void, setLongTapCallback, TSLongTapCallback);
 #pragma matk Original Methods
 public:
-    void switchNext();
+    void switchNext(bool isCallCallback = true);
     
     /**
      * @brief キーを指定してボタンを切り替える
      * @param key キー
      */
-    void switchWithKey(const std::string &key);
+    void switchWithKey(const std::string &key, bool isCallCallback = true);
     
     
 #pragma mark - Easing Methods
@@ -84,7 +83,7 @@ private:
      * @brief キーを元にパターンを特定する
      * @patam key キー
      */
-    SBSwitchPattern *findPattern(const std::string &key);
+    SwitchPattern findPattern(const std::string &key);
     
     
 };
