@@ -182,5 +182,5 @@ void Button::switchTouchEffect(bool sw)
     this->switchScaleEffect(sw);
     this->switchBrightnessEffect(sw);
     
-    this->setTexture(sw ? _touchedTexture : _normalTexture);
+//    this->setTexture(sw ? _touchedTexture : _normalTexture);
 }

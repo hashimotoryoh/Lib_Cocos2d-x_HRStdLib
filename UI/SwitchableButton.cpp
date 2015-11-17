@@ -17,8 +17,8 @@ USING_NS_CC;
 #pragma mark - Constructor & Destructor
 
 SwitchableButton::SwitchableButton()
-: _switchPatterns(std::vector<SwitchPattern>())
-, _currentPattern(SwitchPattern{"", nullptr})
+: _switchPatterns(std::vector<SBSwitchPattern>())
+, _currentPattern(SBSwitchPattern())
 {
 }
 
@@ -46,10 +46,18 @@ bool SwitchableButton::init()
 {
     if (!this->Button::init()) return false;
     
+    // 切り替えボタンは連打、長押し判定はさせない
+    this->disableContinuousTap();
+    this->disableLongTap();
+    
+    this->setTapCallback([this](unsigned int times) {
+        this->switchNext();
+    });
+    
     return true;
 }
 
-SwitchableButton *SwitchableButton::createWithPatterns(std::vector<SwitchPattern> patterns)
+SwitchableButton *SwitchableButton::createWithPatterns(std::vector<SBSwitchPattern> patterns)
 {
     SwitchableButton *pRet = SwitchableButton::create();
     if (pRet->initWithPatterns(patterns))
@@ -58,19 +66,21 @@ SwitchableButton *SwitchableButton::createWithPatterns(std::vector<SwitchPattern
         return nullptr;
 }
 
-bool SwitchableButton::initWithPatterns(std::vector<SwitchPattern> patterns)
+bool SwitchableButton::initWithPatterns(std::vector<SBSwitchPattern> patterns)
 {
-    SwitchPattern firstPattern = patterns.at(0);
-    if (!this->Button::initWithFiles(firstPattern.imageFile, firstPattern.imageFile, true, true, true)) return false;
+    // TODO: キーの被りが無いか調べる
     
-//    _switchPatterns = std::vector<SwitchPattern>(patterns);
-//    _currentPattern = SwitchPattern(firstPattern);
+    SBSwitchPattern firstPattern = *(patterns.begin());
+    if (!this->Button::initWithFiles(firstPattern._imageFile, firstPattern._imageFile, true, true, true)) return false;
+    
+    _switchPatterns = patterns;
+    _currentPattern = firstPattern;
     
     return true;
 }
 
-SwitchableButton *SwitchableButton::createWithPatterns(SwitchPattern pattern1,
-                                                       SwitchPattern pattern2,
+SwitchableButton *SwitchableButton::createWithPatterns(SBSwitchPattern pattern1,
+                                                       SBSwitchPattern pattern2,
                                                        ...)
 {
     SwitchableButton *pRet = SwitchableButton::create();
@@ -80,13 +90,48 @@ SwitchableButton *SwitchableButton::createWithPatterns(SwitchPattern pattern1,
         return nullptr;
 }
 
-bool SwitchableButton::initWithPatterns(SwitchPattern pattern1, SwitchPattern pattern2, ...)
+bool SwitchableButton::initWithPatterns(SBSwitchPattern pattern1, SBSwitchPattern pattern2, ...)
 {
-    std::vector<SwitchPattern> switchPatterns;
+    std::vector<SBSwitchPattern> switchPatterns;
     switchPatterns.push_back(pattern1);
     switchPatterns.push_back(pattern2);
+    
+//    va_list patterns;
+//    va_start(patterns, pattern2);
+//    switchPatterns.pushBack(va_arg(patterns, SBSwitchPattern));
+//    va_end(patterns);
     
     if (!this->SwitchableButton::initWithPatterns(switchPatterns)) return false;
     
     return true;
+}
+
+
+
+#pragma mark - Control Methods
+
+void SwitchableButton::switchNext()
+{
+    _currentPattern._callback();
+    
+    // 次のパターンに移る
+    if (!this->findPattern("hoge")) {
+        HRLOG("key 'hoge' is nothing");
+    }
+    
+    this->setTexture(_currentPattern._imageFile);
+}
+
+
+
+#pragma mark - Easing Methods
+
+SBSwitchPattern *SwitchableButton::findPattern(const std::string &key)
+{
+    for (auto itr : _switchPatterns) {
+        SBSwitchPattern pattern = (SBSwitchPattern)itr;
+        if (pattern._key == key) return &pattern;
+    }
+    
+    return nullptr;
 }
