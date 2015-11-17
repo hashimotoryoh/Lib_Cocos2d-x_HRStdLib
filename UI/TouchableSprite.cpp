@@ -24,8 +24,8 @@ TouchableSprite::TouchableSprite()
 , _isEnableContinuousTap(false)
 , _longTapThreshold(DEFAULT_LONG_TOUCH_THRESHOLD)
 , _continuousTapThreshold(DEFAULT_CONTINUOUS_TAP_THRESHOLD)
-, _enabledTexture(nullptr)
-, _disabledTexture(nullptr)
+, _enabledImage(STRING_UNSET)
+, _disabledImage(STRING_UNSET)
 , _isEnable(true)
 , _touchBeganCallback(nullptr)
 , _touchEndedCallback(nullptr)
@@ -80,15 +80,13 @@ bool TouchableSprite::initWithFiles(const std::string &enabledFile,
                                     bool isEnable)
 {
     if (!this->TouchableSprite::init()) return false;
-    
-    _enabledTexture  = Director::getInstance()->getTextureCache()->addImage(enabledFile);
-    _disabledTexture = Director::getInstance()->getTextureCache()->addImage(disabledFile);
-    _isEnable        = isEnable;
 
-    HRASSERT(_enabledTexture,  "画像のファイルパスが不正です。: %s", enabledFile.c_str());
-    HRASSERT(_disabledTexture, "画像のファイルパスが不正です。: %s", disabledFile.c_str());
+    // TODO: ファイルの存在確認
+    _enabledImage  = enabledFile;
+    _disabledImage = disabledFile;
+    _isEnable        = isEnable;
     
-    this->initWithTexture(_isEnable ? _enabledTexture : _disabledTexture);
+    this->Sprite::initWithFile(_isEnable ? _enabledImage : _disabledImage);
     
     // タッチイベントのリスナを登録する
     _listener = EventListenerTouchOneByOne::create();
@@ -129,6 +127,8 @@ void TouchableSprite::enable()
     
     _eventDispatcher->addEventListenerWithFixedPriority(_listener, 1);
     _isEnable = true;
+    
+    this->setTexture(_enabledImage);
 }
 
 void TouchableSprite::disable()
@@ -137,6 +137,8 @@ void TouchableSprite::disable()
     
     _eventDispatcher->removeEventListener(_listener);
     _isEnable = false;
+    
+    this->setTexture(_disabledImage);
 }
 
 void TouchableSprite::enableContinuousTap()
@@ -225,7 +227,7 @@ void TouchableSprite::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
     // 長押し解除
     this->cancelLongTapReservation();
     
-    // タッチエンドのコールバックはタップとは関係無い
+    // タッチエンドのコールバックはタップとは関係無いので実行
     if (_touchEndedCallback) _touchEndedCallback(this);
     
     // ロングタップ判定(優先)
@@ -240,11 +242,9 @@ void TouchableSprite::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
         
         this->cancelContinuousTapReservation();
         this->reserveContinuousTap();
-        
-        // 連続タップ無効時は times = 0, 連続タップ時は times >= 1
-        if (_tapCallback) _tapCallback(_continuousTapCount);
-        return;
     }
+    // 連続タップ無効時は times = 0, 連続タップ時は times >= 1
+    if (_tapCallback) _tapCallback(_continuousTapCount);
 }
 
 

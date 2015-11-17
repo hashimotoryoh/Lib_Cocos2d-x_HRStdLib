@@ -94,20 +94,20 @@ public:
     /**
      * @brief 連続タップを有効化する
      */
-    void enableContinuousTap();
+    virtual void enableContinuousTap();
     /**
      * @brief 連続タップを無効化する
      */
-    void disableContinuousTap();
+    virtual void disableContinuousTap();
     
     /**
      * @brief ロングタップを有効化する (setter/getterがあるが、他に合わせてこちらも用意)
      */
-    void enableLongTap();
+    virtual void enableLongTap();
     /**
      * @brief ロングタップを無効化する (setter/getterがあるが、他に合わせてこちらも用意)
      */
-    void disableLongTap();
+    virtual void disableLongTap();
     
     
 #pragma mark - Members
@@ -119,10 +119,10 @@ public:
     /* 連続タップ判定する時間 (1stタッチからこの時間以内に2ndタッチで連続タップ判定) */
     CC_SYNTHESIZE(float, _continuousTapThreshold, ContinuousTapThreshold);
 #pragma mark Read Only Members
-    /* タップ有効時のテクスチャ */
-    CC_SYNTHESIZE_READONLY(cocos2d::Texture2D*, _enabledTexture, EnabledTexture);
-    /* タップ無効時のテクスチャ */
-    CC_SYNTHESIZE_READONLY(cocos2d::Texture2D*, _disabledTexture, DisabledTexture);
+    /* タップ有効時の画像ファイル */
+    CC_SYNTHESIZE_READONLY(std::string, _enabledImage, EnabledImage);
+    /* タップ無効時の画像ファイル */
+    CC_SYNTHESIZE_READONLY(std::string, _disabledImage, DisabledImage);
     /* タップが有効か */
     CC_SYNTHESIZE_READONLY(bool, _isEnable, IsEnable);
     /* 連続タップ可能か */
