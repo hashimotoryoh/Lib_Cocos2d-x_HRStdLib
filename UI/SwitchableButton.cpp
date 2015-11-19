@@ -66,12 +66,9 @@ SwitchableButton *SwitchableButton::createWithPatterns(cocos2d::Vector<SBSwitchP
 
 bool SwitchableButton::initWithPatterns(cocos2d::Vector<SBSwitchPattern*> patterns)
 {
-    // TODO: キーの被りが無いか調べる
-    
-    _switchPatterns = patterns;
-    _currentPattern = _switchPatterns.front();
-    
-    if (!this->Button::initWithFiles(_currentPattern->_imageFile, _currentPattern->_imageFile, true, true, true)) return false;
+    for (SBSwitchPattern *pattern : patterns) {
+        this->addPattern(pattern);
+    }
     
     return true;
 }
@@ -82,7 +79,7 @@ bool SwitchableButton::initWithPatterns(cocos2d::Vector<SBSwitchPattern*> patter
 
 void SwitchableButton::addPattern(HR::SBSwitchPattern *pattern)
 {
-    // TODO: キーの被りが無いかチェックする
+    HRASSERT(this->isValidKey(pattern->_key), "既に同じキーで登録されているパターンがあります。");
     
     _switchPatterns.pushBack(pattern);
     
@@ -123,4 +120,14 @@ void SwitchableButton::switchWithKey(const std::string &key, bool isCallCallback
 void SwitchableButton::onTapped()
 {
     this->switchNext();
+}
+
+bool SwitchableButton::isValidKey(const std::string &key)
+{
+    // 既に登録してあるパターンのキーと重複してたらダメ
+    for (SBSwitchPattern *pattern : _switchPatterns) {
+        if (key == pattern->_key) return false;
+    }
+    
+    return true;
 }

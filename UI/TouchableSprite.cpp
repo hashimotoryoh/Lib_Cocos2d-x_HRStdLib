@@ -61,6 +61,13 @@ bool TouchableSprite::init()
 {
     if (!this->Sprite::init()) return false;
     
+    // タッチイベントのリスナを登録する
+    _listener = EventListenerTouchOneByOne::create();
+    _listener->onTouchBegan = CC_CALLBACK_2(TouchableSprite::onTouchBegan, this);
+    _listener->onTouchMoved = CC_CALLBACK_2(TouchableSprite::onTouchMoved, this);
+    _listener->onTouchEnded = CC_CALLBACK_2(TouchableSprite::onTouchEnded, this);
+    _eventDispatcher->addEventListenerWithFixedPriority(_listener, 1);
+    
     return true;
 }
 
@@ -84,16 +91,9 @@ bool TouchableSprite::initWithFiles(const std::string &enabledFile,
     // TODO: ファイルの存在確認
     _enabledImage  = enabledFile;
     _disabledImage = disabledFile;
-    _isEnable        = isEnable;
+    _isEnable      = isEnable;
     
     this->Sprite::initWithFile(_isEnable ? _enabledImage : _disabledImage);
-    
-    // タッチイベントのリスナを登録する
-    _listener = EventListenerTouchOneByOne::create();
-    _listener->onTouchBegan = CC_CALLBACK_2(TouchableSprite::onTouchBegan, this);
-    _listener->onTouchMoved = CC_CALLBACK_2(TouchableSprite::onTouchMoved, this);
-    _listener->onTouchEnded = CC_CALLBACK_2(TouchableSprite::onTouchEnded, this);
-    _eventDispatcher->addEventListenerWithFixedPriority(_listener, 1);
     
     return true;
 }

@@ -90,10 +90,17 @@ public:
     
 #pragma mark - Tap Event Methods
 private:
-    /*
+    /**
      * @brief タップされた時の挙動
      */
     void onTapped();
+    
+    /**
+     * @brief  キーが有効なものかチェックする
+     * @param  key チェックするキー
+     * @return true/false = 有効/無効
+     */
+    bool isValidKey(const std::string &key);
     
     
 };
