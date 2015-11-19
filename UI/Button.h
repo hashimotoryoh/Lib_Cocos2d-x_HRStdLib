@@ -124,7 +124,7 @@ private:
     void switchBrightnessEffect(bool sw);
     
     /**
-     * @brief タッチエフェクト(2つ)をon/off
+     * @brief スケール&明暗の両方をon/off
      * @param sw on/off
      */
     void switchTouchEffect(bool sw);
