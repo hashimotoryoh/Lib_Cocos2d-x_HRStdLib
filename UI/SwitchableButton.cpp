@@ -76,36 +76,27 @@ bool SwitchableButton::initWithPatterns(cocos2d::Vector<SBSwitchPattern*> patter
     return true;
 }
 
-SwitchableButton *SwitchableButton::createWithPatterns(SBSwitchPattern *pattern1,
-                                                       SBSwitchPattern *pattern2,
-                                                       ...)
-{
-    SwitchableButton *pRet = SwitchableButton::create();
-    if (pRet->initWithPatterns(pattern1, pattern2))
-        return pRet;
-    /* else */
-        return nullptr;
-}
-
-bool SwitchableButton::initWithPatterns(SBSwitchPattern *pattern1, SBSwitchPattern *pattern2, ...)
-{
-    Vector<SBSwitchPattern*> switchPatterns;
-    switchPatterns.pushBack(pattern1);
-    switchPatterns.pushBack(pattern2);
-    
-//    va_list patterns;
-//    va_start(patterns, pattern2);
-//    switchPatterns.pushBack(va_arg(patterns, SBSwitchPattern));
-//    va_end(patterns);
-    
-    if (!this->SwitchableButton::initWithPatterns(switchPatterns)) return false;
-    
-    return true;
-}
-
 
 
 #pragma mark - Control Methods
+
+void SwitchableButton::addPattern(HR::SBSwitchPattern *pattern)
+{
+    // TODO: キーの被りが無いかチェックする
+    
+    _switchPatterns.pushBack(pattern);
+    
+    // もし最初のパターンだったら初期化処理
+    if (_switchPatterns.size() == 1) {
+        _currentPattern = _switchPatterns.front();
+        this->setTexture(_currentPattern->_imageFile);
+    }
+}
+
+void SwitchableButton::addPattern(const std::string &key, const std::string imageFile, SBTapCallback callback /* = nullptr */)
+{
+    this->addPattern(SBSwitchPattern::create(key, imageFile, callback));
+}
 
 void SwitchableButton::switchNext(bool isCallCallback /* = true  */)
 {
@@ -116,7 +107,7 @@ void SwitchableButton::switchNext(bool isCallCallback /* = true  */)
 
 void SwitchableButton::switchWithKey(const std::string &key, bool isCallCallback /* = true  */)
 {
-    if (isCallCallback) _currentPattern->_callback();
+    if (isCallCallback && _currentPattern->_callback) _currentPattern->_callback();
     
     for (SBSwitchPattern *pattern : _switchPatterns) {
         if (pattern->_key == key) _currentPattern = pattern;

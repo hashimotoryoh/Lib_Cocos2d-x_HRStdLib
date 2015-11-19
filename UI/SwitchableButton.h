@@ -25,16 +25,17 @@ CC_CONSTRUCTOR_ACCESS:
     
     virtual bool init() override;
     virtual bool initWithPatterns(cocos2d::Vector<HR::SBSwitchPattern*> patterns);
-    virtual bool initWithPatterns(HR::SBSwitchPattern *pattern1, HR::SBSwitchPattern *pattern2, ...);
     
     
 #pragma mark - Create Methods
 public:
     static SwitchableButton *create();
+    /**
+     * @brief  切り替え可能ボタンを生成する
+     * @param  patterns 切り替えパターンのベクター
+     * @return 切り替えボタン
+     */
     static SwitchableButton *createWithPatterns(cocos2d::Vector<HR::SBSwitchPattern*> patterns);
-    static SwitchableButton *createWithPatterns(HR::SBSwitchPattern *pattern1,
-                                                HR::SBSwitchPattern *pattern2,
-                                                ...);
     
     
 #pragma mark - Members
@@ -44,7 +45,6 @@ protected:
     cocos2d::Vector<HR::SBSwitchPattern*> _switchPatterns;
     /* 現在のパターン */
     HR::SBSwitchPattern *_currentPattern;
-    
     
     
 #pragma mark - Control Methods
@@ -60,6 +60,20 @@ protected:
     HR_DISABLE_SUPER_METHOD(void, setLongTapCallback, TSLongTapCallback);
 #pragma matk Original Methods
 public:
+    /**
+     * @brief パターンを追加する
+     * @param pattern パターン
+     */
+    void addPattern(HR::SBSwitchPattern *pattern);
+    
+    /**
+     * @brief パターンを追加する
+     * @param key       キー
+     * @param imageFile 画像ファイル
+     * @param callback  (nullptr)コールバック
+     */
+    void addPattern(const std::string &key, const std::string imageFile, SBTapCallback callback = nullptr);
+    
     /**
      * @brief ボタンを切り替える
      * @param isCallCallback 現在のパターンのコールバックを呼ぶか

@@ -32,7 +32,7 @@ SBSwitchPattern::~SBSwitchPattern()
 
 #pragma mark - Create & Initialize Methods
 
-SBSwitchPattern *SBSwitchPattern::create(const std::string &key, const std::string &imageFile, SBTapCallback callback)
+SBSwitchPattern *SBSwitchPattern::create(const std::string &key, const std::string &imageFile, SBTapCallback callback /* = nullptr */)
 {
     SBSwitchPattern *pRet = new (std::nothrow) SBSwitchPattern();
     if (pRet && pRet->init(key, imageFile, callback)) {

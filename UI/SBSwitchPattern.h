@@ -31,11 +31,12 @@ CC_CONSTRUCTOR_ACCESS:
 public:
     /**
      * @brief  SBSwitchableButtonのパターンを生成する
+     * @param  key       キー
      * @param  imageFile このパターンの時の画像ファイル
-     * @param  callback  このパターンでタップされた時のコールバック
+     * @param  callback  (nullptr)このパターンでタップされた時のコールバック
      * @return パターン
      */
-    static SBSwitchPattern *create(const std::string &key, const std::string &imageFile, SBTapCallback callback);
+    static SBSwitchPattern *create(const std::string &key, const std::string &imageFile, SBTapCallback callback = nullptr);
     
     
 #pragma mark - Members
