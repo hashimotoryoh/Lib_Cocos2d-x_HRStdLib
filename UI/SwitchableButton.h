@@ -62,6 +62,13 @@ protected:
 #pragma matk Original Methods
 public:
     /**
+     * @brief  キーを指定してパターンを取得する
+     * @param  key キー
+     * @return パターン
+     */
+    HR::SBSwitchPattern *getPattern(const std::string &key);
+    
+    /**
      * @brief パターンを追加する
      * @param pattern パターン
      */
@@ -76,13 +83,19 @@ public:
     void addPattern(const std::string &key, const std::string imageFile, SBTapCallback callback = nullptr);
     
     /**
-     * @brief 登録済みの同じキーを持つパターンを変更する
+     * @brief パターンを削除する
+     * @param key キー
+     */
+    void removePattern(const std::string &key);
+    
+    /**
+     * @brief 同じキーを持つパターンを変更する
      * @param pattern パターン
      */
     void replacePattern(HR::SBSwitchPattern *pattern);
     
     /**
-     * @brief 登録済みのパターンを変更する
+     * @brief パターンを変更する
      * @param key       変更するパターンのキー
      * @param imageFile 新しい画像ファイル
      * @param callback  (nullptr)新しいコールバック

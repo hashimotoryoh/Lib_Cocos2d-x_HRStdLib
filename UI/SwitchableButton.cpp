@@ -95,6 +95,12 @@ void SwitchableButton::addPattern(const std::string &key, const std::string imag
     this->addPattern(SBSwitchPattern::create(key, imageFile, callback));
 }
 
+void SwitchableButton::removePattern(const std::string &key)
+{
+    SBSwitchPattern *targetPattern = this->getPattern(key);
+    _switchPatterns.eraseObject(targetPattern);
+}
+
 void SwitchableButton::replacePattern(HR::SBSwitchPattern *pattern)
 {
     this->replacePattern(pattern->_key, pattern->_imageFile, nullptr);
@@ -102,12 +108,19 @@ void SwitchableButton::replacePattern(HR::SBSwitchPattern *pattern)
 
 void SwitchableButton::replacePattern(const std::string &key, const std::string &newImageFile, SBTapCallback newCallback)
 {
+    SBSwitchPattern *targetPattern = this->getPattern(key);
+    targetPattern->_imageFile = newImageFile;
+    targetPattern->_callback  = newCallback;
+}
+
+HR::SBSwitchPattern *SwitchableButton::getPattern(const std::string &key)
+{
     for (SBSwitchPattern *pattern : _switchPatterns) {
-        if (pattern->_key == key) {
-            pattern->_imageFile = newImageFile;
-            pattern->_callback  = newCallback;
-        }
+        if (pattern->_key == key) return pattern;
     }
+    
+    HRERROR("キー %s は登録されていません。", key.c_str());
+    return nullptr;
 }
 
 void SwitchableButton::switchNext(bool isCallCallback /* = true  */)
@@ -121,9 +134,7 @@ void SwitchableButton::switchWithKey(const std::string &key, bool isCallCallback
 {
     if (isCallCallback && _currentPattern->_callback) _currentPattern->_callback();
     
-    for (SBSwitchPattern *pattern : _switchPatterns) {
-        if (pattern->_key == key) _currentPattern = pattern;
-    }
+    _currentPattern = this->getPattern(key);
     
     this->setTexture(_currentPattern->_imageFile);
 }
