@@ -95,6 +95,21 @@ void SwitchableButton::addPattern(const std::string &key, const std::string imag
     this->addPattern(SBSwitchPattern::create(key, imageFile, callback));
 }
 
+void SwitchableButton::replacePattern(HR::SBSwitchPattern *pattern)
+{
+    this->replacePattern(pattern->_key, pattern->_imageFile, nullptr);
+}
+
+void SwitchableButton::replacePattern(const std::string &key, const std::string &newImageFile, SBTapCallback newCallback)
+{
+    for (SBSwitchPattern *pattern : _switchPatterns) {
+        if (pattern->_key == key) {
+            pattern->_imageFile = newImageFile;
+            pattern->_callback  = newCallback;
+        }
+    }
+}
+
 void SwitchableButton::switchNext(bool isCallCallback /* = true  */)
 {
     Vector<HR::SBSwitchPattern*>::iterator iter = _switchPatterns.find(_currentPattern);
@@ -126,7 +141,7 @@ bool SwitchableButton::isValidKey(const std::string &key)
 {
     // 既に登録してあるパターンのキーと重複してたらダメ
     for (SBSwitchPattern *pattern : _switchPatterns) {
-        if (key == pattern->_key) return false;
+        if (pattern->_key == key) return false;
     }
     
     return true;

@@ -39,12 +39,13 @@ public:
     
     
 #pragma mark - Members
+#pragma mark Read Only Members
+    /* 現在のパターン */
+    CC_SYNTHESIZE_READONLY(HR::SBSwitchPattern*, _currentPattern, CurrentPattern);
 #pragma mark Protected Members
 protected:
     /* スイッチするパターン群 */
     cocos2d::Vector<HR::SBSwitchPattern*> _switchPatterns;
-    /* 現在のパターン */
-    HR::SBSwitchPattern *_currentPattern;
     
     
 #pragma mark - Control Methods
@@ -73,6 +74,20 @@ public:
      * @param callback  (nullptr)コールバック
      */
     void addPattern(const std::string &key, const std::string imageFile, SBTapCallback callback = nullptr);
+    
+    /**
+     * @brief 登録済みの同じキーを持つパターンを変更する
+     * @param pattern パターン
+     */
+    void replacePattern(HR::SBSwitchPattern *pattern);
+    
+    /**
+     * @brief 登録済みのパターンを変更する
+     * @param key       変更するパターンのキー
+     * @param imageFile 新しい画像ファイル
+     * @param callback  (nullptr)新しいコールバック
+     */
+    void replacePattern(const std::string &key, const std::string &imageFile, SBTapCallback callback = nullptr);
     
     /**
      * @brief ボタンを切り替える
