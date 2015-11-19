@@ -24,15 +24,6 @@ SBSwitchPattern::SBSwitchPattern()
 {
 }
 
-SBSwitchPattern::SBSwitchPattern(const std::string &key,
-                                 const std::string &imageFile,
-                                 SBTapCallback callback)
-: _key(key)
-, _imageFile(imageFile)
-, _callback(callback)
-{
-}
-
 SBSwitchPattern::~SBSwitchPattern()
 {
 }
@@ -41,11 +32,11 @@ SBSwitchPattern::~SBSwitchPattern()
 
 #pragma mark - Create & Initialize Methods
 
-SBSwitchPattern *SBSwitchPattern::create(const std::string &imageFile, SBTapCallback callback)
+SBSwitchPattern *SBSwitchPattern::create(const std::string &key, const std::string &imageFile, SBTapCallback callback)
 {
     SBSwitchPattern *pRet = new (std::nothrow) SBSwitchPattern();
-    if (pRet && pRet->init(imageFile, callback)) {
-//        pRet->autorelease();
+    if (pRet && pRet->init(key, imageFile, callback)) {
+        pRet->autorelease();
         return pRet;
     }
     
@@ -53,8 +44,9 @@ SBSwitchPattern *SBSwitchPattern::create(const std::string &imageFile, SBTapCall
     return nullptr;
 }
 
-bool SBSwitchPattern::init(const std::string &imageFile, SBTapCallback callback)
+bool SBSwitchPattern::init(const std::string &key, const std::string &imageFile, SBTapCallback callback)
 {
+    _key       = key;
     _imageFile = imageFile;
     _callback  = callback;
     

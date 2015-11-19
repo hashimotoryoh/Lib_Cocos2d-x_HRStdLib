@@ -18,17 +18,13 @@ namespace HR {
 typedef std::function<void()> SBTapCallback;
 
 
-class SBSwitchPattern
+class SBSwitchPattern : public cocos2d::Ref
 {
 CC_CONSTRUCTOR_ACCESS:
-public:
     SBSwitchPattern();
-    SBSwitchPattern(const std::string &key,
-                    const std::string &imageFile,
-                    SBTapCallback callback);
     ~SBSwitchPattern();
     
-    bool init(const std::string &imageFile, SBTapCallback callback);
+    bool init(const std::string &key, const std::string &imageFile, SBTapCallback callback);
     
     
 #pragma mark - Create Methods
@@ -36,10 +32,10 @@ public:
     /**
      * @brief  SBSwitchableButtonのパターンを生成する
      * @param  imageFile このパターンの時の画像ファイル
-     * @param  callback  このパターンでタップされたとくのコールバック
+     * @param  callback  このパターンでタップされた時のコールバック
      * @return パターン
      */
-    static SBSwitchPattern *create(const std::string &imageFile, SBTapCallback callback);
+    static SBSwitchPattern *create(const std::string &key, const std::string &imageFile, SBTapCallback callback);
     
     
 #pragma mark - Members

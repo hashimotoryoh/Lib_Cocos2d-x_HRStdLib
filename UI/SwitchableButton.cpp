@@ -17,8 +17,8 @@ USING_NS_CC;
 #pragma mark - Constructor & Destructor
 
 SwitchableButton::SwitchableButton()
-: _switchPatterns(std::vector<SwitchPattern>())
-, _currentPattern(SwitchPattern{})
+: _switchPatterns(cocos2d::Vector<SBSwitchPattern*>())
+, _currentPattern(nullptr)
 {
 }
 
@@ -50,14 +50,12 @@ bool SwitchableButton::init()
     this->disableContinuousTap();
     this->disableLongTap();
     
-    this->setTapCallback([this](unsigned int times) {
-        this->switchNext();
-    });
+    this->setTapCallback([this](unsigned int times) { this->onTapped(); });
     
     return true;
 }
 
-SwitchableButton *SwitchableButton::createWithPatterns(std::vector<SwitchPattern> patterns)
+SwitchableButton *SwitchableButton::createWithPatterns(cocos2d::Vector<SBSwitchPattern*> patterns)
 {
     SwitchableButton *pRet = SwitchableButton::create();
     if (pRet->initWithPatterns(patterns))
@@ -66,22 +64,20 @@ SwitchableButton *SwitchableButton::createWithPatterns(std::vector<SwitchPattern
         return nullptr;
 }
 
-bool SwitchableButton::initWithPatterns(std::vector<SwitchPattern> patterns)
+bool SwitchableButton::initWithPatterns(cocos2d::Vector<SBSwitchPattern*> patterns)
 {
     // TODO: キーの被りが無いか調べる
     
-    SwitchPattern firstPattern = patterns.front();
-    if (!this->Button::initWithFiles(firstPattern.imageFile, firstPattern.imageFile, true, true, true)) return false;
-    
     _switchPatterns = patterns;
-    _currentPattern = firstPattern;
-    _currentPatternIter = patterns.begin();
+    _currentPattern = _switchPatterns.front();
+    
+    if (!this->Button::initWithFiles(_currentPattern->_imageFile, _currentPattern->_imageFile, true, true, true)) return false;
     
     return true;
 }
 
-SwitchableButton *SwitchableButton::createWithPatterns(SwitchPattern pattern1,
-                                                       SwitchPattern pattern2,
+SwitchableButton *SwitchableButton::createWithPatterns(SBSwitchPattern *pattern1,
+                                                       SBSwitchPattern *pattern2,
                                                        ...)
 {
     SwitchableButton *pRet = SwitchableButton::create();
@@ -91,11 +87,11 @@ SwitchableButton *SwitchableButton::createWithPatterns(SwitchPattern pattern1,
         return nullptr;
 }
 
-bool SwitchableButton::initWithPatterns(SwitchPattern pattern1, SwitchPattern pattern2, ...)
+bool SwitchableButton::initWithPatterns(SBSwitchPattern *pattern1, SBSwitchPattern *pattern2, ...)
 {
-    std::vector<SwitchPattern> switchPatterns;
-    switchPatterns.push_back(pattern1);
-    switchPatterns.push_back(pattern2);
+    Vector<SBSwitchPattern*> switchPatterns;
+    switchPatterns.pushBack(pattern1);
+    switchPatterns.pushBack(pattern2);
     
 //    va_list patterns;
 //    va_start(patterns, pattern2);
@@ -113,34 +109,27 @@ bool SwitchableButton::initWithPatterns(SwitchPattern pattern1, SwitchPattern pa
 
 void SwitchableButton::switchNext(bool isCallCallback /* = true  */)
 {
-    // 次のパターンのキーを取得する
-    std::vector<SwitchPattern>::iterator nextIter = std::next(_currentPatternIter);
-    std::string nextKey = ((SwitchPattern)*nextIter).key;
-    
-    this->switchWithKey(nextKey, isCallCallback);
+    Vector<HR::SBSwitchPattern*>::iterator iter = _switchPatterns.find(_currentPattern);
+    SBSwitchPattern *nextPattern = (iter+1 != _switchPatterns.end()) ? *(iter+1) : _switchPatterns.front();
+    this->switchWithKey(nextPattern->_key);
 }
 
 void SwitchableButton::switchWithKey(const std::string &key, bool isCallCallback /* = true  */)
 {
-    if (isCallCallback) _currentPattern.callback();
+    if (isCallCallback) _currentPattern->_callback();
     
-    // 指定されたキーのパターンが無ければ何もしない
-    SwitchPattern nextPattern = this->findPattern(key);
-    if (nextPattern.key == "") return;
+    for (SBSwitchPattern *pattern : _switchPatterns) {
+        if (pattern->_key == key) _currentPattern = pattern;
+    }
     
-    this->setTexture(nextPattern.imageFile);
-    _currentPattern = nextPattern;
+    this->setTexture(_currentPattern->_imageFile);
 }
 
 
 
-#pragma mark - Easing Methods
+#pragma mark - Tap Event Methods
 
-SwitchPattern SwitchableButton::findPattern(const std::string &key)
+void SwitchableButton::onTapped()
 {
-    for (SwitchPattern pattern : _switchPatterns) {
-        if (pattern.key == key) return pattern;
-    }
-    
-    return SwitchPattern{};
+    this->switchNext();
 }

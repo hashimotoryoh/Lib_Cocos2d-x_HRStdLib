@@ -16,13 +16,6 @@
 
 namespace HR {
 
-
-    typedef struct {
-        std::string   key;
-        std::string   imageFile;
-        SBTapCallback callback;
-    } SwitchPattern;
-    
     
 class SwitchableButton : public HR::Button
 {
@@ -31,16 +24,16 @@ CC_CONSTRUCTOR_ACCESS:
     virtual ~SwitchableButton();
     
     virtual bool init() override;
-    virtual bool initWithPatterns(std::vector<HR::SwitchPattern> patterns);
-    virtual bool initWithPatterns(HR::SwitchPattern pattern1, HR::SwitchPattern pattern2, ...);
+    virtual bool initWithPatterns(cocos2d::Vector<HR::SBSwitchPattern*> patterns);
+    virtual bool initWithPatterns(HR::SBSwitchPattern *pattern1, HR::SBSwitchPattern *pattern2, ...);
     
     
 #pragma mark - Create Methods
 public:
     static SwitchableButton *create();
-    static SwitchableButton *createWithPatterns(std::vector<HR::SwitchPattern> patterns);
-    static SwitchableButton *createWithPatterns(HR::SwitchPattern pattern1,
-                                                HR::SwitchPattern pattern2,
+    static SwitchableButton *createWithPatterns(cocos2d::Vector<HR::SBSwitchPattern*> patterns);
+    static SwitchableButton *createWithPatterns(HR::SBSwitchPattern *pattern1,
+                                                HR::SBSwitchPattern *pattern2,
                                                 ...);
     
     
@@ -48,10 +41,9 @@ public:
 #pragma mark Protected Members
 protected:
     /* スイッチするパターン群 */
-    std::vector<HR::SwitchPattern> _switchPatterns;
-    /* 現在のパターンの番号 */
-    HR::SwitchPattern _currentPattern;
-    std::vector<HR::SwitchPattern>::iterator _currentPatternIter;
+    cocos2d::Vector<HR::SBSwitchPattern*> _switchPatterns;
+    /* 現在のパターン */
+    HR::SBSwitchPattern *_currentPattern;
     
     
     
@@ -68,22 +60,26 @@ protected:
     HR_DISABLE_SUPER_METHOD(void, setLongTapCallback, TSLongTapCallback);
 #pragma matk Original Methods
 public:
+    /**
+     * @brief ボタンを切り替える
+     * @param isCallCallback 現在のパターンのコールバックを呼ぶか
+     */
     void switchNext(bool isCallCallback = true);
     
     /**
      * @brief キーを指定してボタンを切り替える
-     * @param key キー
+     * @param key            キー
+     * @param isCallCallback 現在のパターンのコールバックを呼ぶか
      */
     void switchWithKey(const std::string &key, bool isCallCallback = true);
     
     
-#pragma mark - Easing Methods
+#pragma mark - Tap Event Methods
 private:
-    /**
-     * @brief キーを元にパターンを特定する
-     * @patam key キー
+    /*
+     * @brief タップされた時の挙動
      */
-    SwitchPattern findPattern(const std::string &key);
+    void onTapped();
     
     
 };
