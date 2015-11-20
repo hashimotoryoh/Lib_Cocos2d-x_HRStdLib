@@ -49,9 +49,9 @@ CC_CONSTRUCTOR_ACCESS:
     virtual ~TouchableSprite();
     
     virtual bool init() override;
-    virtual bool init(const std::string &enabledImageFile,
-                      const std::string &disabledImageFile,
-                      bool isEnable = true);
+    virtual bool initWithFiles(const std::string &enabledImageFile,
+                               const std::string &disabledImageFile,
+                               bool isEnable = true);
     
     
 #pragma mark - Create Methods
@@ -68,17 +68,17 @@ public:
      * @param  isEnable          (true)生成時有効か
      * @return タッチイベントを持ったSprite
      */
-    static TouchableSprite *create(const std::string &enabledImageFile,
-                                   const std::string &disabledImageFile,
-                                   bool isEnable = true);
+    static TouchableSprite *createWithFiles(const std::string &enabledImageFile,
+                                            const std::string &disabledImageFile,
+                                            bool isEnable = true);
     /**
      * @brief  タッチイベントを持ったSpriteを生成する
      * @param  filePath 画像ファイル
      * @param  isEnable (true)生成時有効か
      * @return タッチイベントを持ったSprite
      */
-    static TouchableSprite *create(const std::string &imageFile,
-                                   bool isEnable = true);
+    static TouchableSprite *createWithFile(const std::string &imageFile,
+                                           bool isEnable = true);
     
     
 #pragma mark - Control Methods
@@ -114,10 +114,15 @@ public:
     virtual void disableLongTap();
     
     /**
-     * @brief テクスチャを変更する
+     * @brief 有効時のテクスチャを変更する
      * @param imageFile 画像ファイル
      */
-    void setTexture(const std::string &imageFile);
+    void setEnabledTexture(const std::string &imageFile);
+    /**
+     * @brief 無効時のテクスチャを変更する
+     * @param imageFile 画像ファイル
+     */
+    void setDisabledTexture(const std::string &imageFile);
     /**
      * @brief テクスチャを変更する
      * @param enabled  有効時の画像ファイル

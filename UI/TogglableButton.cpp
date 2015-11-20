@@ -1,22 +1,28 @@
+
+
+//  HRStandardLibrary
 //
-//  TogglableButton.cpp
-//  cocos3.4
-//
-//  Created by 橋本龍 on 2015/11/20.
+//  Created by c1790 on 2015/11/20.
 //
 //
 
-#include "TogglableButton.hpp"
+#include "TogglableButton.h"
+#include "HRConfig.h"
+#include "HRFileHelper.h"
 
 
 using namespace HR;
 USING_NS_CC;
 
 
-
-#pragma mark - Constructor & Destructor
+#pragma mark - COnstructor & Destructor
 
 TogglableButton::TogglableButton()
+: _toggleStatus(false)
+, _onImageFile(STRING_UNSET)
+, _offImageFile(STRING_UNSET)
+, _toggledCallback(nullptr)
+, _isGrayScale(false)
 {
 }
 
@@ -30,8 +36,8 @@ TogglableButton::~TogglableButton()
 
 TogglableButton *TogglableButton::create()
 {
-    TogglableButton *pRet = new (std::nothrow) TogglableButton;
-    if (pRet && pRet->init()) {
+    TogglableButton *pRet = new (std::nothrow) TogglableButton();
+    if (pRet->init()) {
         pRet->autorelease();
         return pRet;
     }
@@ -42,25 +48,65 @@ TogglableButton *TogglableButton::create()
 
 bool TogglableButton::init()
 {
-    if (!this->TogglableButton::init()) return false;
+    if (!this->SwitchableButton::init()) return false;
     
+    _isEnableBrightnessEffect = false;
     
+    _toggleStatus    = true;
+    _isGrayScale     = true;
+    _toggledCallback = nullptr;
     
     return true;
 }
 
-TogglableButton *TogglableButton::createWithFiles(const std::string &on, const std::string &off)
+TogglableButton *TogglableButton::createWithFiles(const std::string &on,
+                                                  const std::string &off,
+                                                  ToggledCallback callback,
+                                                  bool isGrayScale /* = false */)
 {
     TogglableButton *pRet = TogglableButton::create();
-    if (pRet->initWithFiles(on, off)) {
-        pRet->autorelease();
+    if (pRet->initWithFiles(on, off, callback, isGrayScale)) {
         return pRet;
     }
     
-    CC_SAFE_DELETE(pRet);
     return nullptr;
 }
 
-bool TogglableButton::initWithFiles(const std::string &on, const std::string &off)
+bool TogglableButton::initWithFiles(const std::string &on, const std::string &off, ToggledCallback callback, bool isGrayScale /* = false */)
 {
+    // on/offのパターンのSwitchableButtonを生成する
+    this->addPattern(SBSwitchPattern::create( "on",  on, [this]() { this->toggle(); }));
+    this->addPattern(SBSwitchPattern::create("off", off, [this]() { this->toggle(); }));
+    
+    _toggledCallback = callback;
+    _isGrayScale = isGrayScale;
+    
+    return  true;
+}
+
+TogglableButton *TogglableButton::createWithFile(const std::string &imageFile,
+                                                ToggledCallback callback)
+{
+    return TogglableButton::createWithFiles(imageFile, imageFile, callback, true);
+}
+
+
+
+#pragma mark - Control Methods
+
+
+
+
+
+#pragma mark - Tap Event Methods
+
+void TogglableButton::toggle()
+{
+    _toggleStatus = !_toggleStatus;
+    
+    if(!_toggleStatus && _isGrayScale) this->setColor(Color3B::GRAY);
+    else                               this->setColor(Color3B::WHITE);
+    
+    // on->offならfalse, off->onならtrueを渡してコールバックを実行
+    _toggledCallback(_toggleStatus);
 }

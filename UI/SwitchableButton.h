@@ -117,12 +117,15 @@ public:
     
     
 #pragma mark - Tap Event Methods
-private:
+protected:
     /**
      * @brief タップされた時の挙動
      */
-    void onTapped();
+    virtual void onTapped();
     
+    
+#pragma mark - Easing Methods
+protected:
     /**
      * @brief  キーが有効なものかチェックする
      * @param  key チェックするキー
