@@ -86,7 +86,7 @@ void SwitchableButton::addPattern(HR::SBSwitchPattern *pattern)
     // もし最初のパターンだったら初期化処理
     if (_switchPatterns.size() == 1) {
         _currentPattern = _switchPatterns.front();
-        this->setTexture(_currentPattern->_imageFile);
+        this->Sprite::setTexture(_currentPattern->_imageFile);
     }
 }
 
@@ -136,7 +136,7 @@ void SwitchableButton::switchWithKey(const std::string &key, bool isCallCallback
     
     _currentPattern = this->getPattern(key);
     
-    this->setTexture(_currentPattern->_imageFile);
+    this->Sprite::setTexture(_currentPattern->_imageFile);
 }
 
 
