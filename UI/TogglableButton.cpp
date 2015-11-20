@@ -15,7 +15,8 @@ using namespace HR;
 USING_NS_CC;
 
 
-#pragma mark - COnstructor & Destructor
+
+#pragma mark - Constructor & Destructor
 
 TogglableButton::TogglableButton()
 : _toggleStatus(false)
@@ -75,8 +76,8 @@ TogglableButton *TogglableButton::createWithFiles(const std::string &on,
 bool TogglableButton::initWithFiles(const std::string &on, const std::string &off, ToggledCallback callback, bool isGrayScale /* = false */)
 {
     // on/offのパターンのSwitchableButtonを生成する
-    this->addPattern(SBSwitchPattern::create( "on",  on, [this]() { this->toggle(); }));
-    this->addPattern(SBSwitchPattern::create("off", off, [this]() { this->toggle(); }));
+    this->addPattern(SBSwitchPattern::create( "on",  on, [this]() { this->onTapped(); }));
+    this->addPattern(SBSwitchPattern::create("off", off, [this]() { this->onTapped(); }));
     
     _toggledCallback = callback;
     _isGrayScale = isGrayScale;
@@ -94,11 +95,7 @@ TogglableButton *TogglableButton::createWithFile(const std::string &imageFile,
 
 #pragma mark - Control Methods
 
-
-
-
-
-#pragma mark - Tap Event Methods
+#pragma mark Original Methods
 
 void TogglableButton::toggle()
 {
@@ -109,4 +106,27 @@ void TogglableButton::toggle()
     
     // on->offならfalse, off->onならtrueを渡してコールバックを実行
     _toggledCallback(_toggleStatus);
+}
+
+void TogglableButton::turnOn()
+{
+    // 現状をオフにしてトグルする
+    _toggleStatus = false;
+    this->toggle();
+}
+
+void TogglableButton::turnOff()
+{
+    // 現状をオンにしてトグルする
+    _toggleStatus = true;
+    this->toggle();
+}
+
+
+
+#pragma mark - Tap Event Methods
+
+void TogglableButton::onTapped()
+{
+    this->toggle();
 }

@@ -82,18 +82,29 @@ public:
 #pragma mark Read & Write Members
     /* オフの時にグレースケールするか */
     CC_SYNTHESIZE(bool, _isGrayScale, IsGrayScale);
-#pragma mark Protected Members
-protected:
     
     
 #pragma mark - Control Methods
-#pragma mark Override Methods
 #pragma mark Original Methods
+    /**
+     * @brief トグルする
+     */
+    virtual void toggle();
+    
+    /**
+     * @brief 強制的にオンにする
+     */
+    virtual void turnOn();
+    
+    /**
+     * @brief 強制的にオフにする
+     */
+    virtual void turnOff();
     
     
 #pragma mark - Tap Event Methods
-protected:
-    virtual void toggle();
+private:
+    virtual void onTapped() override;
     
     
 };

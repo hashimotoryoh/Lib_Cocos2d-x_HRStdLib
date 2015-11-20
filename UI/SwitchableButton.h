@@ -117,7 +117,7 @@ public:
     
     
 #pragma mark - Tap Event Methods
-protected:
+private:
     /**
      * @brief タップされた時の挙動
      */
