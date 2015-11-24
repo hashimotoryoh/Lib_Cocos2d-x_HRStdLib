@@ -21,13 +21,14 @@ USING_NS_CC;
 
 TouchableSprite::TouchableSprite()
 : _isEnableLongTap(true)
-, _isEnableContinuousTap(false)
 , _longTapThreshold(DEFAULT_LONG_TOUCH_THRESHOLD)
 , _continuousTapThreshold(DEFAULT_CONTINUOUS_TAP_THRESHOLD)
-, _enabledImage(STRING_UNSET)
-, _disabledImage(STRING_UNSET)
+, _enabledImageFile(STRING_UNSET)
+, _disabledImageFile(STRING_UNSET)
 , _isEnable(true)
+, _isEnableContinuousTap(false)
 , _touchBeganCallback(nullptr)
+, _longTouchCallback(nullptr)
 , _touchEndedCallback(nullptr)
 , _tapCallback(nullptr)
 , _longTapCallback(nullptr)
@@ -54,7 +55,7 @@ TouchableSprite *TouchableSprite::create()
     }
     
     CC_SAFE_DELETE(pRet);
-    return pRet;
+    return nullptr;
 }
 
 bool TouchableSprite::init()
@@ -71,37 +72,34 @@ bool TouchableSprite::init()
     return true;
 }
 
-TouchableSprite *TouchableSprite::createWithFiles(const std::string &enabledFile,
-                                                  const std::string &disabledFile,
+TouchableSprite *TouchableSprite::createWithFiles(const std::string &enabledImageFile,
+                                                  const std::string &disabledImageFile,
                                                   bool isEnable /* = true */)
 {
     TouchableSprite *pRet = TouchableSprite::create();
-    if (pRet->initWithFiles(enabledFile, disabledFile, isEnable))
+    if (pRet->initWithFiles(enabledImageFile, disabledImageFile, isEnable)) {
         return pRet;
-    /* else */
-        return nullptr;
+    }
+    
+    return nullptr;
 }
 
-bool TouchableSprite::initWithFiles(const std::string &enabledFile,
-                                    const std::string &disabledFile,
-                                    bool isEnable)
+bool TouchableSprite::initWithFiles(const std::string &enabledImageFile, const std::string &disabledImageFile, bool isEnable /* = true */)
 {
-    if (!this->TouchableSprite::init()) return false;
-
     // TODO: ファイルの存在確認
-    _enabledImage  = enabledFile;
-    _disabledImage = disabledFile;
-    _isEnable      = isEnable;
+    _enabledImageFile  = enabledImageFile;
+    _disabledImageFile = disabledImageFile;
+    _isEnable          = isEnable;
     
-    this->Sprite::initWithFile(_isEnable ? _enabledImage : _disabledImage);
+    this->Sprite::setTexture(_isEnable ? _enabledImageFile : _disabledImageFile);
     
     return true;
 }
 
-TouchableSprite *TouchableSprite::createWithFile(const std::string &file,
+TouchableSprite *TouchableSprite::createWithFile(const std::string &imageFile,
                                                  bool isEnable /* = true */)
 {
-    return TouchableSprite::createWithFiles(file, file, isEnable);
+    return TouchableSprite::createWithFiles(imageFile, imageFile, isEnable);
 }
 
 
@@ -128,7 +126,7 @@ void TouchableSprite::enable()
     _eventDispatcher->addEventListenerWithFixedPriority(_listener, 1);
     _isEnable = true;
     
-    this->Sprite::setTexture(_enabledImage);
+    this->Sprite::setTexture(_enabledImageFile);
 }
 
 void TouchableSprite::disable()
@@ -138,7 +136,7 @@ void TouchableSprite::disable()
     _eventDispatcher->removeEventListener(_listener);
     _isEnable = false;
     
-    this->Sprite::setTexture(_disabledImage);
+    this->Sprite::setTexture(_disabledImageFile);
 }
 
 void TouchableSprite::enableContinuousTap()
@@ -171,20 +169,24 @@ void TouchableSprite::disableLongTap()
     _isEnableLongTap = false;
 }
 
-void TouchableSprite::setTexture(const std::string &current)
+void TouchableSprite::setEnabledTexture(const std::string &imageFile)
 {
-    if (_isEnable) _enabledImage  = current;
-    else           _disabledImage = current;
-    
-    this->Sprite::setTexture(current);
+    // TODO: ファイルの存在を確認する
+    _enabledImageFile = imageFile;
+    if (_isEnable) this->Sprite::setTexture(_enabledImageFile);
+}
+
+void TouchableSprite::setDisabledTexture(const std::string &imageFile)
+{
+    // TODO: ファイルの存在を確認する
+    _disabledImageFile = imageFile;
+    if (!_isEnable) this->Sprite::setTexture(_disabledImageFile);
 }
 
 void TouchableSprite::setTexture(const std::string &enabled, const std::string &disabled)
 {
-    _enabledImage  = enabled;
-    _disabledImage = disabled;
-    
-    this->Sprite::setTexture(_isEnable ? _enabledImage : _disabledImage);
+    this->setEnabledTexture(enabled);
+    this->setDisabledTexture(disabled);
 }
 
 

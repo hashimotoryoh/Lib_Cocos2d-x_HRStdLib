@@ -7,8 +7,11 @@
 //
 
 #include "HRFileHelper.h"
+#include "HRLog.h"
+
 
 using namespace HR;
+USING_NS_CC;
 
 
 std::string HRFileHelper::getFileNameFromPath(const std::string &path, bool extension /* = true */)
@@ -34,4 +37,11 @@ std::string HRFileHelper::getFileNameFromPath(const std::string &path, bool exte
     }
     
     return fileName;
+}
+
+cocos2d::Texture2D *HRFileHelper::getTexture(const std::string &path)
+{
+    Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(path);
+    HRASSERT(texture, "画像のファイルパスが不正です。: %s", path.c_str());
+    return texture;
 }

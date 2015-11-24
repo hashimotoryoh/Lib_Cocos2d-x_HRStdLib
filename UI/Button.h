@@ -31,50 +31,52 @@ CC_CONSTRUCTOR_ACCESS:
     virtual ~Button();
     
     virtual bool init() override;
-    virtual bool initWithFiles(const std::string &normalFile,
-                               const std::string &touchedFile,
-                               bool scaleEffect,
-                               bool brightnessEffect,
-                               bool isEnable);
-//    virtual bool initWithFile(const std::string &file,
-//                              bool scaleEffect         = true,
-//                              bool brightnessEffect    = true,
-//                              bool isEnable            = true);
+    virtual bool initWithFiles(const std::string &enabledImageFile,
+                               const std::string &disabledImageFile,
+                               bool scaleEffect      = true,
+                               bool brightnessEffect = true,
+                               bool isEnable         = true);
     
     
-public:
 #pragma mark - Create Methods
-    static Button *create();
+public:
     /**
      * @brief  ボタンを生成する
-     * @param normal           普段の画像ファイル
-     * @param touched          押下時の画像ファイル
-     * @param scaleEffect      (true)押下時に小さくするか
-     * @param brightnessEffect (true)押下時に暗くするか
-     * @param isEnable         (true)有効か
      * @return ボタン
      */
-    static Button *createWithFiles(const std::string &normalFile,
-                                   const std::string &touchedFile,
-                                   bool scaleEffect = true,
-                                   bool brightnessEffect = true,
-                                   bool isEnable = true);
+    static Button *create();
+    
     /**
      * @brief  ボタンを生成する
-     * @param  filePath         画像ファイル
+     * @param  enabledImageFile  有効時の画像ファイル
+     * @param  disabledImageFile 無効時の画像ファイル
+     * @param  scaleEffect       (true)押下時に小さくするか
+     * @param  brightnessEffect  (true)押下時に暗くするか
+     * @param  isEnable          (true)有効か
+     * @return ボタン
+     */
+    static Button *createWithFiles(const std::string &enabledImageFile,
+                                   const std::string &disabledImageFile,
+                                   bool scaleEffect      = true,
+                                   bool brightnessEffect = true,
+                                   bool isEnable         = true);
+    
+    /**
+     * @brief  ボタンを生成する
+     * @param  imageFile        画像ファイル
      * @param  scaleEffect      (true)押下時に小さくするか
      * @param  brightnessEffect (true)押下時に暗くするか
      * @param  isEnable         (true)有効か
      * @return ボタン
      */
-    static Button *createWithFile(const std::string &file,
-                                  bool scaleEffect = true,
+    static Button *createWithFile(const std::string &imageFile,
+                                  bool scaleEffect      = true,
                                   bool brightnessEffect = true,
-                                  bool isEnable = true);
+                                  bool isEnable         = true);
 
     
-    
 #pragma mark - Control Methods
+public:
     /**
      * @brief 押下時のスケールエフェクト有効化する
      */
@@ -96,8 +98,6 @@ public:
     
 #pragma mark - Members
 #pragma mark Read Only Members
-    CC_SYNTHESIZE_READONLY(cocos2d::Texture2D*, _normalTexture, NormalTexture);
-    CC_SYNTHESIZE_READONLY(cocos2d::Texture2D*, _touchedTexture, TouchedTexture);
     CC_SYNTHESIZE_READONLY(bool, _isEnableScaleEffect, IsEnableScaleEffect);
     CC_SYNTHESIZE_READONLY(bool, _isEnableBrightnessEffect, IsEnableBrightnessEffect);
     

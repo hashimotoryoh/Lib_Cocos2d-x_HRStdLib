@@ -49,23 +49,27 @@ CC_CONSTRUCTOR_ACCESS:
     virtual ~TouchableSprite();
     
     virtual bool init() override;
-    virtual bool initWithFiles(const std::string &enabledFile,
-                               const std::string &disabledFile,
-                               bool isEnable);
+    virtual bool initWithFiles(const std::string &enabledImageFile,
+                               const std::string &disabledImageFile,
+                               bool isEnable = true);
     
     
 #pragma mark - Create Methods
 public:
+    /**
+     * @brief  タッチイベントを持ったSpriteを生成する
+     * @return タッチイベントを持ったSprite
+     */
     static TouchableSprite *create();
     /**
      * @brief  タッチイベントを持ったSpriteを生成する
-     * @param  enabledFilePath  タッチ有効時の画像ファイル
-     * @param  disabledFilePath タッチ無効時の画像ファイル
-     * @param  isEnable         (true)生成時有効か
+     * @param  enabledImageFile  タッチ有効時の画像ファイル
+     * @param  disabledImageFile タッチ無効時の画像ファイル
+     * @param  isEnable          (true)生成時有効か
      * @return タッチイベントを持ったSprite
      */
-    static TouchableSprite *createWithFiles(const std::string &enabledFile,
-                                            const std::string &disabledFile,
+    static TouchableSprite *createWithFiles(const std::string &enabledImageFile,
+                                            const std::string &disabledImageFile,
                                             bool isEnable = true);
     /**
      * @brief  タッチイベントを持ったSpriteを生成する
@@ -73,7 +77,7 @@ public:
      * @param  isEnable (true)生成時有効か
      * @return タッチイベントを持ったSprite
      */
-    static TouchableSprite *createWithFile(const std::string &file,
+    static TouchableSprite *createWithFile(const std::string &imageFile,
                                            bool isEnable = true);
     
     
@@ -110,10 +114,15 @@ public:
     virtual void disableLongTap();
     
     /**
-     * @brief 現在の状態(有効/無効)のテクスチャを変更する
-     * @param current 画像ファイル
+     * @brief 有効時のテクスチャを変更する
+     * @param imageFile 画像ファイル
      */
-    void setTexture(const std::string &current);
+    void setEnabledTexture(const std::string &imageFile);
+    /**
+     * @brief 無効時のテクスチャを変更する
+     * @param imageFile 画像ファイル
+     */
+    void setDisabledTexture(const std::string &imageFile);
     /**
      * @brief テクスチャを変更する
      * @param enabled  有効時の画像ファイル
@@ -132,9 +141,9 @@ public:
     CC_SYNTHESIZE(float, _continuousTapThreshold, ContinuousTapThreshold);
 #pragma mark Read Only Members
     /* タップ有効時の画像ファイル */
-    CC_SYNTHESIZE_READONLY(std::string, _enabledImage, EnabledImage);
+    CC_SYNTHESIZE_READONLY(std::string, _enabledImageFile, EnabledImageFile);
     /* タップ無効時の画像ファイル */
-    CC_SYNTHESIZE_READONLY(std::string, _disabledImage, DisabledImage);
+    CC_SYNTHESIZE_READONLY(std::string, _disabledImageFile, DisabledImageFile);
     /* タップが有効か */
     CC_SYNTHESIZE_READONLY(bool, _isEnable, IsEnable);
     /* 連続タップ可能か */

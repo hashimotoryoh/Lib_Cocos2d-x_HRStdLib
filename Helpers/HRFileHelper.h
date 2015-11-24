@@ -9,6 +9,8 @@
 #ifndef HRStandardLibrary_HRFileHelper_h
 #define HRStandardLibrary_HRFileHelper_h
 
+#include "cocos2d.h"
+
 
 namespace HR {
 
@@ -23,6 +25,13 @@ public:
      * @return ファイル名
      */
     static std::string getFileNameFromPath(const std::string &path, bool extension = true);
+    
+    /**
+     * @brief  画像のファイルパスからテクスチャを取得する
+     * @param  path 画像ファイルパス
+     * @return テクスチャ
+     */
+    static cocos2d::Texture2D *getTexture(const std::string &path);
 
 
 };

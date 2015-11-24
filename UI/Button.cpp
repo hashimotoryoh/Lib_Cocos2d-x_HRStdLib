@@ -9,6 +9,7 @@
 #include "Button.h"
 #include "HRLog.h"
 #include "NodeUtility.h"
+#include "HRFileHelper.h"
 
 
 using namespace HR;
@@ -18,9 +19,7 @@ USING_NS_CC;
 #pragma mark - Constructor & Destructor
 
 Button::Button()
-: _normalTexture(nullptr)
-, _touchedTexture(nullptr)
-, _isEnableScaleEffect(true)
+: _isEnableScaleEffect(true)
 , _isEnableBrightnessEffect(true)
 {
 }
@@ -52,28 +51,23 @@ bool Button::init()
     return true;
 }
 
-Button *Button::createWithFiles(const std::string &normalFile,
-                                const std::string &touchedFile,
+Button *Button::createWithFiles(const std::string &enabledImageFile,
+                                const std::string &disabledImageFile,
                                 bool scaleEffect      /* = true */,
                                 bool brightnessEffect /* = true */,
                                 bool isEnable         /* = true */)
 {
     Button *pRet = Button::create();
-    if (pRet->initWithFiles(normalFile, touchedFile, scaleEffect, brightnessEffect, isEnable))
+    if (pRet->initWithFiles(enabledImageFile, disabledImageFile, scaleEffect, brightnessEffect, isEnable)) {
         return pRet;
-    /* else */
-        return nullptr;
+    }
+    
+    return nullptr;
 }
 
-bool Button::initWithFiles(const std::string &normal, const std::string &touched, bool scaleEffect, bool brightnessEffect, bool isEnable)
+bool Button::initWithFiles(const std::string &enabledImageFile, const std::string &disabledImageFile, bool scaleEffect /* = true */, bool brightnessEffect /* = true */, bool isEnable /* = true */)
 {
-    if (!this->TouchableSprite::initWithFiles(normal, normal, isEnable)) return false;
-    
-    _normalTexture  = Director::getInstance()->getTextureCache()->addImage(normal);
-    _touchedTexture = Director::getInstance()->getTextureCache()->addImage(touched);
-    
-    HRASSERT(_normalTexture,  "画像のファイルパスが不正です。: %s", normal.c_str());
-    HRASSERT(_touchedTexture, "画像のファイルパスが不正です。: %s", touched.c_str());
+    if (!this->TouchableSprite::initWithFiles(enabledImageFile, disabledImageFile, isEnable)) return false;
     
     scaleEffect      ? this->enableScaleEffect()      : disableScaleEffect();
     brightnessEffect ? this->enableBrightnessEffect() : disableBrightnessEffect();
@@ -81,12 +75,12 @@ bool Button::initWithFiles(const std::string &normal, const std::string &touched
     return true;
 }
 
-Button *Button::createWithFile(const std::string &file,
+Button *Button::createWithFile(const std::string &imageFile,
                                bool scaleEffect      /* = true */,
                                bool brightnessEffect /* = true */,
                                bool isEnable         /* = true */)
 {
-    return Button::createWithFiles(file, file, scaleEffect, brightnessEffect, isEnable);
+    return Button::createWithFiles(imageFile, imageFile, scaleEffect, brightnessEffect, isEnable);
 }
 
 
@@ -181,6 +175,4 @@ void Button::switchTouchEffect(bool sw)
 {
     this->switchScaleEffect(sw);
     this->switchBrightnessEffect(sw);
-    
-//    this->setTexture(sw ? _touchedTexture : _normalTexture);
 }
