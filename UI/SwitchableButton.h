@@ -6,6 +6,18 @@
 //
 //
 
+/**
+ * HR::SwitchableButton
+ *
+ * extend HR::Button
+ *
+ * タップされる度に、
+ * あらかじめ決められたいくつかのパターンのボタンを
+ * 順番に切り替わっていくボタン。
+ * 例えば、何かのスピードを調整する設定ボタンで、
+ * x1, x2, x3, 停止 を順番に切り替えていくような…
+ */
+
 #ifndef __HRStandardLibrary__SwitchableButton__
 #define __HRStandardLibrary__SwitchableButton__
 

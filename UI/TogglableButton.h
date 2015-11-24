@@ -6,6 +6,15 @@
 //
 //
 
+/**
+ * HR::TogglableButton
+ *
+ * extend HR::SwitchableButton
+ *
+ * トグル型のボタンクラス。
+ * on/off切り替えとかに使う。
+ */
+
 #ifndef __HRStandardLibrary__TogglableButton__
 #define __HRStandardLibrary__TogglableButton__
 

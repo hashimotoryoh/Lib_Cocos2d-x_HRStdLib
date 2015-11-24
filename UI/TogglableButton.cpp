@@ -110,14 +110,14 @@ void TogglableButton::toggle()
 
 void TogglableButton::turnOn()
 {
-    // 現状をオフにしてトグルする
+    // 現状をオフにしてトグルすることでオンにする
     _toggleStatus = false;
     this->toggle();
 }
 
 void TogglableButton::turnOff()
 {
-    // 現状をオンにしてトグルする
+    // 現状をオンにしてトグルすることでオフにする
     _toggleStatus = true;
     this->toggle();
 }
