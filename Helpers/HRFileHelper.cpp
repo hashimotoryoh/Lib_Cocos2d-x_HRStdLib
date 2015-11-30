@@ -29,6 +29,27 @@ std::string HRFileHelper::getStringFromFile(const std::string &path)
     return FileUtils::getInstance()->getStringFromFile(path);
 }
 
+void HRFileHelper::saveStringToFile(const std::string &str, const std::string &path, bool overwrite /* = true */)
+{
+    // 書き込み可能ディレクトリの取得
+    std::string fullPath = CCFileUtils::getInstance()->getWritablePath() + path;
+    
+    // TODO: pathにディレクトリ構成が含まれていた場合、そのディレクトリを作成する
+    
+    if (FileUtils::getInstance()->isFileExist(fullPath)) {
+        HRLOG("書き込み先のファイルが既に存在します。: %s", path.c_str());
+        if (overwrite) { HRLOG("  └─>上書きします。"); }
+        else           { return; }
+    }
+    
+    // 書き込み処理
+    std::vector<char> buffer;
+    std::copy(str.begin(), str.end(), std::back_inserter(buffer));
+    FILE *fp = fopen(fullPath.c_str(), "wb");
+    fwrite(&buffer[0], sizeof(char), buffer.size(), fp);
+    fclose(fp);
+}
+
 std::string HRFileHelper::getFileNameFromPath(const std::string &path, bool extension /* = true */)
 {
     HRFileHelper::checkIsFileExists(path, true);

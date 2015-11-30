@@ -34,6 +34,15 @@ public:
     static std::string getStringFromFile(const std::string &path);
     
     /**
+     * @brief  文字列をテキストファイルに書き込む
+     * @param  str       文字列
+     * @param  path      書き込み先パス
+     * @param  overwrite (true)既に存在した場合上書きするか
+     * @return 書き込みが成功したか
+     */
+    static void saveStringToFile(const std::string &str, const std::string &path, bool overwrite = true);
+    
+    /**
      * @brief  ファイルパスからファイル名を取得する
      * @param  path      ファイルパス
      * @param  extension 拡張子を付けるか(デフォルト true)
