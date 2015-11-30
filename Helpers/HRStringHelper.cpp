@@ -34,3 +34,50 @@ std::string HRStringHelper::format(const char *format, ...)
     
     return ret;
 }
+
+std::string HRStringHelper::intToString(int num)
+{
+    std::stringstream ss;
+    ss << num;
+    return ss.str();
+}
+
+std::string HRStringHelper::stringFormat(const std::string &str,
+                                         unsigned int unit,
+                                         const std::string &delimiter,
+                                         bool reverse /* = false */)
+{
+    std::string ret;
+    int i = 1;
+    
+    if (reverse) {
+        // 後ろから
+        const auto begin = str.rbegin();
+        const auto end   = str.rend();
+        for (auto iter=begin; iter!=end; iter++) {
+            ret = (*iter) + ret;
+            if (i%unit == 0 && iter+1 != end) ret = delimiter + ret;
+            i++;
+        }
+    }
+    else {
+        // 前から
+        const auto begin = str.begin();
+        const auto end   = str.end();
+        for (auto iter=begin; iter!=end; iter++) {
+            ret = ret + (*iter);
+            if (i%unit == 0 && iter+1 != end) ret = ret + delimiter;
+            i++;
+        }
+    }
+    
+    return ret;
+}
+
+std::string HRStringHelper::numberFormat(int num)
+{
+    unsigned int absNum = std::abs(num);
+    std::string ret = HRStringHelper::stringFormat(HRStringHelper::intToString(absNum), 3, ",", true);
+    
+    return (num > 0) ? ret : "-"+ret;
+}
