@@ -93,6 +93,8 @@ KeyはJSONのキー。ValueTypeはC++で読み取る型。
 | enabled_filepath | std::string | o |  | タッチ有効時の画像ファイルパス |
 | disabled_filepath | std::string | x | enabled_filepath | タッチ無効時の画像ファイルパス |
 | is_enable | bool | x | true | 有効か |
+| long_tap | bool | x | true | ロングタップが有効か |
+| continuous_tap | bool | x | false | 連続タップが有効か |
 | scale_effect | bool | x | true | タッチ時に小さくするか |
 | brightness_effect | bool | x | true | タッチ時に暗くするか |
 
@@ -100,3 +102,23 @@ KeyはJSONのキー。ValueTypeはC++で読み取る型。
 
 | Key | ValueType | Required | Default | Description |
 |:---|:---|:---:|:---|:---|
+| patterns | JSON Array | o |  | 切り替えパターン郡<br />次のパターンの配列 |
+| patterns.key | std::string | o |  | パターンのキー |
+| patterns.filepath | std::string | o |  | パターンの画像ファイルパス |
+| is_enable | bool | x | true | 有効か |
+| long_tap | bool | x | true | ロングタップが有効か |
+| continuous_tap | bool | x | false | 連続タップが有効か |
+| scale_effect | bool | x | true | タッチ時に小さくするか |
+| brightness_effect | bool | x | true | タッチ時に暗くするか |
+
+### TogglableButton's Parameters
+
+| Key | ValueType | Required | Default | Description |
+|:---|:---|:---:|:---|:---|
+| on_filepath | std::string | o |  | オンの時の画像ファイルパス |
+| off_filepath | std::string | o |  | オフの時の画像ファイルパス |
+| initial_status | bool | x | true | 初期状態 true/false = on/off |
+| is_enable | bool | x | true | 有効か |
+| scale_effect | bool | x | true | タッチ時に小さくするか |
+| brightness_effect | bool | x | true | タッチ時に暗くするか |
+| gray_scale | bool | x | true | オフの時グレースケールするか |
