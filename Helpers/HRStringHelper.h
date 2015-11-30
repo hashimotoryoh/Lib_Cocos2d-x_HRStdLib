@@ -23,6 +23,14 @@ public:
      * @return フォーマットされた文字列
      */
     static std::string format(const char *format, ...);
+    
+    /**
+     * @brief  数値を文字列に変換する
+     *         to_string()がAndroidで非対応な為
+     * @param  i 数値
+     * @retrun 文字列
+     */
+    static std::string intToString(int i);
 
 
 };

@@ -34,3 +34,10 @@ std::string HRStringHelper::format(const char *format, ...)
     
     return ret;
 }
+
+std::string HRStringHelper::intToString(int i)
+{
+    std::stringstream ss;
+    ss << i;
+    return ss.str();
+}
