@@ -51,6 +51,13 @@ public:
     static std::string getFileNameFromPath(const std::string &path, bool extension = true);
     
     /**
+     * @brief  ファイルパスからディレクトリ構成を取得する
+     * @param  path ファイルパス
+     * @return ディレクトリの配列
+     */
+    static std::vector<std::string> getDirectoriesFromPath(const std::string &path);
+    
+    /**
      * @brief  画像のファイルパスからテクスチャを取得する
      * @param  path 画像ファイルパス
      * @return テクスチャ

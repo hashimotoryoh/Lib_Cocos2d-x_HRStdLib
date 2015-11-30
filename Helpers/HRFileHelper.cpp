@@ -77,6 +77,22 @@ std::string HRFileHelper::getFileNameFromPath(const std::string &path, bool exte
     return fileName;
 }
 
+std::vector<std::string> HRFileHelper::getDirectoriesFromPath(const std::string &path)
+{
+    HRFileHelper::checkIsFileExists(path, true);
+    
+    std::vector<std::string> directories;
+    size_t current = 0;
+    size_t cutPoint = current;
+    
+    while ((cutPoint = path.find_first_of("/", current)) != std::string::npos) {
+        directories.push_back(std::string(path, current, cutPoint-current));
+        current = cutPoint+1;
+    }
+    
+    return directories;
+}
+
 cocos2d::Texture2D *HRFileHelper::getTexture(const std::string &path)
 {
     HRFileHelper::checkIsFileExists(path);
