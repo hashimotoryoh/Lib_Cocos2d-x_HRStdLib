@@ -28,9 +28,18 @@ public:
      * @brief  数値を文字列に変換する
      *         to_string()がAndroidで非対応な為
      * @param  i 数値
-     * @retrun 文字列
+     * @return 文字列
      */
     static std::string intToString(int i);
+    
+    /**
+     * @brief  文字列の指定文字数毎にデリミタを挟む
+     * @param  str       文字列
+     * @param  unit      挟む間隔
+     * @param  delimiter デリミタ
+     * @return 整形後の文字列
+     */
+    static std::string stringFormat(const std::string &str, unsigned int unit, const std::string &delimiter);
 
 
 };

@@ -41,3 +41,16 @@ std::string HRStringHelper::intToString(int i)
     ss << i;
     return ss.str();
 }
+
+std::string HRStringHelper::stringFormat(const std::string &str, unsigned int unit, const std::string &delimiter)
+{
+    int size = (int)str.size();
+    
+    std::string ret;
+    for (int i =  1; i < size + 1 ; i++){
+        std::string tmp = str.substr(i-1,1);
+        if ((size - i + 1) % unit == 0 && i != 1) ret.append(delimiter);
+        ret.append(tmp);
+    }
+    return ret;
+}
