@@ -21,6 +21,7 @@
 #define __HRStandardLibrary__TouchableSprite__
 
 #include "cocos2d.h"
+#include "BaseSprite.h"
 #include "HRMacros.h"
 
 
@@ -42,7 +43,7 @@ enum class TouchingStatus {
 };
 
 
-class TouchableSprite : public cocos2d::Sprite
+class TouchableSprite : public HR::BaseSprite
 {
 CC_CONSTRUCTOR_ACCESS:
     TouchableSprite();
