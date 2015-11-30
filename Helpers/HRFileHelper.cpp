@@ -32,9 +32,11 @@ std::string HRFileHelper::getStringFromFile(const std::string &path)
 void HRFileHelper::saveStringToFile(const std::string &str, const std::string &path, bool overwrite /* = true */)
 {
     // 書き込み可能ディレクトリの取得
-    std::string fullPath = CCFileUtils::getInstance()->getWritablePath() + path;
+    std::string fullPath = FileUtils::getInstance()->getWritablePath() + path;
     
-    // TODO: pathにディレクトリ構成が含まれていた場合、そのディレクトリを作成する
+    // pathにディレクトリ構成が含まれていた場合、そのディレクトリを作成する
+    size_t lastSlash = fullPath.find_last_of("/");
+    FileUtils::getInstance()->createDirectory(std::string(fullPath, 0, lastSlash));
     
     if (FileUtils::getInstance()->isFileExist(fullPath)) {
         HRLOG("書き込み先のファイルが既に存在します。: %s", path.c_str());
