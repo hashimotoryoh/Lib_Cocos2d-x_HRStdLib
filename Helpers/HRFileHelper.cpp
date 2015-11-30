@@ -14,8 +14,25 @@ using namespace HR;
 USING_NS_CC;
 
 
+void HRFileHelper::checkIsFileExists(const std::string &path, bool isContinue /* = false */)
+{
+    if (FileUtils::getInstance()->isFileExist(path)) return;
+    
+    if (isContinue) { HRLOG("次のファイルは存在しませんが続行します。: %s", path.c_str()); }
+    else            { HRERROR("次のファイルは存在しません。: %s", path.c_str()); }
+}
+
+std::string HRFileHelper::getStringFromFile(const std::string &path)
+{
+    HRFileHelper::checkIsFileExists(path);
+    
+    return FileUtils::getInstance()->getStringFromFile(path);
+}
+
 std::string HRFileHelper::getFileNameFromPath(const std::string &path, bool extension /* = true */)
 {
+    HRFileHelper::checkIsFileExists(path, true);
+    
     std::string fileName;
     size_t current = 0;
     size_t cutPoint = current;
@@ -41,6 +58,8 @@ std::string HRFileHelper::getFileNameFromPath(const std::string &path, bool exte
 
 cocos2d::Texture2D *HRFileHelper::getTexture(const std::string &path)
 {
+    HRFileHelper::checkIsFileExists(path);
+    
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(path);
     HRASSERT(texture, "画像のファイルパスが不正です。: %s", path.c_str());
     return texture;

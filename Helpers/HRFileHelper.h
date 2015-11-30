@@ -19,6 +19,21 @@ class HRFileHelper
 {
 public:
     /**
+     * @brief ファイルが存在するかチェックする
+     *        エラーログを統一する為
+     * @param path       ファイルパス
+     * @param isContinue (false)ログ出力だけしてエラーにはしないか
+     */
+    static void checkIsFileExists(const std::string &path, bool isContinue = false);
+    
+    /**
+     * @brief  ファイルをテキストファイルとして読み込む
+     * @param  path ファイルパス
+     * @retrun テキストファイルの内容
+     */
+    static std::string getStringFromFile(const std::string &path);
+    
+    /**
      * @brief  ファイルパスからファイル名を取得する
      * @param  path      ファイルパス
      * @param  extension 拡張子を付けるか(デフォルト true)

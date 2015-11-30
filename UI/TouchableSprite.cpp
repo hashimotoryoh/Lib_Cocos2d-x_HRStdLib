@@ -11,6 +11,7 @@
 #include "UIClassConfig.h"
 #include "HRLog.h"
 #include "NodeUtility.h"
+#include "HRFileHelper.h"
 
 
 using namespace HR;
@@ -86,7 +87,9 @@ TouchableSprite *TouchableSprite::createWithFiles(const std::string &enabledImag
 
 bool TouchableSprite::initWithFiles(const std::string &enabledImageFile, const std::string &disabledImageFile, bool isEnable /* = true */)
 {
-    // TODO: ファイルの存在確認
+    HRFileHelper::checkIsFileExists(enabledImageFile);
+    HRFileHelper::checkIsFileExists(disabledImageFile);
+    
     _enabledImageFile  = enabledImageFile;
     _disabledImageFile = disabledImageFile;
     _isEnable          = isEnable;
@@ -171,14 +174,16 @@ void TouchableSprite::disableLongTap()
 
 void TouchableSprite::setEnabledTexture(const std::string &imageFile)
 {
-    // TODO: ファイルの存在を確認する
+    HRFileHelper::checkIsFileExists(imageFile);
+    
     _enabledImageFile = imageFile;
     if (_isEnable) this->Sprite::setTexture(_enabledImageFile);
 }
 
 void TouchableSprite::setDisabledTexture(const std::string &imageFile)
 {
-    // TODO: ファイルの存在を確認する
+    HRFileHelper::checkIsFileExists(imageFile);
+    
     _disabledImageFile = imageFile;
     if (!_isEnable) this->Sprite::setTexture(_disabledImageFile);
 }
