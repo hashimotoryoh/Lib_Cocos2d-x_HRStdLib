@@ -1,13 +1,12 @@
-
 //
-//  BaseScene.cpp
+//  BaseSprite.cpp
 //  HRStandardLibrary
 //
 //  Created by c1790 on 2015/11/30.
 //
 //
 
-#include "BaseScene.h"
+#include "BaseSprite.h"
 
 
 using namespace HR;
@@ -17,11 +16,11 @@ USING_NS_CC;
 
 #pragma mark - Constructor & Destructor
 
-BaseScene::BaseScene()
+BaseSprite::BaseSprite()
 {
 }
 
-BaseScene::~BaseScene()
+BaseSprite::~BaseSprite()
 {
 }
 
@@ -29,9 +28,9 @@ BaseScene::~BaseScene()
 
 #pragma mark - Create & Initialize Methods
 
-BaseScene *BaseScene::create()
+BaseSprite *BaseSprite::create()
 {
-    BaseScene *pRet = new (std::nothrow) BaseScene();
+    BaseSprite *pRet = new (std::nothrow) BaseSprite();
     if (pRet && pRet->init()) {
         pRet->autorelease();
         return pRet;
@@ -41,9 +40,9 @@ BaseScene *BaseScene::create()
     return nullptr;
 }
 
-bool BaseScene::init()
+bool BaseSprite::init()
 {
-    if (!this->Scene::init()) return false;
+    if (!this->Sprite::init()) return false;
     
     return true;
 }

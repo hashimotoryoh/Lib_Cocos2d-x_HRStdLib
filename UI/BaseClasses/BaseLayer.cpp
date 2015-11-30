@@ -42,7 +42,7 @@ BaseLayer *BaseLayer::create()
 
 bool BaseLayer::init()
 {
-    if (this->Layer::init()) return false;
+    if (!this->Layer::init()) return false;
     
     return true;
 }
