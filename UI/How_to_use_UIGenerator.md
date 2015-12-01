@@ -14,28 +14,28 @@ KeyはJSONのキー。ValueTypeはC++で読み取る型。
 
 ルートと子ノードで共通のパラメータ。
 
-| Key | ValueType | Description |
-|:---|:---|:---|
-| width | unsigned int | 幅 |
-| height| unsigned int | 高さ |
-| position_x | int | x座標 |
-| position_y | int | y座標 |
-| anchor_x | float | アンカーポイントx (0.0f ~ 1.0f) |
-| anchor_y | float | アンカーポイントy (0.0f ~ 1.0f) |
-| tag | unsigned int | タグ |
-| name | std::string | 名前 |
-| scale | float | スケール |
-| rotation | float | 回転角 |
-| opacity | unsigned int | 透明度(0 ~ 255) |
-| visible | bool | 表示/非表示 |
+| Key | ValueType | Required | Default | Description |
+|:---|:---|:---:|:---|:---|
+| width | unsigned int | x | それぞれのデフォルト値 | 幅 |
+| height| unsigned int | x | それぞれのデフォルト値 | 高さ |
+| position_x | int | x | 0 | x座標 |
+| position_y | int | x | 0 | y座標 |
+| anchor_x | float | x | 0.5f | アンカーポイントx (0.0f ~ 1.0f) |
+| anchor_y | float | x | 0.5f | アンカーポイントy (0.0f ~ 1.0f) |
+| tag | unsigned int | x | 無し | タグ |
+| name | std::string | x | 無し | 名前 |
+| scale | float | x | 1.0f | スケール |
+| rotation | float | x | 0.0f | 回転角 |
+| opacity | unsigned int | x | 255 | 透明度(0 ~ 255) |
+| visible | bool | x | true | 表示/非表示 |
 
 ## Root Parameters
 
 ルートはHR::BaseLayer。
 
-| Key | ValueType | Description |
-|:---|:---|:---|
-|  |  |
+| Key | ValueType | Required | Default | Description |
+|:---|:---|:---:|:---|:---|
+|  |  |  |  |
 
 ## Children Types
 
@@ -48,8 +48,8 @@ KeyはJSONのキー。ValueTypeはC++で読み取る型。
 | type | touchable_sprite | HR::TouchableSprite | タッチイベントを持ったSprite |
 | type | label | HR::BaseLabel |  |
 | type | button | HR::Button | TouchableSpriteよりもボタンらしさをもったSprite |
-| type | switchable_button | 切り替えボタン |
-| type | togglable_button | トグルボタン |
+| type | switchable_button | HR::SwitchableButton | 切り替えボタン |
+| type | togglable_button | HR::TogglableButton | トグルボタン |
 
 ## Child Node Parameters
 
