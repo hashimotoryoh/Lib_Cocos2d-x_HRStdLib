@@ -21,11 +21,12 @@ CC_CONSTRUCTOR_ACCESS:
     BaseSprite();
     virtual ~BaseSprite();
     
-    virtual bool init() override;
+    virtual bool init(const std::string &filepath);
     
     
 #pragma mark - Create Methods
-    static BaseSprite *create();
+public:
+    static BaseSprite *create(const std::string &filepath);
     
     
     

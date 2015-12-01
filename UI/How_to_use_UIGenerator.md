@@ -80,7 +80,8 @@ KeyはJSONのキー。ValueTypeはC++で読み取る型。
 | Key | ValueType | Required | Default | Description |
 |:---|:---|:---:|:---|:---|
 | text | std::string | o |  | テキスト |
-| font_size | unsigned int | x | cocosのデフォルト値 | テキストのサイズ |
+| font_path | std::string | x | fonts/Marker Felt.ttf | フォントファイルパス |
+| font_size | float | x | 24.0f | テキストのサイズ |
 | font_color_r | unsigned int | x | 0 | テキストの色R値(0~255) |
 | font_color_g | unsigned int | x | 0 | テキストの色G値(0~255) |
 | font_color_b | unsigned int | x | 0 | テキストの色B値(0~255) |

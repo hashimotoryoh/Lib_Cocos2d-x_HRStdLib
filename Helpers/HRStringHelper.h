@@ -17,7 +17,14 @@ class HRStringHelper
 {
 public:
     /**
-     * @brief 引数をフォーマットした文字列を得る。
+     * @brief  char型文字列が同じかどうか比較する
+     * @param  char1 文字列
+     * @param  char2 文字列
+     * @return true/false
+     */
+    
+    /**
+     * @brief  引数をフォーマットした文字列を得る。
      * @param  format フォーマット
      * @param  ...    フォーマットに対応する引数
      * @return フォーマットされた文字列

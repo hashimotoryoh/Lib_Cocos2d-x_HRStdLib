@@ -28,10 +28,10 @@ BaseLabel::~BaseLabel()
 
 #pragma mark - Create & Initialize Methods
 
-BaseLabel *BaseLabel::create()
+BaseLabel *BaseLabel::create(const std::string &text, const std::string &fontPath, float fontSize)
 {
     BaseLabel *pRet = new (std::nothrow) BaseLabel();
-    if (pRet && pRet->init()) {
+    if (pRet && pRet->init(text, fontPath, fontSize)) {
         pRet->autorelease();
         return pRet;
     }
@@ -40,9 +40,11 @@ BaseLabel *BaseLabel::create()
     return nullptr;
 }
 
-bool BaseLabel::init()
+bool BaseLabel::init(const std::string &text, const std::string &fontPath, float fontSize)
 {
-    if (!this->Label::init()) return false;
+    if (!this->Label::init() || !this->setTTFConfig(TTFConfig(fontPath.c_str(), fontSize))) return false;
+    
+    this->setString(text);
     
     return true;
 }

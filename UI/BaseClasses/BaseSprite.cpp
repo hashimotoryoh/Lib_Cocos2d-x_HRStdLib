@@ -28,10 +28,10 @@ BaseSprite::~BaseSprite()
 
 #pragma mark - Create & Initialize Methods
 
-BaseSprite *BaseSprite::create()
+BaseSprite *BaseSprite::create(const std::string &filepath)
 {
     BaseSprite *pRet = new (std::nothrow) BaseSprite();
-    if (pRet && pRet->init()) {
+    if (pRet && pRet->init(filepath)) {
         pRet->autorelease();
         return pRet;
     }
@@ -40,9 +40,9 @@ BaseSprite *BaseSprite::create()
     return nullptr;
 }
 
-bool BaseSprite::init()
+bool BaseSprite::init(const std::string &filepath)
 {
-    if (!this->Sprite::init()) return false;
+    if (!this->Sprite::initWithFile(filepath)) return false;
     
     return true;
 }
