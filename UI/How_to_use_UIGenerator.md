@@ -16,18 +16,18 @@ KeyはJSONのキー。ValueTypeはC++で読み取る型。
 
 | Key | ValueType | Required | Default | Description |
 |:---|:---|:---:|:---|:---|
-| width | unsigned int | x | それぞれのデフォルト値 | 幅 |
-| height| unsigned int | x | それぞれのデフォルト値 | 高さ |
-| position_x | int | x | 0 | x座標 |
-| position_y | int | x | 0 | y座標 |
+| width | unsigned int | x | 指定無し | 幅 |
+| height| unsigned int | x | 指定無し | 高さ |
+| position_x | float | x | 0.0f | x座標 |
+| position_y | float | x | 0.0f | y座標 |
 | anchor_x | float | x | 0.5f | アンカーポイントx (0.0f ~ 1.0f) |
 | anchor_y | float | x | 0.5f | アンカーポイントy (0.0f ~ 1.0f) |
-| tag | unsigned int | x | 無し | タグ |
-| name | std::string | x | 無し | 名前 |
-| scale | float | x | 1.0f | スケール |
-| rotation | float | x | 0.0f | 回転角 |
-| opacity | unsigned int | x | 255 | 透明度(0 ~ 255) |
-| visible | bool | x | true | 表示/非表示 |
+| tag | unsigned int | x | 指定無し | タグ |
+| name | std::string | x | 指定無し | 名前 |
+| scale | float | x | 指定無し | スケール |
+| rotation | float | x | 指定なし | 回転角 |
+| opacity | unsigned int | x | 指定無し | 透明度(0 ~ 255) |
+| visible | bool | x | 指定無し | 表示/非表示 |
 
 ## Root Parameters
 
@@ -106,8 +106,6 @@ KeyはJSONのキー。ValueTypeはC++で読み取る型。
 | patterns.key | std::string | o |  | パターンのキー |
 | patterns.filepath | std::string | o |  | パターンの画像ファイルパス |
 | is_enable | bool | x | true | 有効か |
-| long_tap | bool | x | true | ロングタップが有効か |
-| continuous_tap | bool | x | false | 連続タップが有効か |
 | scale_effect | bool | x | true | タッチ時に小さくするか |
 | brightness_effect | bool | x | true | タッチ時に暗くするか |
 
@@ -117,7 +115,7 @@ KeyはJSONのキー。ValueTypeはC++で読み取る型。
 |:---|:---|:---:|:---|:---|
 | on_filepath | std::string | o |  | オンの時の画像ファイルパス |
 | off_filepath | std::string | o |  | オフの時の画像ファイルパス |
-| initial_status | bool | x | true | 初期状態 true/false = on/off |
+| initial_state | bool | x | true | 初期状態 true/false = on/off |
 | is_enable | bool | x | true | 有効か |
 | scale_effect | bool | x | true | タッチ時に小さくするか |
 | brightness_effect | bool | x | true | タッチ時に暗くするか |
