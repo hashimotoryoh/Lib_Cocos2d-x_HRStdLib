@@ -115,7 +115,7 @@ KeyはJSONのキー。ValueTypeはC++で読み取る型。
 | Key | ValueType | Required | Default | Description |
 |:---|:---|:---:|:---|:---|
 | on_filepath | std::string | o |  | オンの時の画像ファイルパス |
-| off_filepath | std::string | o |  | オフの時の画像ファイルパス |
+| off_filepath | std::string | x | on_filepath | オフの時の画像ファイルパス |
 | initial_state | bool | x | true | 初期状態 true/false = on/off |
 | is_enable | bool | x | true | 有効か |
 | scale_effect | bool | x | true | タッチ時に小さくするか |
