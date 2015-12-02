@@ -62,7 +62,7 @@ bool TogglableButton::init()
 
 TogglableButton *TogglableButton::createWithFiles(const std::string &on,
                                                   const std::string &off,
-                                                  ToggledCallback callback,
+                                                  ToggledCallback callback /* = nullptr */,
                                                   bool isGrayScale /* = false */)
 {
     TogglableButton *pRet = TogglableButton::create();
@@ -86,7 +86,7 @@ bool TogglableButton::initWithFiles(const std::string &on, const std::string &of
 }
 
 TogglableButton *TogglableButton::createWithFile(const std::string &imageFile,
-                                                ToggledCallback callback)
+                                                ToggledCallback callback /* = nullptr */)
 {
     return TogglableButton::createWithFiles(imageFile, imageFile, callback, true);
 }

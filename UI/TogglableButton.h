@@ -64,7 +64,7 @@ public:
      */
     static TogglableButton *createWithFiles(const std::string &on,
                                             const std::string &off,
-                                            ToggledCallback callback,
+                                            ToggledCallback callback = nullptr,
                                             bool isGrayScale = false);
     
     /**
@@ -74,7 +74,7 @@ public:
      * @return トグルボタン
      */
     static TogglableButton *createWithFile(const std::string &imageFile,
-                                           ToggledCallback callback);
+                                           ToggledCallback callback = nullptr);
     
     
 #pragma mark - Members
