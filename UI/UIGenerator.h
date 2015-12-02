@@ -72,6 +72,8 @@ private:
     static HR::TogglableButton  *constructTogglableButton (cocos2d::ValueMap &data);
     
     
+    static cocos2d::TextHAlignment convertAlignment(const std::string &strAlign);
+    
     
 };
 

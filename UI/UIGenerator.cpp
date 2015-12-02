@@ -8,6 +8,7 @@
 
 #include "UIGenerator.h"
 #include "UIGeneratorKeys.h"
+#include "UIGeneratorValues.h"
 #include "UIGeneratorDefaults.h"
 #include "HRJsonHelper.h"
 #include "HRValueHelper.h"
@@ -15,6 +16,7 @@
 
 using namespace HR;
 using namespace UIGeneratorKey;
+using namespace UIGeneratorValue;
 using namespace UIGeneratorDefault;
 USING_NS_CC;
 
@@ -207,7 +209,7 @@ TouchableSprite *UIGenerator::constructTouchableSprite(cocos2d::ValueMap &data)
         HRASSERT((data.at(PARAM_KEY_LONG_TAP).getType() == Value::Type::BOOLEAN),
                  "\"long_tap\"はboolでなければいけません。");
         bool isEnableLongTap = data.at(PARAM_KEY_LONG_TAP).asBool();
-        if (isEnableLongTap) ret->enableLongTap();
+        isEnableLongTap ? ret->enableLongTap() : ret->disableLongTap();
     }
     
     // 連打を有効にするか
@@ -215,7 +217,7 @@ TouchableSprite *UIGenerator::constructTouchableSprite(cocos2d::ValueMap &data)
         HRASSERT((data.at(PARAM_KEY_CONTINUOUS_TAP).getType() == Value::Type::BOOLEAN),
                  "\"continuous_tap\"はboolでなければいけません。");
         bool isEnableContinuousTap = data.at(PARAM_KEY_CONTINUOUS_TAP).asBool();
-        if (isEnableContinuousTap) ret->enableContinuousTap();
+        isEnableContinuousTap ? ret->enableContinuousTap() : ret->disableContinuousTap();
     }
     
     return ret;
@@ -250,8 +252,223 @@ BaseLabel *UIGenerator::constructLabel(cocos2d::ValueMap &data)
     
     
     // 文字色
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_FONT_COLOR_R)
+        && HRValueHelper::isExistsKey(data, PARAM_KEY_FONT_COLOR_G)
+        && HRValueHelper::isExistsKey(data, PARAM_KEY_FONT_COLOR_B)) {
+        HRASSERT((data.at(PARAM_KEY_FONT_COLOR_R).getType() == Value::Type::INTEGER),
+                 "\"font_color_r\"はintでなければいけません。");
+        HRASSERT((data.at(PARAM_KEY_FONT_COLOR_G).getType() == Value::Type::INTEGER),
+                 "\"font_color_g\"はintでなければいけません。");
+        HRASSERT((data.at(PARAM_KEY_FONT_COLOR_B).getType() == Value::Type::INTEGER),
+                 "\"font_color_b\"はintでなければいけません。");
+        GLubyte r = data.at(PARAM_KEY_FONT_COLOR_R).asInt();
+        GLubyte g = data.at(PARAM_KEY_FONT_COLOR_G).asInt();
+        GLubyte b = data.at(PARAM_KEY_FONT_COLOR_B).asInt();
+        ret->setTextColor(Color4B(Color3B(r, g, b)));
+    }
     
+    // 寄せ
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_TEXT_ALIGN)) {
+        HRASSERT((data.at(PARAM_KEY_TEXT_ALIGN).getType() == Value::Type::STRING),
+                  "\"text_alignment\"はstringでなければいけません。");
+        TextHAlignment align = convertAlignment(data.at(PARAM_KEY_TEXT_ALIGN).asString());
+        ret->setAlignment(align);
+    }
+    
+    return ret;
+}
+
+Button *UIGenerator::constructButton(cocos2d::ValueMap &data)
+{
+    // 有効時画像ファイルパス
+    // TODO: validate requred enabled_filepath
+    HRASSERT((data.at(PARAM_KEY_ENABLED_FILEPATH).getType() == Value::Type::STRING),
+             "\"enabled_filepath\"はstringでなければいけません。");
+    std::string enabledFilepath = data.at(PARAM_KEY_ENABLED_FILEPATH).asString();
+    
+    // 無効時画像ファイルパス
+    std::string disabledFilepath = enabledFilepath;
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_DISABLED_FILEPATH)) {
+        HRASSERT((data.at(PARAM_KEY_DISABLED_FILEPATH).getType() == Value::Type::STRING),
+                 "\"disabled_filepath\"はstringでなければいけません。");
+        disabledFilepath = data.at(PARAM_KEY_DISABLED_FILEPATH).asString();
+    }
+    
+    // 初期有効か
+    bool isEnable = true;
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_IS_ENABLE)) {
+        HRASSERT((data.at(PARAM_KEY_IS_ENABLE).getType() == Value::Type::BOOLEAN),
+                 "\"is_enable\"はboolでなければいけません。");
+        isEnable = data.at(PARAM_KEY_IS_ENABLE).asBool();
+    }
+    
+    
+    Button *ret = dynamic_cast<Button*>(commonConstructor(Button::createWithFiles(enabledFilepath, disabledFilepath, isEnable), data));
+    
+    
+    // ロングタップを有効にするか
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_LONG_TAP)) {
+        HRASSERT((data.at(PARAM_KEY_LONG_TAP).getType() == Value::Type::BOOLEAN),
+                 "\"long_tap\"はboolでなければいけません。");
+        bool isEnableLongTap = data.at(PARAM_KEY_LONG_TAP).asBool();
+        isEnableLongTap ? ret->enableLongTap() : ret->disableLongTap();
+    }
+    
+    // 連打を有効にするか
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_CONTINUOUS_TAP)) {
+        HRASSERT((data.at(PARAM_KEY_CONTINUOUS_TAP).getType() == Value::Type::BOOLEAN),
+                 "\"continuous_tap\"はboolでなければいけません。");
+        bool isEnableContinuousTap = data.at(PARAM_KEY_CONTINUOUS_TAP).asBool();
+        isEnableContinuousTap ? ret->enableContinuousTap() : ret->disableContinuousTap();
+    }
+    
+    // スケールエフェクト
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_SCALE_EFFECT)) {
+        HRASSERT((data.at(PARAM_KEY_SCALE_EFFECT).getType() == Value::Type::BOOLEAN),
+                 "\"scale_effect\"はboolでなければいけません。");
+        bool scaleEffect = data.at(PARAM_KEY_SCALE_EFFECT).asBool();
+        scaleEffect ? ret->enableScaleEffect() : ret->disableScaleEffect();
+    }
+    
+    // 明暗エフェクト
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_BRIGHTNESS_EFFECT)) {
+        HRASSERT((data.at(PARAM_KEY_BRIGHTNESS_EFFECT).getType() == Value::Type::BOOLEAN),
+                 "\"brightness_effect\"はboolでなければいけません。");
+        bool brightnessEffect = data.at(PARAM_KEY_BRIGHTNESS_EFFECT).asBool();
+        brightnessEffect ? ret->enableBrightnessEffect() : ret->disableBrightnessEffect();
+    }
+    
+    return ret;
+}
+
+SwitchableButton *UIGenerator::constructSwitchableButton(cocos2d::ValueMap &data)
+{
+    // パターン群
+    // TODO: validate requred patterns
+    HRASSERT((data.at(PARAM_KEY_PATTERNS).getType() == Value::Type::VECTOR),
+             "\"text\"はvector(array)でなければいけません。");
+    ValueVector patternsData = data.at(PARAM_KEY_PATTERNS).asValueVector();
+    Vector<SBSwitchPattern*> patterns;
+    
+    // パターン一つ一つ
+    for (Value patternData : patternsData) {
+        ValueMap pattern = patternData.asValueMap();
+        
+        // キー
+        // TODO: validate required key
+        HRASSERT((pattern.at(PARAM_KEY_PATTERN_KEY).getType() == Value::Type::STRING),
+                  "\"patters.key\"はstringでなければいけません。");
+        std::string key = pattern.at(PARAM_KEY_PATTERN_KEY).asString();
+        
+        // 画像ファイルパス
+        // TODO: validate required filepath
+        HRASSERT((pattern.at(PARAM_KEY_PATTERN_FILEPATH).getType() == Value::Type::STRING),
+                 "\"patters.filepath\"はstringでなければいけません。");
+        std::string filepath = pattern.at(PARAM_KEY_PATTERN_FILEPATH).asString();
+        
+        patterns.pushBack(SBSwitchPattern::create(key, filepath));
+    }
+    
+    
+    SwitchableButton *ret = dynamic_cast<SwitchableButton*>(commonConstructor(SwitchableButton::createWithPatterns(patterns), data));
+    
+    
+    // 初期有効か
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_IS_ENABLE)) {
+        HRASSERT((data.at(PARAM_KEY_IS_ENABLE).getType() == Value::Type::BOOLEAN),
+                 "\"is_enable\"はboolでなければいけません。");
+        bool isEnable = data.at(PARAM_KEY_IS_ENABLE).asBool();
+        isEnable ? ret->enable() : ret->disable();
+    }
+    
+    // スケールエフェクト
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_SCALE_EFFECT)) {
+        HRASSERT((data.at(PARAM_KEY_SCALE_EFFECT).getType() == Value::Type::BOOLEAN),
+                 "\"scale_effect\"はboolでなければいけません。");
+        bool scaleEffect = data.at(PARAM_KEY_SCALE_EFFECT).asBool();
+        scaleEffect ? ret->enableScaleEffect() : ret->disableScaleEffect();
+    }
+    
+    // 明暗エフェクト
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_BRIGHTNESS_EFFECT)) {
+        HRASSERT((data.at(PARAM_KEY_BRIGHTNESS_EFFECT).getType() == Value::Type::BOOLEAN),
+                 "\"brightness_effect\"はboolでなければいけません。");
+        bool brightnessEffect = data.at(PARAM_KEY_BRIGHTNESS_EFFECT).asBool();
+        brightnessEffect ? ret->enableBrightnessEffect() : ret->disableBrightnessEffect();
+    }
+    
+    return ret;
+}
+
+TogglableButton *UIGenerator::constructTogglableButton(cocos2d::ValueMap &data)
+{
+    // オンの時の画像ファイルパス
+    // TODO: validate requred on_filepath
+    HRASSERT((data.at(PARAM_KEY_ON_FILEPATH).getType() == Value::Type::STRING),
+             "\"on_filepath\"はstringでなければいけません。");
+    std::string onFilepath = data.at(PARAM_KEY_ON_FILEPATH).asString();
+    
+    // オフの時の画像ファイルパス
+    std::string offFilepath = onFilepath;
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_OFF_FILEPATH)) {
+        HRASSERT((data.at(PARAM_KEY_OFF_FILEPATH).getType() == Value::Type::STRING),
+                 "\"off_filepath\"はstringでなければいけません。");
+        offFilepath = data.at(PARAM_KEY_OFF_FILEPATH).asString();
+    }
+    
+    
+    TogglableButton *ret = dynamic_cast<TogglableButton*>(commonConstructor(TogglableButton::createWithFiles(onFilepath, offFilepath), data));
+    
+    
+    // 初期状態
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_INIT_STATE)) {
+        HRASSERT((data.at(PARAM_KEY_INIT_STATE).getType() == Value::Type::BOOLEAN),
+                 "\"initial_state\"はboolでなければいけません。");
+        bool initState = data.at(PARAM_KEY_INIT_STATE).asBool();
+        initState ? ret->turnOn() : ret->turnOff();
+    }
+    
+    // 初期有効か
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_IS_ENABLE)) {
+        HRASSERT((data.at(PARAM_KEY_IS_ENABLE).getType() == Value::Type::BOOLEAN),
+                 "\"is_effect\"はboolでなければいけません。");
+        bool isEnable = data.at(PARAM_KEY_IS_ENABLE).asBool();
+        isEnable ? ret->enable() : ret->disable();
+    }
+    
+    // スケールエフェクト
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_SCALE_EFFECT)) {
+        HRASSERT((data.at(PARAM_KEY_SCALE_EFFECT).getType() == Value::Type::BOOLEAN),
+                 "\"scale_effect\"はboolでなければいけません。");
+        bool scaleEffect = data.at(PARAM_KEY_SCALE_EFFECT).asBool();
+        scaleEffect ? ret->enableScaleEffect() : ret->disableScaleEffect();
+    }
+    
+    // 明暗エフェクト
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_BRIGHTNESS_EFFECT)) {
+        HRASSERT((data.at(PARAM_KEY_BRIGHTNESS_EFFECT).getType() == Value::Type::BOOLEAN),
+                 "\"brightness_effect\"はboolでなければいけません。");
+        bool brightnessEffect = data.at(PARAM_KEY_BRIGHTNESS_EFFECT).asBool();
+        brightnessEffect ? ret->enableBrightnessEffect() : ret->disableBrightnessEffect();
+    }
+    
+    // オフの時のグレースケール
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_GRAY_SCALE)) {
+        HRASSERT((data.at(PARAM_KEY_GRAY_SCALE).getType() == Value::Type::BOOLEAN),
+                 "\"gray_scale\"はboolでなければいけません。");
+        bool grayScale = data.at(PARAM_KEY_GRAY_SCALE).asBool();
+        ret->setIsGrayScale(grayScale);
+    }
+    
+    return ret;
 }
 
 
-
+TextHAlignment UIGenerator::convertAlignment(const std::string &strAlign)
+{
+    if      (strAlign == PARAM_VALUE_TEXT_ALIGN_LEFT)   return TextHAlignment::LEFT;
+    else if (strAlign == PARAM_VALUE_TEXT_ALIGN_CENTER) return TextHAlignment::CENTER;
+    else if (strAlign == PARAM_VALUE_TEXT_ALIGN_RIGHT)  return TextHAlignment::RIGHT;
+    /* else */
+    return TextHAlignment::LEFT;
+}
