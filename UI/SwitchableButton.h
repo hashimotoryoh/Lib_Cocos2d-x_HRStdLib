@@ -127,6 +127,13 @@ public:
      */
     void switchWithKey(const std::string &key, bool isCallCallback = true);
     
+    /**
+     * @brief キーを指定してコールバックを設定する
+     * @param key      キー
+     * @param callback コールバック
+     */
+    void setCallbackWithKey(const std::string &key, HR::SBTapCallback callback);
+    
     
 #pragma mark - Tap Event Methods
 private:

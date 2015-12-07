@@ -139,6 +139,16 @@ void SwitchableButton::switchWithKey(const std::string &key, bool isCallCallback
     this->Sprite::setTexture(_currentPattern->_imageFile);
 }
 
+void SwitchableButton::setCallbackWithKey(const std::string &key, HR::SBTapCallback callback)
+{
+    if (!this->isValidKey(key)) {
+        HRLOG("次のキーは登録されていません。: %s", key.c_str());
+        return;
+    }
+    
+    this->getPattern(key)->_callback = callback;
+}
+
 
 
 #pragma mark - Tap Event Methods
