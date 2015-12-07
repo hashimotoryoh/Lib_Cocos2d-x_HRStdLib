@@ -124,6 +124,20 @@ cocos2d::Node *UIGenerator::commonConstructor(cocos2d::Node *node, cocos2d::Valu
         node->setVisible(visible);
     }
     
+    
+    // 子ノード
+    if (HRValueHelper::isExistsKey(data, PARAM_KEY_CHILDREN)) {
+        HRASSERT((data.at(PARAM_KEY_CHILDREN).getType() == Value::Type::VECTOR),
+                 "\"children\"はvector(array)でなければいけません。");
+        ValueVector children = data.at(PARAM_KEY_CHILDREN).asValueVector();
+        for (Value child : children) {
+            HRASSERT((child.getType() == Value::Type::MAP),
+                     "\"children\"はmapでなければいけません。");
+            node->addChild(constructNode(child.asValueMap()));
+        }
+    }
+    
+    
     return node;
 }
 
@@ -140,13 +154,13 @@ Node *UIGenerator::constructNode(cocos2d::ValueMap &data)
              "\"type\"はstringでなければいけません。");
     
     std::string type = data.at(PARAM_KEY_TYPE).asString();
-    if      (type == CHILD_TYPE_LAYER)             constructLayer(data);
-    else if (type == CHILD_TYPE_SPRITE)            constructSprite(data);
-    else if (type == CHILD_TYPE_TOUCHABLE_SPRITE)  constructTouchableSprite(data);
-    else if (type == CHILD_TYPE_LABEL)             constructLabel(data);
-    else if (type == CHILD_TYPE_BUTTON)            constructButton(data);
-    else if (type == CHILD_TYPE_SWITCHABLE_BUTTON) constructSwitchableButton(data);
-    else if (type == CHILD_TYPE_TOGGLABLE_BUTTON)  constructTogglableButton(data);
+    if      (type == CHILD_TYPE_LAYER)             return constructLayer(data);
+    else if (type == CHILD_TYPE_SPRITE)            return constructSprite(data);
+    else if (type == CHILD_TYPE_TOUCHABLE_SPRITE)  return constructTouchableSprite(data);
+    else if (type == CHILD_TYPE_LABEL)             return constructLabel(data);
+    else if (type == CHILD_TYPE_BUTTON)            return constructButton(data);
+    else if (type == CHILD_TYPE_SWITCHABLE_BUTTON) return constructSwitchableButton(data);
+    else if (type == CHILD_TYPE_TOGGLABLE_BUTTON)  return constructTogglableButton(data);
     /* else */
     HRERROR("\"type\"が不正です。: %s", type.c_str());
     
