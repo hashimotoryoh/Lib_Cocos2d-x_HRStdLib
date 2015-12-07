@@ -77,6 +77,21 @@ bool SwitchableButton::initWithPatterns(cocos2d::Vector<SBSwitchPattern*> patter
 
 #pragma mark - Control Methods
 
+cocos2d::Vector<SBSwitchPattern*> SwitchableButton::getPatterns()
+{
+    return _switchPatterns;
+}
+
+HR::SBSwitchPattern *SwitchableButton::getPattern(const std::string &key)
+{
+    for (SBSwitchPattern *pattern : _switchPatterns) {
+        if (pattern->_key == key) return pattern;
+    }
+    
+    HRERROR("キー %s は登録されていません。", key.c_str());
+    return nullptr;
+}
+
 void SwitchableButton::addPattern(HR::SBSwitchPattern *pattern)
 {
     HRASSERT(this->isValidKey(pattern->_key), "既に同じキーで登録されているパターンがあります。");
@@ -113,16 +128,6 @@ void SwitchableButton::replacePattern(const std::string &key, const std::string 
     targetPattern->_callback  = newCallback;
 }
 
-HR::SBSwitchPattern *SwitchableButton::getPattern(const std::string &key)
-{
-    for (SBSwitchPattern *pattern : _switchPatterns) {
-        if (pattern->_key == key) return pattern;
-    }
-    
-    HRERROR("キー %s は登録されていません。", key.c_str());
-    return nullptr;
-}
-
 void SwitchableButton::switchNext(bool isCallCallback /* = true  */)
 {
     Vector<HR::SBSwitchPattern*>::iterator iter = _switchPatterns.find(_currentPattern);
@@ -141,7 +146,7 @@ void SwitchableButton::switchWithKey(const std::string &key, bool isCallCallback
 
 void SwitchableButton::setCallbackWithKey(const std::string &key, HR::SBTapCallback callback)
 {
-    if (!this->isValidKey(key)) {
+    if (this->isNewKey(key)) {
         HRLOG("次のキーは登録されていません。: %s", key.c_str());
         return;
     }
@@ -158,11 +163,24 @@ void SwitchableButton::onTapped()
     this->switchNext();
 }
 
+
+
+#pragma mark - Easing Methods
+
 bool SwitchableButton::isValidKey(const std::string &key)
 {
     // 既に登録してあるパターンのキーと重複してたらダメ
+    if (!this->isNewKey(key)) return false;
+    
+    return true;
+}
+
+bool SwitchableButton::isNewKey(const std::string &key)
+{
     for (SBSwitchPattern *pattern : _switchPatterns) {
-        if (pattern->_key == key) return false;
+        if (pattern->_key == key) {
+            return false;
+        }
     }
     
     return true;

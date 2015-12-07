@@ -71,8 +71,14 @@ protected:
     HR_DISABLE_SUPER_METHOD(void, setLongTouchCallback, TSTouchCallback);
     HR_DISABLE_SUPER_METHOD(void, setTouchEndedCallback, TSTouchCallback);
     HR_DISABLE_SUPER_METHOD(void, setLongTapCallback, TSLongTapCallback);
-#pragma matk Original Methods
+#pragma mark Original Methods
 public:
+    /**
+     * @brief  全てのパターンを取得する
+     * @return 全てのパターンのvector
+     */
+    cocos2d::Vector<HR::SBSwitchPattern*> getPatterns();
+    
     /**
      * @brief  キーを指定してパターンを取得する
      * @param  key キー
@@ -151,6 +157,13 @@ protected:
      * @return true/false = 有効/無効
      */
     bool isValidKey(const std::string &key);
+    
+    /**
+     * @brief  キーが新しいキーが調べる
+     * @param  key キー
+     * @return 未登録/登録済み = true/false
+     */
+    bool isNewKey(const std::string &key);
     
     
 };
