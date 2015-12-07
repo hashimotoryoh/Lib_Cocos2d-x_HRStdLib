@@ -11,6 +11,11 @@
 using namespace HR;
 
 
+bool HRStringHelper::isEqualChar(const char *char1, const char *char2)
+{
+    return (strcmp(char1, char2) == 0);
+}
+
 std::string HRStringHelper::format(const char *format, ...)
 {
     int size = ((int)strlen(format)) * 2 + 50;   // Use a rubric appropriate for your code

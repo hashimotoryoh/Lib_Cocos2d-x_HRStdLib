@@ -22,6 +22,7 @@ public:
      * @param  char2 文字列
      * @return true/false
      */
+    static bool isEqualChar(const char *char1, const char *char2);
     
     /**
      * @brief  引数をフォーマットした文字列を得る。
