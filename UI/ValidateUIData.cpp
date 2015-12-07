@@ -15,7 +15,7 @@ using namespace HR;
 USING_NS_CC;
 
 
-bool ValidateUIData::validateCouple(cocos2d::ValueMap data, const char *one, const char *another)
+bool ValidateUIData::validateCouple(cocos2d::ValueMap &data, const char *one, const char *another)
 {
     if (HRValueHelper::isExistsKey(data, one) == HRValueHelper::isExistsKey(data, another)) {
         HRLOG("%s と %s は、どちらか一方のみを指定することは出来ません。", one, another);

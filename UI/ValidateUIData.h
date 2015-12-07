@@ -26,7 +26,7 @@ public:
      * @param  another もう片方のキー
      * @return バリデート結果
      */
-    static bool validateCouple(cocos2d::ValueMap data, const char *one, const char *another);
+    static bool validateCouple(cocos2d::ValueMap &data, const char *one, const char *another);
     
     
 };
