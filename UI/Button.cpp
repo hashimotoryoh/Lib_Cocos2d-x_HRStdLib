@@ -53,19 +53,19 @@ bool Button::init()
 
 Button *Button::createWithFiles(const std::string &enabledImageFile,
                                 const std::string &disabledImageFile,
+                                bool isEnable         /* = true */,
                                 bool scaleEffect      /* = true */,
-                                bool brightnessEffect /* = true */,
-                                bool isEnable         /* = true */)
+                                bool brightnessEffect /* = true */)
 {
     Button *pRet = Button::create();
-    if (pRet->initWithFiles(enabledImageFile, disabledImageFile, scaleEffect, brightnessEffect, isEnable)) {
+    if (pRet->initWithFiles(enabledImageFile, disabledImageFile, isEnable, scaleEffect, brightnessEffect)) {
         return pRet;
     }
     
     return nullptr;
 }
 
-bool Button::initWithFiles(const std::string &enabledImageFile, const std::string &disabledImageFile, bool scaleEffect /* = true */, bool brightnessEffect /* = true */, bool isEnable /* = true */)
+bool Button::initWithFiles(const std::string &enabledImageFile, const std::string &disabledImageFile, bool isEnable /* = true */, bool scaleEffect /* = true */, bool brightnessEffect /* = true */)
 {
     if (!this->TouchableSprite::initWithFiles(enabledImageFile, disabledImageFile, isEnable)) return false;
     
@@ -76,9 +76,9 @@ bool Button::initWithFiles(const std::string &enabledImageFile, const std::strin
 }
 
 Button *Button::createWithFile(const std::string &imageFile,
+                               bool isEnable         /* = true */,
                                bool scaleEffect      /* = true */,
-                               bool brightnessEffect /* = true */,
-                               bool isEnable         /* = true */)
+                               bool brightnessEffect /* = true */)
 {
     return Button::createWithFiles(imageFile, imageFile, scaleEffect, brightnessEffect, isEnable);
 }
