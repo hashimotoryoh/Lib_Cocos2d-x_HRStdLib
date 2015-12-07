@@ -58,19 +58,19 @@ public:
      * @brief  トグルボタンを生成する
      * @param  on          オンの時の画像ファイル
      * @param  off         オフの時の画像ファイル
-     * @param  callback    コールバック
-     * @param  isGrayScale オフの時のグレースケールするか
+     * @param  callback    (nullptr)コールバック
+     * @param  isGrayScale (true)オフの時のグレースケールするか
      * @return トグルボタン
      */
     static TogglableButton *createWithFiles(const std::string &on,
                                             const std::string &off,
                                             ToggledCallback callback = nullptr,
-                                            bool isGrayScale = false);
+                                            bool isGrayScale = true);
     
     /**
      * @brief  トグルボタンを生成する
      * @param  imageFile 画像ファイル
-     * @param  callback  コールバック
+     * @param  callback  (nullptr)コールバック
      * @return トグルボタン
      */
     static TogglableButton *createWithFile(const std::string &imageFile,
@@ -109,11 +109,6 @@ public:
      * @brief 強制的にオフにする
      */
     virtual void turnOff();
-    
-    
-#pragma mark - Tap Event Methods
-private:
-    virtual void onTapped() override;
     
     
 };

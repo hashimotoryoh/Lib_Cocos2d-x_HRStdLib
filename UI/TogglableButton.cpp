@@ -63,7 +63,7 @@ bool TogglableButton::init()
 TogglableButton *TogglableButton::createWithFiles(const std::string &on,
                                                   const std::string &off,
                                                   ToggledCallback callback /* = nullptr */,
-                                                  bool isGrayScale /* = false */)
+                                                  bool isGrayScale /* = true */)
 {
     TogglableButton *pRet = TogglableButton::create();
     if (pRet->initWithFiles(on, off, callback, isGrayScale)) {
@@ -73,11 +73,11 @@ TogglableButton *TogglableButton::createWithFiles(const std::string &on,
     return nullptr;
 }
 
-bool TogglableButton::initWithFiles(const std::string &on, const std::string &off, ToggledCallback callback, bool isGrayScale /* = false */)
+bool TogglableButton::initWithFiles(const std::string &on, const std::string &off, ToggledCallback callback, bool isGrayScale /* = true */)
 {
     // on/offのパターンのSwitchableButtonを生成する
-    this->addPattern(SBSwitchPattern::create( "on",  on, [this]() { this->onTapped(); }));
-    this->addPattern(SBSwitchPattern::create("off", off, [this]() { this->onTapped(); }));
+    this->addPattern(SBSwitchPattern::create( "on",  on, [this]() { this->toggle(); }));
+    this->addPattern(SBSwitchPattern::create("off", off, [this]() { this->toggle(); }));
     
     _toggledCallback = callback;
     _isGrayScale = isGrayScale;
@@ -105,7 +105,7 @@ void TogglableButton::toggle()
     else                               this->setColor(Color3B::WHITE);
     
     // on->offならfalse, off->onならtrueを渡してコールバックを実行
-    _toggledCallback(_toggleStatus);
+    if (_toggledCallback) _toggledCallback(_toggleStatus);
 }
 
 void TogglableButton::turnOn()
@@ -119,14 +119,5 @@ void TogglableButton::turnOff()
 {
     // 現状をオンにしてトグルすることでオフにする
     _toggleStatus = true;
-    this->toggle();
-}
-
-
-
-#pragma mark - Tap Event Methods
-
-void TogglableButton::onTapped()
-{
     this->toggle();
 }
