@@ -15,6 +15,21 @@ using namespace HR;
 USING_NS_CC;
 
 
+bool ValidateUIData::validateRequired(cocos2d::ValueMap &data, std::vector<std::string> keys)
+{
+    bool result = true;
+    
+    for (std::string key : keys) {
+        if (HRValueHelper::isExistsKey(data, key)) {
+            HRLOG("次のキーがありません。: %s", key.c_str());
+            result = false;
+        }
+    }
+    
+    return result;
+}
+
+
 bool ValidateUIData::validateCouple(cocos2d::ValueMap &data, const char *one, const char *another)
 {
     if (HRValueHelper::isExistsKey(data, one) == HRValueHelper::isExistsKey(data, another)) {

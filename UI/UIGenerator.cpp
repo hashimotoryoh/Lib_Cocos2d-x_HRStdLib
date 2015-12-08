@@ -10,6 +10,7 @@
 #include "UIGeneratorKeys.h"
 #include "UIGeneratorValues.h"
 #include "UIGeneratorDefaults.h"
+#include "ValidateUIData.h"
 #include "HRJsonHelper.h"
 #include "HRValueHelper.h"
 
@@ -149,7 +150,9 @@ BaseLayer *UIGenerator::constructRootLayer(cocos2d::ValueMap &data)
 
 Node *UIGenerator::constructNode(cocos2d::ValueMap &data)
 {
-    // TODO: validate required type
+    HRASSERT(ValidateUIData::validateRequired(data, {
+        PARAM_KEY_TYPE
+    }), "バリデートに失敗しました。");
     HRASSERT((data.at(PARAM_KEY_TYPE).getType() == Value::Type::STRING),
              "\"type\"はstringでなければいけません。");
     
@@ -179,8 +182,11 @@ BaseLayer *UIGenerator::constructLayer(cocos2d::ValueMap &data)
 
 BaseSprite *UIGenerator::constructSprite(cocos2d::ValueMap &data)
 {
+    HRASSERT(ValidateUIData::validateRequired(data, {
+        PARAM_KEY_FILEPATH
+    }), "バリデートに失敗しました。");
+    
     // 画像ファイルパス
-    // TODO: validate required filepath
     HRASSERT((data.at(PARAM_KEY_FILEPATH).getType() == Value::Type::STRING),
              "\"filepath\"はstringでなければいけません。");
     std::string filepath = data.at(PARAM_KEY_FILEPATH).asString();
@@ -192,8 +198,11 @@ BaseSprite *UIGenerator::constructSprite(cocos2d::ValueMap &data)
 
 TouchableSprite *UIGenerator::constructTouchableSprite(cocos2d::ValueMap &data)
 {
+    HRASSERT(ValidateUIData::validateRequired(data, {
+        PARAM_KEY_ENABLED_FILEPATH
+    }), "バリデートに失敗しました。");
+    
     // 有効時画像ファイルパス
-    // TODO: validate requred enabled_filepath
     HRASSERT((data.at(PARAM_KEY_ENABLED_FILEPATH).getType() == Value::Type::STRING),
              "\"enabled_filepath\"はstringでなければいけません。");
     std::string enabledFilepath = data.at(PARAM_KEY_ENABLED_FILEPATH).asString();
@@ -239,8 +248,11 @@ TouchableSprite *UIGenerator::constructTouchableSprite(cocos2d::ValueMap &data)
 
 BaseLabel *UIGenerator::constructLabel(cocos2d::ValueMap &data)
 {
+    HRASSERT(ValidateUIData::validateRequired(data, {
+        PARAM_KEY_TEXT
+    }), "バリデートに失敗しました。");
+    
     // テキスト
-    // TODO: validate requred text
     HRASSERT((data.at(PARAM_KEY_TEXT).getType() == Value::Type::STRING),
              "\"text\"はstringでなければいけません。");
     std::string text = data.at(PARAM_KEY_TEXT).asString();
@@ -294,8 +306,11 @@ BaseLabel *UIGenerator::constructLabel(cocos2d::ValueMap &data)
 
 Button *UIGenerator::constructButton(cocos2d::ValueMap &data)
 {
+    HRASSERT(ValidateUIData::validateRequired(data, {
+        PARAM_KEY_ENABLED_FILEPATH
+    }), "バリデートに失敗しました。");
+    
     // 有効時画像ファイルパス
-    // TODO: validate requred enabled_filepath
     HRASSERT((data.at(PARAM_KEY_ENABLED_FILEPATH).getType() == Value::Type::STRING),
              "\"enabled_filepath\"はstringでなければいけません。");
     std::string enabledFilepath = data.at(PARAM_KEY_ENABLED_FILEPATH).asString();
@@ -357,8 +372,11 @@ Button *UIGenerator::constructButton(cocos2d::ValueMap &data)
 
 SwitchableButton *UIGenerator::constructSwitchableButton(cocos2d::ValueMap &data)
 {
+    HRASSERT(ValidateUIData::validateRequired(data, {
+        PARAM_KEY_PATTERNS
+    }), "バリデートに失敗しました。");
+    
     // パターン群
-    // TODO: validate requred patterns
     HRASSERT((data.at(PARAM_KEY_PATTERNS).getType() == Value::Type::VECTOR),
              "\"text\"はvector(array)でなければいけません。");
     ValueVector patternsData = data.at(PARAM_KEY_PATTERNS).asValueVector();
@@ -367,15 +385,17 @@ SwitchableButton *UIGenerator::constructSwitchableButton(cocos2d::ValueMap &data
     // パターン一つ一つ
     for (Value patternData : patternsData) {
         ValueMap pattern = patternData.asValueMap();
+        HRASSERT(ValidateUIData::validateRequired(pattern, {
+            PARAM_KEY_PATTERN_KEY,
+            PARAM_KEY_PATTERN_FILEPATH
+        }), "バリデートに失敗しました。");
         
         // キー
-        // TODO: validate required key
         HRASSERT((pattern.at(PARAM_KEY_PATTERN_KEY).getType() == Value::Type::STRING),
                   "\"patters.key\"はstringでなければいけません。");
         std::string key = pattern.at(PARAM_KEY_PATTERN_KEY).asString();
         
         // 画像ファイルパス
-        // TODO: validate required filepath
         HRASSERT((pattern.at(PARAM_KEY_PATTERN_FILEPATH).getType() == Value::Type::STRING),
                  "\"patters.filepath\"はstringでなければいけません。");
         std::string filepath = pattern.at(PARAM_KEY_PATTERN_FILEPATH).asString();
@@ -416,8 +436,11 @@ SwitchableButton *UIGenerator::constructSwitchableButton(cocos2d::ValueMap &data
 
 TogglableButton *UIGenerator::constructTogglableButton(cocos2d::ValueMap &data)
 {
+    HRASSERT(ValidateUIData::validateRequired(data, {
+        PARAM_KEY_ON_FILEPATH
+    }), "バリデートに失敗しました。");
+    
     // オンの時の画像ファイルパス
-    // TODO: validate requred on_filepath
     HRASSERT((data.at(PARAM_KEY_ON_FILEPATH).getType() == Value::Type::STRING),
              "\"on_filepath\"はstringでなければいけません。");
     std::string onFilepath = data.at(PARAM_KEY_ON_FILEPATH).asString();

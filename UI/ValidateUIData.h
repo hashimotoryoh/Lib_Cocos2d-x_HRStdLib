@@ -12,12 +12,20 @@
 #include "cocos2d.h"
 
 
-//namespace HR {
+namespace HR {
 
 
 class ValidateUIData
 {
 public:
+    /**
+     * @brief  必須項目をバリデートする
+     * @param  data データ
+     * @param  keys 調べるキー郡
+     * @return バリデート結果
+     */
+    static bool validateRequired(cocos2d::ValueMap &data, std::vector<std::string> keys);
+    
     /**
      * @brief  ニコイチ的なデータをバリデートする
      *         片方だけ指定されている場合にfalseを返す
@@ -32,6 +40,6 @@ public:
 };
 
 
-//}
+}
 
 #endif /* defined(__HRStandardLibrary__ValidateUIData__) */
