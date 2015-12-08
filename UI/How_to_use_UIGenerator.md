@@ -121,3 +121,38 @@ KeyはJSONのキー。ValueTypeはC++で読み取る型。
 | scale_effect | bool | x | true | タッチ時に小さくするか |
 | brightness_effect | bool | x | true | タッチ時に暗くするか |
 | gray_scale | bool | x | true | オフの時グレースケールするか |
+
+# How to set callbacks
+
+UIGeneratorで生成したボタンとかにコールバックを設定するには、タグを振っておいて、 ```getChildByTag()``` メソッド使って取り出せば良い。
+
+```JSON
+{
+    "width"      : 1136,
+    "height"     : 640,
+    "position_x" : 0.0,
+    "position_y" : 0.0,
+    "anchor_x"   : 0.0,
+    "anchor_y"   : 0.0,
+    "children"   : [
+        {
+            "type"             : "button",
+            "enabled_filepath" : "HelloWorld.png",
+            "position_x"       : 568.0,
+            "position_y"       : 320.0,
+            "anchor_x"         : 0.5,
+            "anchor_y"         : 0.5,
+            "tag"              : 8410
+        }
+    ]
+}
+```
+
+```C++
+HR::BaseLayer *mainLayer = HR::UIGenerator::generateUI("sample.json");
+
+HR::Button *button = dynamic_cast<HR::Button*>(mainLayer->getChildByTag(8410));
+button->setTapCallback([]() {
+    HRLOG("タグ 8410 のボタンが押された。");
+});
+```
