@@ -19,7 +19,7 @@
 #include "TogglableButton.h"
 
 
-//namespace HR {
+namespace HR {
 
 
 class UIGenerator
@@ -78,6 +78,6 @@ private:
 };
 
 
-//}
+}
 
 #endif /* defined(__HRStandardLibrary__UIGenerator__) */

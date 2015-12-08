@@ -94,6 +94,7 @@ public:
     
     
 #pragma mark - Control Methods
+public:
 #pragma mark Original Methods
     /**
      * @brief トグルする
@@ -109,6 +110,11 @@ public:
      * @brief 強制的にオフにする
      */
     virtual void turnOff();
+    
+    
+#pragma mark - Touch Event Methods
+protected:
+    virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event) override;
     
     
 };

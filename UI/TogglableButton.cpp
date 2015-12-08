@@ -51,8 +51,6 @@ bool TogglableButton::init()
 {
     if (!this->SwitchableButton::init()) return false;
     
-    _isEnableBrightnessEffect = false;
-    
     _toggleStatus    = true;
     _isGrayScale     = true;
     _toggledCallback = nullptr;
@@ -120,4 +118,18 @@ void TogglableButton::turnOff()
     // 現状をオンにしてトグルすることでオフにする
     _toggleStatus = true;
     this->toggle();
+}
+
+
+
+#pragma mark - Touch Event Methods
+
+void TogglableButton::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
+{
+    this->SwitchableButton::onTouchEnded(touch, event);
+    // ===== Call Super Method =====
+    
+    // 親クラスのonTouchEnded()ではタッチエンドで白に戻すが、
+    // TogglableButtonではオフ状態にグレーのままの場合がある
+    if (_isGrayScale && !_toggleStatus) this->setColor(Color3B::GRAY);
 }
