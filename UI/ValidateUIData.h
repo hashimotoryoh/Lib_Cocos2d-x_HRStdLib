@@ -27,6 +27,15 @@ public:
     static bool validateRequired(cocos2d::ValueMap &data, std::vector<std::string> keys);
     
     /**
+     * @brief  型をバリデートする
+     * @param  data         データ
+     * @param  key          調べるキー
+     * @param  expectedType 期待する型
+     * @return バリデート結果
+     */
+    static bool validateType(cocos2d::ValueMap &data, const char *key, cocos2d::Value::Type expectedType);
+    
+    /**
      * @brief  ニコイチ的なデータをバリデートする
      *         片方だけ指定されている場合にfalseを返す
      * @param  data    UIデータ

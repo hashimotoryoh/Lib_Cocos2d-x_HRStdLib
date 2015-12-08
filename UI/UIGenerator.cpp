@@ -22,25 +22,34 @@ using namespace UIGeneratorDefault;
 USING_NS_CC;
 
 
+const char *VALIDATION_FAILED_MESSAGE = "バリデートに失敗しました。";
+
+
 
 #pragma mark - Generate Methods
 
 BaseLayer *UIGenerator::generateUI(const std::string &jsonFilepath)
 {
-    return generateUI(HRJsonHelper::parseJsonFileToValue(jsonFilepath).asValueMap());
+    HRLOG("");
+    HRLOG("");
+    HRLOG("=============== %s のUI生成 開始 ===============", jsonFilepath.c_str());
+    HRLOG("");
+    HRLOG("");
+    
+    BaseLayer *ret = generateUI(HRJsonHelper::parseJsonFileToValue(jsonFilepath).asValueMap());
+    
+    HRLOG("");
+    HRLOG("");
+    HRLOG("=============== %s のUI生成 終了 ===============", jsonFilepath.c_str());
+    HRLOG("");
+    HRLOG("");
+    
+    return ret;
 }
 
 BaseLayer *UIGenerator::generateUI(cocos2d::ValueMap &UIData)
 {
     BaseLayer *ret = constructLayer(UIData);
-    
-    if (HRValueHelper::isExistsKey(UIData, PARAM_KEY_CHILDREN)) {
-        HRASSERT((UIData.at(PARAM_KEY_CHILDREN).getType() == Value::Type::VECTOR),
-                 "\"children\"はvector(array)でなければいけません。");
-        
-        ValueVector childrenData = UIData.at(PARAM_KEY_CHILDREN).asValueVector();
-        for (Value childData : childrenData) ret->addChild(constructNode(childData.asValueMap()));
-    }
     
     return ret;
 }
@@ -52,20 +61,22 @@ BaseLayer *UIGenerator::generateUI(cocos2d::ValueMap &UIData)
 cocos2d::Node *UIGenerator::commonConstructor(cocos2d::Node *node, cocos2d::ValueMap &data)
 {
     // 幅・高さ
-    // TODO: couple width & hegiht
-    if (HRValueHelper::isExistsKey(data, PARAM_KEY_WIDTH) && HRValueHelper::isExistsKey(data, PARAM_KEY_HEIGHT)) {
-        // TODO: width -> unsigned int?
-        // TODO: hegiht -> unsigned int?
+    if (ValidateUIData::validateCouple(data, PARAM_KEY_WIDTH, PARAM_KEY_HEIGHT)
+        && (HRValueHelper::isExistsKey(data, PARAM_KEY_WIDTH) && HRValueHelper::isExistsKey(data, PARAM_KEY_HEIGHT))) {
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_WIDTH, Value::Type::INTEGER), VALIDATION_FAILED_MESSAGE);
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_HEIGHT, Value::Type::INTEGER), VALIDATION_FAILED_MESSAGE);
+        
         unsigned int width  = data.at(PARAM_KEY_WIDTH).asInt();
         unsigned int hegiht = data.at(PARAM_KEY_HEIGHT).asInt();
         node->setContentSize(Size(width, hegiht));
     }
     
     // ポジション
-    // TODO: couple pos_x & pos_y
+    ValidateUIData::validateCouple(data, PARAM_KEY_POS_X, PARAM_KEY_POS_Y);
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_POS_X) && HRValueHelper::isExistsKey(data, PARAM_KEY_POS_Y)) {
-        // TODO: pos_x -> float?
-        // TODO: pos_y -> float?
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_POS_X, Value::Type::FLOAT), VALIDATION_FAILED_MESSAGE);
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_POS_Y, Value::Type::FLOAT), VALIDATION_FAILED_MESSAGE);
+        
         float pos_x = data.at(PARAM_KEY_POS_X).asFloat();
         float pos_y = data.at(PARAM_KEY_POS_Y).asFloat();
         node->setPosition(Vec2(pos_x, pos_y));
@@ -73,10 +84,11 @@ cocos2d::Node *UIGenerator::commonConstructor(cocos2d::Node *node, cocos2d::Valu
     else node->setPosition(Vec2(PARAM_DEFAULT_VALUE_POS_X, PARAM_DEFAULT_VALUE_POS_Y));
     
     // アンカーポイント
-    // TODO: couple anchor_x & anchor_y
+    ValidateUIData::validateCouple(data, PARAM_KEY_ANCHOR_X, PARAM_KEY_ANCHOR_Y);
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_ANCHOR_X) && HRValueHelper::isExistsKey(data, PARAM_KEY_ANCHOR_Y)) {
-        // TODO: anchor_x -> float?
-        // TODO: anchor_y -> float?
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_ANCHOR_X, Value::Type::FLOAT), VALIDATION_FAILED_MESSAGE);
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_ANCHOR_Y, Value::Type::FLOAT), VALIDATION_FAILED_MESSAGE);
+        
         float anchor_x = data.at(PARAM_KEY_ANCHOR_X).asFloat();
         float anchor_y = data.at(PARAM_KEY_ANCHOR_Y).asFloat();
         node->setAnchorPoint(Vec2(anchor_x, anchor_y));
@@ -85,42 +97,48 @@ cocos2d::Node *UIGenerator::commonConstructor(cocos2d::Node *node, cocos2d::Valu
     
     // タグ
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_TAG)) {
-        // TODO: tag -> unsigned int?
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_TAG, Value::Type::INTEGER), VALIDATION_FAILED_MESSAGE);
+        
         unsigned int tag = data.at(PARAM_KEY_TAG).asInt();
         node->setTag(tag);
     }
     
     // 名前
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_NAME)) {
-        // TODO: nane -> std::string?
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_NAME, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
+        
         std::string name = data.at(PARAM_KEY_NAME).asString();
         node->setName(name);
     }
     
     // スケール
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_SCALE)) {
-        // TODO: scale -> float?
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_SCALE, Value::Type::FLOAT), VALIDATION_FAILED_MESSAGE);
+        
         float scale = data.at(PARAM_KEY_SCALE).asFloat();
         node->setScale(scale);
     }
     
     // ローテーション
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_ROTATION)) {
-        // TODO: rotation -> float?
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_ROTATION, Value::Type::FLOAT), VALIDATION_FAILED_MESSAGE);
+        
         float rotation = data.at(PARAM_KEY_ROTATION).asFloat();
         node->setRotation(rotation);
     }
     
     // 透明度
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_OPACITY)) {
-        // TODO: opacity -> unsigned int?
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_OPACITY, Value::Type::INTEGER), VALIDATION_FAILED_MESSAGE);
+        
         unsigned int opacity = data.at(PARAM_KEY_OPACITY).asInt();
         node->setOpacity(opacity);
     }
     
     // 表示/非表示
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_VISIBLE)) {
-        // TODO: visible -> bool?
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_VISIBLE, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool visible = data.at(PARAM_KEY_VISIBLE).asBool();
         node->setVisible(visible);
     }
@@ -128,8 +146,7 @@ cocos2d::Node *UIGenerator::commonConstructor(cocos2d::Node *node, cocos2d::Valu
     
     // 子ノード
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_CHILDREN)) {
-        HRASSERT((data.at(PARAM_KEY_CHILDREN).getType() == Value::Type::VECTOR),
-                 "\"children\"はvector(array)でなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_CHILDREN, Value::Type::VECTOR), VALIDATION_FAILED_MESSAGE);
         ValueVector children = data.at(PARAM_KEY_CHILDREN).asValueVector();
         for (Value child : children) {
             HRASSERT((child.getType() == Value::Type::MAP),
@@ -152,9 +169,8 @@ Node *UIGenerator::constructNode(cocos2d::ValueMap &data)
 {
     HRASSERT(ValidateUIData::validateRequired(data, {
         PARAM_KEY_TYPE
-    }), "バリデートに失敗しました。");
-    HRASSERT((data.at(PARAM_KEY_TYPE).getType() == Value::Type::STRING),
-             "\"type\"はstringでなければいけません。");
+    }), VALIDATION_FAILED_MESSAGE);
+    HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_TYPE, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
     
     std::string type = data.at(PARAM_KEY_TYPE).asString();
     if      (type == CHILD_TYPE_LAYER)             return constructLayer(data);
@@ -184,11 +200,10 @@ BaseSprite *UIGenerator::constructSprite(cocos2d::ValueMap &data)
 {
     HRASSERT(ValidateUIData::validateRequired(data, {
         PARAM_KEY_FILEPATH
-    }), "バリデートに失敗しました。");
+    }), VALIDATION_FAILED_MESSAGE);
     
     // 画像ファイルパス
-    HRASSERT((data.at(PARAM_KEY_FILEPATH).getType() == Value::Type::STRING),
-             "\"filepath\"はstringでなければいけません。");
+    HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_FILEPATH, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
     std::string filepath = data.at(PARAM_KEY_FILEPATH).asString();
     
     BaseSprite *ret = dynamic_cast<BaseSprite*>(commonConstructor(BaseSprite::create(filepath), data));
@@ -200,26 +215,25 @@ TouchableSprite *UIGenerator::constructTouchableSprite(cocos2d::ValueMap &data)
 {
     HRASSERT(ValidateUIData::validateRequired(data, {
         PARAM_KEY_ENABLED_FILEPATH
-    }), "バリデートに失敗しました。");
+    }), VALIDATION_FAILED_MESSAGE);
     
     // 有効時画像ファイルパス
-    HRASSERT((data.at(PARAM_KEY_ENABLED_FILEPATH).getType() == Value::Type::STRING),
-             "\"enabled_filepath\"はstringでなければいけません。");
+    HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_ENABLED_FILEPATH, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
     std::string enabledFilepath = data.at(PARAM_KEY_ENABLED_FILEPATH).asString();
     
     // 無効時画像ファイルパス
     std::string disabledFilepath = enabledFilepath;
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_DISABLED_FILEPATH)) {
-        HRASSERT((data.at(PARAM_KEY_DISABLED_FILEPATH).getType() == Value::Type::STRING),
-                 "\"disabled_filepath\"はstringでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_DISABLED_FILEPATH, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
+        
         disabledFilepath = data.at(PARAM_KEY_DISABLED_FILEPATH).asString();
     }
     
     // 初期有効か
     bool isEnable = true;
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_IS_ENABLE)) {
-        HRASSERT((data.at(PARAM_KEY_IS_ENABLE).getType() == Value::Type::BOOLEAN),
-                 "\"is_enable\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_IS_ENABLE, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         isEnable = data.at(PARAM_KEY_IS_ENABLE).asBool();
     }
     
@@ -229,16 +243,16 @@ TouchableSprite *UIGenerator::constructTouchableSprite(cocos2d::ValueMap &data)
     
     // ロングタップを有効にするか
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_LONG_TAP)) {
-        HRASSERT((data.at(PARAM_KEY_LONG_TAP).getType() == Value::Type::BOOLEAN),
-                 "\"long_tap\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_LONG_TAP, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool isEnableLongTap = data.at(PARAM_KEY_LONG_TAP).asBool();
         isEnableLongTap ? ret->enableLongTap() : ret->disableLongTap();
     }
     
     // 連打を有効にするか
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_CONTINUOUS_TAP)) {
-        HRASSERT((data.at(PARAM_KEY_CONTINUOUS_TAP).getType() == Value::Type::BOOLEAN),
-                 "\"continuous_tap\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_CONTINUOUS_TAP, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool isEnableContinuousTap = data.at(PARAM_KEY_CONTINUOUS_TAP).asBool();
         isEnableContinuousTap ? ret->enableContinuousTap() : ret->disableContinuousTap();
     }
@@ -250,26 +264,25 @@ BaseLabel *UIGenerator::constructLabel(cocos2d::ValueMap &data)
 {
     HRASSERT(ValidateUIData::validateRequired(data, {
         PARAM_KEY_TEXT
-    }), "バリデートに失敗しました。");
+    }), VALIDATION_FAILED_MESSAGE);
     
     // テキスト
-    HRASSERT((data.at(PARAM_KEY_TEXT).getType() == Value::Type::STRING),
-             "\"text\"はstringでなければいけません。");
+    HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_TEXT, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
     std::string text = data.at(PARAM_KEY_TEXT).asString();
     
     // フォント
     std::string fontPath = PARAM_DEFAULT_VALUE_FONT_PATH;
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_FONT_PATH)) {
-        HRASSERT((data.at(PARAM_KEY_FONT_PATH).getType() == Value::Type::STRING),
-                 "\"font_path\"はstringでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_FONT_PATH, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
+        
         fontPath = data.at(PARAM_KEY_FONT_PATH).asString();
     }
     
     // フォントサイズ
     float fontSize = PARAM_DEFAULT_VALUE_FONT_SIZE;
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_FONT_SIZE)) {
-        HRASSERT((data.at(PARAM_KEY_FONT_SIZE).getType() == Value::Type::FLOAT),
-                 "\"font_size\"はfloatでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_FONT_SIZE, Value::Type::FLOAT), VALIDATION_FAILED_MESSAGE);
+        
         fontSize = data.at(PARAM_KEY_FONT_SIZE).asFloat();
     }
     
@@ -281,22 +294,22 @@ BaseLabel *UIGenerator::constructLabel(cocos2d::ValueMap &data)
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_FONT_COLOR_R)
         && HRValueHelper::isExistsKey(data, PARAM_KEY_FONT_COLOR_G)
         && HRValueHelper::isExistsKey(data, PARAM_KEY_FONT_COLOR_B)) {
-        HRASSERT((data.at(PARAM_KEY_FONT_COLOR_R).getType() == Value::Type::INTEGER),
-                 "\"font_color_r\"はintでなければいけません。");
-        HRASSERT((data.at(PARAM_KEY_FONT_COLOR_G).getType() == Value::Type::INTEGER),
-                 "\"font_color_g\"はintでなければいけません。");
-        HRASSERT((data.at(PARAM_KEY_FONT_COLOR_B).getType() == Value::Type::INTEGER),
-                 "\"font_color_b\"はintでなければいけません。");
+        
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_FONT_COLOR_R, Value::Type::INTEGER), VALIDATION_FAILED_MESSAGE);
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_FONT_COLOR_G, Value::Type::INTEGER), VALIDATION_FAILED_MESSAGE);
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_FONT_COLOR_B, Value::Type::INTEGER), VALIDATION_FAILED_MESSAGE);
+        
         GLubyte r = data.at(PARAM_KEY_FONT_COLOR_R).asInt();
         GLubyte g = data.at(PARAM_KEY_FONT_COLOR_G).asInt();
         GLubyte b = data.at(PARAM_KEY_FONT_COLOR_B).asInt();
         ret->setTextColor(Color4B(Color3B(r, g, b)));
+        
     }
     
     // 寄せ
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_TEXT_ALIGN)) {
-        HRASSERT((data.at(PARAM_KEY_TEXT_ALIGN).getType() == Value::Type::STRING),
-                  "\"text_alignment\"はstringでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_TEXT_ALIGN, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
+        
         TextHAlignment align = convertAlignment(data.at(PARAM_KEY_TEXT_ALIGN).asString());
         ret->setAlignment(align);
     }
@@ -308,26 +321,25 @@ Button *UIGenerator::constructButton(cocos2d::ValueMap &data)
 {
     HRASSERT(ValidateUIData::validateRequired(data, {
         PARAM_KEY_ENABLED_FILEPATH
-    }), "バリデートに失敗しました。");
+    }), VALIDATION_FAILED_MESSAGE);
     
     // 有効時画像ファイルパス
-    HRASSERT((data.at(PARAM_KEY_ENABLED_FILEPATH).getType() == Value::Type::STRING),
-             "\"enabled_filepath\"はstringでなければいけません。");
+    HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_ENABLED_FILEPATH, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
     std::string enabledFilepath = data.at(PARAM_KEY_ENABLED_FILEPATH).asString();
     
     // 無効時画像ファイルパス
     std::string disabledFilepath = enabledFilepath;
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_DISABLED_FILEPATH)) {
-        HRASSERT((data.at(PARAM_KEY_DISABLED_FILEPATH).getType() == Value::Type::STRING),
-                 "\"disabled_filepath\"はstringでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_DISABLED_FILEPATH, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
+        
         disabledFilepath = data.at(PARAM_KEY_DISABLED_FILEPATH).asString();
     }
     
     // 初期有効か
     bool isEnable = true;
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_IS_ENABLE)) {
-        HRASSERT((data.at(PARAM_KEY_IS_ENABLE).getType() == Value::Type::BOOLEAN),
-                 "\"is_enable\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_IS_ENABLE, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         isEnable = data.at(PARAM_KEY_IS_ENABLE).asBool();
     }
     
@@ -337,32 +349,32 @@ Button *UIGenerator::constructButton(cocos2d::ValueMap &data)
     
     // ロングタップを有効にするか
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_LONG_TAP)) {
-        HRASSERT((data.at(PARAM_KEY_LONG_TAP).getType() == Value::Type::BOOLEAN),
-                 "\"long_tap\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_LONG_TAP, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool isEnableLongTap = data.at(PARAM_KEY_LONG_TAP).asBool();
         isEnableLongTap ? ret->enableLongTap() : ret->disableLongTap();
     }
     
     // 連打を有効にするか
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_CONTINUOUS_TAP)) {
-        HRASSERT((data.at(PARAM_KEY_CONTINUOUS_TAP).getType() == Value::Type::BOOLEAN),
-                 "\"continuous_tap\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_CONTINUOUS_TAP, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool isEnableContinuousTap = data.at(PARAM_KEY_CONTINUOUS_TAP).asBool();
         isEnableContinuousTap ? ret->enableContinuousTap() : ret->disableContinuousTap();
     }
     
     // スケールエフェクト
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_SCALE_EFFECT)) {
-        HRASSERT((data.at(PARAM_KEY_SCALE_EFFECT).getType() == Value::Type::BOOLEAN),
-                 "\"scale_effect\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_SCALE_EFFECT, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool scaleEffect = data.at(PARAM_KEY_SCALE_EFFECT).asBool();
         scaleEffect ? ret->enableScaleEffect() : ret->disableScaleEffect();
     }
     
     // 明暗エフェクト
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_BRIGHTNESS_EFFECT)) {
-        HRASSERT((data.at(PARAM_KEY_BRIGHTNESS_EFFECT).getType() == Value::Type::BOOLEAN),
-                 "\"brightness_effect\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_BRIGHTNESS_EFFECT, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool brightnessEffect = data.at(PARAM_KEY_BRIGHTNESS_EFFECT).asBool();
         brightnessEffect ? ret->enableBrightnessEffect() : ret->disableBrightnessEffect();
     }
@@ -374,11 +386,10 @@ SwitchableButton *UIGenerator::constructSwitchableButton(cocos2d::ValueMap &data
 {
     HRASSERT(ValidateUIData::validateRequired(data, {
         PARAM_KEY_PATTERNS
-    }), "バリデートに失敗しました。");
+    }), VALIDATION_FAILED_MESSAGE);
     
     // パターン群
-    HRASSERT((data.at(PARAM_KEY_PATTERNS).getType() == Value::Type::VECTOR),
-             "\"text\"はvector(array)でなければいけません。");
+    HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_PATTERNS, Value::Type::VECTOR), VALIDATION_FAILED_MESSAGE);
     ValueVector patternsData = data.at(PARAM_KEY_PATTERNS).asValueVector();
     Vector<SBSwitchPattern*> patterns;
     
@@ -388,16 +399,14 @@ SwitchableButton *UIGenerator::constructSwitchableButton(cocos2d::ValueMap &data
         HRASSERT(ValidateUIData::validateRequired(pattern, {
             PARAM_KEY_PATTERN_KEY,
             PARAM_KEY_PATTERN_FILEPATH
-        }), "バリデートに失敗しました。");
+        }), VALIDATION_FAILED_MESSAGE);
         
         // キー
-        HRASSERT((pattern.at(PARAM_KEY_PATTERN_KEY).getType() == Value::Type::STRING),
-                  "\"patters.key\"はstringでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(pattern, PARAM_KEY_PATTERN_KEY, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
         std::string key = pattern.at(PARAM_KEY_PATTERN_KEY).asString();
         
         // 画像ファイルパス
-        HRASSERT((pattern.at(PARAM_KEY_PATTERN_FILEPATH).getType() == Value::Type::STRING),
-                 "\"patters.filepath\"はstringでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(pattern, PARAM_KEY_PATTERN_FILEPATH, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
         std::string filepath = pattern.at(PARAM_KEY_PATTERN_FILEPATH).asString();
         
         patterns.pushBack(SBSwitchPattern::create(key, filepath));
@@ -409,24 +418,24 @@ SwitchableButton *UIGenerator::constructSwitchableButton(cocos2d::ValueMap &data
     
     // 初期有効か
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_IS_ENABLE)) {
-        HRASSERT((data.at(PARAM_KEY_IS_ENABLE).getType() == Value::Type::BOOLEAN),
-                 "\"is_enable\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_IS_ENABLE, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool isEnable = data.at(PARAM_KEY_IS_ENABLE).asBool();
         isEnable ? ret->enable() : ret->disable();
     }
     
     // スケールエフェクト
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_SCALE_EFFECT)) {
-        HRASSERT((data.at(PARAM_KEY_SCALE_EFFECT).getType() == Value::Type::BOOLEAN),
-                 "\"scale_effect\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_SCALE_EFFECT, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool scaleEffect = data.at(PARAM_KEY_SCALE_EFFECT).asBool();
         scaleEffect ? ret->enableScaleEffect() : ret->disableScaleEffect();
     }
     
     // 明暗エフェクト
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_BRIGHTNESS_EFFECT)) {
-        HRASSERT((data.at(PARAM_KEY_BRIGHTNESS_EFFECT).getType() == Value::Type::BOOLEAN),
-                 "\"brightness_effect\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_BRIGHTNESS_EFFECT, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool brightnessEffect = data.at(PARAM_KEY_BRIGHTNESS_EFFECT).asBool();
         brightnessEffect ? ret->enableBrightnessEffect() : ret->disableBrightnessEffect();
     }
@@ -438,18 +447,17 @@ TogglableButton *UIGenerator::constructTogglableButton(cocos2d::ValueMap &data)
 {
     HRASSERT(ValidateUIData::validateRequired(data, {
         PARAM_KEY_ON_FILEPATH
-    }), "バリデートに失敗しました。");
+    }), VALIDATION_FAILED_MESSAGE);
     
     // オンの時の画像ファイルパス
-    HRASSERT((data.at(PARAM_KEY_ON_FILEPATH).getType() == Value::Type::STRING),
-             "\"on_filepath\"はstringでなければいけません。");
+    HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_ON_FILEPATH, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
     std::string onFilepath = data.at(PARAM_KEY_ON_FILEPATH).asString();
     
     // オフの時の画像ファイルパス
     std::string offFilepath = onFilepath;
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_OFF_FILEPATH)) {
-        HRASSERT((data.at(PARAM_KEY_OFF_FILEPATH).getType() == Value::Type::STRING),
-                 "\"off_filepath\"はstringでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_OFF_FILEPATH, Value::Type::STRING), VALIDATION_FAILED_MESSAGE);
+        
         offFilepath = data.at(PARAM_KEY_OFF_FILEPATH).asString();
     }
     
@@ -459,40 +467,40 @@ TogglableButton *UIGenerator::constructTogglableButton(cocos2d::ValueMap &data)
     
     // 初期状態
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_INIT_STATE)) {
-        HRASSERT((data.at(PARAM_KEY_INIT_STATE).getType() == Value::Type::BOOLEAN),
-                 "\"initial_state\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_INIT_STATE, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool initState = data.at(PARAM_KEY_INIT_STATE).asBool();
         initState ? ret->turnOn() : ret->turnOff();
     }
     
     // 初期有効か
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_IS_ENABLE)) {
-        HRASSERT((data.at(PARAM_KEY_IS_ENABLE).getType() == Value::Type::BOOLEAN),
-                 "\"is_effect\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_IS_ENABLE, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool isEnable = data.at(PARAM_KEY_IS_ENABLE).asBool();
         isEnable ? ret->enable() : ret->disable();
     }
     
     // スケールエフェクト
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_SCALE_EFFECT)) {
-        HRASSERT((data.at(PARAM_KEY_SCALE_EFFECT).getType() == Value::Type::BOOLEAN),
-                 "\"scale_effect\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_SCALE_EFFECT, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool scaleEffect = data.at(PARAM_KEY_SCALE_EFFECT).asBool();
         scaleEffect ? ret->enableScaleEffect() : ret->disableScaleEffect();
     }
     
     // 明暗エフェクト
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_BRIGHTNESS_EFFECT)) {
-        HRASSERT((data.at(PARAM_KEY_BRIGHTNESS_EFFECT).getType() == Value::Type::BOOLEAN),
-                 "\"brightness_effect\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_BRIGHTNESS_EFFECT, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool brightnessEffect = data.at(PARAM_KEY_BRIGHTNESS_EFFECT).asBool();
         brightnessEffect ? ret->enableBrightnessEffect() : ret->disableBrightnessEffect();
     }
     
     // オフの時のグレースケール
     if (HRValueHelper::isExistsKey(data, PARAM_KEY_GRAY_SCALE)) {
-        HRASSERT((data.at(PARAM_KEY_GRAY_SCALE).getType() == Value::Type::BOOLEAN),
-                 "\"gray_scale\"はboolでなければいけません。");
+        HRASSERT(ValidateUIData::validateType(data, PARAM_KEY_GRAY_SCALE, Value::Type::BOOLEAN), VALIDATION_FAILED_MESSAGE);
+        
         bool grayScale = data.at(PARAM_KEY_GRAY_SCALE).asBool();
         ret->setIsGrayScale(grayScale);
     }
