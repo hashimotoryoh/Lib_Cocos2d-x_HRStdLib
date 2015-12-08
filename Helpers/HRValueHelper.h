@@ -26,6 +26,13 @@ public:
      */
     static bool isExistsKey(const cocos2d::ValueMap vm, const std::string &key);
     
+    /**
+     * @brief  Value::Typeを型名に変換する
+     * @param  type
+     * @return 型名
+     */
+    static const std::string translateValueType(cocos2d::Value::Type type);
+    
     
 };
 

@@ -51,8 +51,6 @@ bool TogglableButton::init()
 {
     if (!this->SwitchableButton::init()) return false;
     
-    _isEnableBrightnessEffect = false;
-    
     _toggleStatus    = true;
     _isGrayScale     = true;
     _toggledCallback = nullptr;
@@ -62,8 +60,8 @@ bool TogglableButton::init()
 
 TogglableButton *TogglableButton::createWithFiles(const std::string &on,
                                                   const std::string &off,
-                                                  ToggledCallback callback,
-                                                  bool isGrayScale /* = false */)
+                                                  ToggledCallback callback /* = nullptr */,
+                                                  bool isGrayScale /* = true */)
 {
     TogglableButton *pRet = TogglableButton::create();
     if (pRet->initWithFiles(on, off, callback, isGrayScale)) {
@@ -73,11 +71,11 @@ TogglableButton *TogglableButton::createWithFiles(const std::string &on,
     return nullptr;
 }
 
-bool TogglableButton::initWithFiles(const std::string &on, const std::string &off, ToggledCallback callback, bool isGrayScale /* = false */)
+bool TogglableButton::initWithFiles(const std::string &on, const std::string &off, ToggledCallback callback, bool isGrayScale /* = true */)
 {
     // on/offのパターンのSwitchableButtonを生成する
-    this->addPattern(SBSwitchPattern::create( "on",  on, [this]() { this->onTapped(); }));
-    this->addPattern(SBSwitchPattern::create("off", off, [this]() { this->onTapped(); }));
+    this->addPattern(SBSwitchPattern::create( "on",  on, [this]() { this->toggle(); }));
+    this->addPattern(SBSwitchPattern::create("off", off, [this]() { this->toggle(); }));
     
     _toggledCallback = callback;
     _isGrayScale = isGrayScale;
@@ -86,7 +84,7 @@ bool TogglableButton::initWithFiles(const std::string &on, const std::string &of
 }
 
 TogglableButton *TogglableButton::createWithFile(const std::string &imageFile,
-                                                ToggledCallback callback)
+                                                ToggledCallback callback /* = nullptr */)
 {
     return TogglableButton::createWithFiles(imageFile, imageFile, callback, true);
 }
@@ -105,7 +103,7 @@ void TogglableButton::toggle()
     else                               this->setColor(Color3B::WHITE);
     
     // on->offならfalse, off->onならtrueを渡してコールバックを実行
-    _toggledCallback(_toggleStatus);
+    if (_toggledCallback) _toggledCallback(_toggleStatus);
 }
 
 void TogglableButton::turnOn()
@@ -124,9 +122,14 @@ void TogglableButton::turnOff()
 
 
 
-#pragma mark - Tap Event Methods
+#pragma mark - Touch Event Methods
 
-void TogglableButton::onTapped()
+void TogglableButton::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
 {
-    this->toggle();
+    this->SwitchableButton::onTouchEnded(touch, event);
+    // ===== Call Super Method =====
+    
+    // 親クラスのonTouchEnded()ではタッチエンドで白に戻すが、
+    // TogglableButtonではオフ状態にグレーのままの場合がある
+    if (_isGrayScale && !_toggleStatus) this->setColor(Color3B::GRAY);
 }

@@ -21,12 +21,12 @@ CC_CONSTRUCTOR_ACCESS:
     BaseLabel();
     virtual ~BaseLabel();
     
-    virtual bool init() override;
+    virtual bool init(const std::string &text, const std::string &fontPath, float fontSize);
     
     
 #pragma mark - Create Methods
 public:
-    static BaseLabel *create();
+    static BaseLabel *create(const std::string &text, const std::string &fontPath, float fontSize);
     
     
 };

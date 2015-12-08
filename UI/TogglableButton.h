@@ -58,23 +58,23 @@ public:
      * @brief  トグルボタンを生成する
      * @param  on          オンの時の画像ファイル
      * @param  off         オフの時の画像ファイル
-     * @param  callback    コールバック
-     * @param  isGrayScale オフの時のグレースケールするか
+     * @param  callback    (nullptr)コールバック
+     * @param  isGrayScale (true)オフの時のグレースケールするか
      * @return トグルボタン
      */
     static TogglableButton *createWithFiles(const std::string &on,
                                             const std::string &off,
-                                            ToggledCallback callback,
-                                            bool isGrayScale = false);
+                                            ToggledCallback callback = nullptr,
+                                            bool isGrayScale = true);
     
     /**
      * @brief  トグルボタンを生成する
      * @param  imageFile 画像ファイル
-     * @param  callback  コールバック
+     * @param  callback  (nullptr)コールバック
      * @return トグルボタン
      */
     static TogglableButton *createWithFile(const std::string &imageFile,
-                                           ToggledCallback callback);
+                                           ToggledCallback callback = nullptr);
     
     
 #pragma mark - Members
@@ -94,6 +94,7 @@ public:
     
     
 #pragma mark - Control Methods
+public:
 #pragma mark Original Methods
     /**
      * @brief トグルする
@@ -111,9 +112,9 @@ public:
     virtual void turnOff();
     
     
-#pragma mark - Tap Event Methods
-private:
-    virtual void onTapped() override;
+#pragma mark - Touch Event Methods
+protected:
+    virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event) override;
     
     
 };

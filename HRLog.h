@@ -27,6 +27,23 @@
 
 
 /**
+ * @brief 警告出力。対象がfalseならログを出力する。
+ *        プログラムは停止しない。ログ出力後、続行する。
+ * @param target 対象(falseでログ出力)
+ * @param format 出力フォーマット
+ * @param ...    フォーマットに対応する出力変数
+ */
+#define HRWARN(target, format, ...)                                                 \
+{                                                                                   \
+    if (!target) {                                                                  \
+        std::string newFormat = std::string("HRWARN: ") + std::string(format);      \
+        std::string message   = STRING_FORMAT(newFormat.c_str(), ##__VA_ARGS__);    \
+        HRLOG(message);                                                             \
+    }                                                                               \
+}
+
+
+/**
  * @brief 標準エラー出力。ログ出力と同時にプログラムを停止させる。
  *
  * @param format 出力用フォーマット
