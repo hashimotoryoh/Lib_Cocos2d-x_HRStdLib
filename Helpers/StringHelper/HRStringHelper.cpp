@@ -79,6 +79,14 @@ std::string HRStringHelper::stringFormat(const std::string &str,
     return ret;
 }
 
+std::string HRStringHelper::multiByteStringFormat(const std::string &str,
+                                                  unsigned int unit,
+                                                  const std::string &delimiter,
+                                                  bool reverse /* = false */)
+{
+    // TODO: 未実装
+}
+
 std::string HRStringHelper::numberFormat(int num)
 {
     unsigned int absNum = std::abs(num);

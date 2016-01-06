@@ -33,28 +33,28 @@ class HRJsonHelper
 {
 public:
     /**
-     * @brief JSON文字列を解析してcocos2d::Valueに落としこむ。
+     * @brief  JSON文字列を解析してcocos2d::Valueに落としこむ。
      * @param  jsonString JSON文字列
      * @return 解析したJSON
      */
     static cocos2d::Value parseJsonStringToValue(const std::string &jsonString);
     
     /**
-     * @brief JSONファイルを解析してcocos2d::Valueに落としこむ。
+     * @brief  JSONファイルを解析してcocos2d::Valueに落としこむ。
      * @param  jsonFilePath JSONファイルのパス
      * @return 解析したJSON
      */
     static cocos2d::Value parseJsonFileToValue(const std::string &jsonFilePath);
     
     /**
-     * @brief JSON値をcocos2d::Valueに変換する。
+     * @brief  JSON値をcocos2d::Valueに変換する。
      * @param  jsonValue JSON値
      * @return 変換したValue
      */
     static cocos2d::Value convertJsonValueToValue(const rapidjson::Value &jsonValue);
     
     /**
-     * @brief JSON値のタイプを取得する。
+     * @brief  JSON値のタイプを取得する。
      * @param  jsonValue JSON値
      * @return タイプ
      */

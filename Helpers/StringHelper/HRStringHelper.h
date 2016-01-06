@@ -9,6 +9,8 @@
 #ifndef __HRStandardLibrary__HRStringHelper__
 #define __HRStandardLibrary__HRStringHelper__
 
+#include "cocos2d.h"
+
 
 namespace HR {
 
@@ -22,7 +24,8 @@ public:
      * @param  char2 文字列
      * @return true/false
      */
-    static bool isEqualChar(const char *char1, const char *char2);
+    static bool isEqualChar(const char *char1,
+                            const char *char2);
     
     /**
      * @brief  引数をフォーマットした文字列を得る。
@@ -48,7 +51,23 @@ public:
      * @param  reverse   (false)後ろから数えるか
      * @return 整形後の文字列
      */
-    static std::string stringFormat(const std::string &str, unsigned int unit, const std::string &delimiter, bool reverse = false);
+    static std::string stringFormat(const std::string &str,
+                                    unsigned int unit,
+                                    const std::string &delimiter,
+                                    bool reverse = false);
+    
+    /**
+     * @brief  文字列の指定文字数毎にdelimiterを挟む(2バイト文字用)
+     * @param  str       文字列
+     * @param  unit      挟む間隔
+     * @param  delimiter デリミタ
+     * @param  reverse   (false)後ろから数えるか
+     * @return 整形後の文字列
+     */
+    static std::string multiByteStringFormat(const std::string &str,
+                                             unsigned int unit,
+                                             const std::string &delimiter,
+                                             bool reverse = false);
     
     /**
      * @brief  数値の3桁毎にカンマを挿入する
