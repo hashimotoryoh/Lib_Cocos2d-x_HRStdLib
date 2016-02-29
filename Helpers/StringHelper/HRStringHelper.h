@@ -44,6 +44,17 @@ public:
     static std::string intToString(int num);
     
     /**
+     * @brief  プレースホルダーを指定文字列に置換する
+     * @brief  subject     ターゲットとなる文字列
+     * @brief  placeholder プレースホルダー
+     * @brief  word        置換後の文字列
+     * @return 置換が完了した文字列
+     */
+    static std::string replacePlaceholder(const std::string &subject,
+                                          const std::string &placeholder,
+                                          const std::string &word);
+    
+    /**
      * @brief  文字列の指定文字数毎にデリミタを挟む
      * @param  str       文字列
      * @param  unit      挟む間隔

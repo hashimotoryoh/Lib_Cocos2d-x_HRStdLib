@@ -47,6 +47,21 @@ std::string HRStringHelper::intToString(int num)
     return ss.str();
 }
 
+std::string HRStringHelper::replacePlaceholder(const std::string &subject,
+                                               const std::string &placeholder,
+                                               const std::string &word)
+{
+    std::string ret = subject;
+    
+    size_t pos = 0;
+    while ((pos = ret.find(placeholder, pos)) != std::string::npos) {
+        ret.replace(pos, placeholder.length(), word);
+        pos += word.length();
+    }
+    
+    return ret;
+}
+
 std::string HRStringHelper::stringFormat(const std::string &str,
                                          unsigned int unit,
                                          const std::string &delimiter,
