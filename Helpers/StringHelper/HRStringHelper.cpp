@@ -46,19 +46,22 @@ std::string HRStringHelper::format(const char *format, ...)
 }
 
 std::string HRStringHelper::intToString(int num,
-                                        int digits /* = -1 */)
+                                        int digits /* = 0 */)
 {
     std::stringstream ss;
     ss << num;
     std::string ret = ss.str();
     
-    // まず指定桁数だけ0を左に付ける
-    int i = digits;
-    while (i--)
-        ret = "0" + ret;
+    if (digits) {
+        // まず指定桁数だけ0を左に付ける
+        int i = digits;
+        while (i--)
+            ret = "0" + ret;
+        
+        ret = ret.substr(ret.length()-digits, digits);
+    }
     
-    // ケツから指定桁数だけを返す
-    return ret.substr(ret.length()-digits, digits);
+    return ret;
 }
 
 std::string HRStringHelper::replacePlaceholder(const std::string &subject,

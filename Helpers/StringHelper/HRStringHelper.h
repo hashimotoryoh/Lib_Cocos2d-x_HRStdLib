@@ -43,7 +43,7 @@ public:
      * @return 文字列
      */
     static std::string intToString(int num,
-                                   int digits = -1);
+                                   int digits = 0);
     
     /**
      * @brief  プレースホルダーを指定文字列に置換する
