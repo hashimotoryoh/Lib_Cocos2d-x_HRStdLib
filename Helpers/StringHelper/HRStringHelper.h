@@ -55,6 +55,16 @@ public:
                                           const std::string &word);
     
     /**
+     * @brief  日付を取得する
+     * @brief  フォーマットのプレースホルダーはPHPのdate()関数を踏襲 http://php.net/manual/ja/function.date.php
+     * @param  format    フォーマット
+     * @param  timestamp (現在)UNIXタイムスタンプ
+     * @return 日付文字列
+     */
+    static std::string getDate(std::string format,
+                               time_t timestamp = -1);
+    
+    /**
      * @brief  文字列の指定文字数毎にデリミタを挟む
      * @param  str       文字列
      * @param  unit      挟む間隔
