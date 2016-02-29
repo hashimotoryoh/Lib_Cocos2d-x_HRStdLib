@@ -75,6 +75,13 @@ public:
      * @return カンマ挿入後の数値
      */
     static std::string numberFormat(int num);
+    
+    /**
+     * @brief  RGB値のカラーコードをcocos2d::Colorに変換する
+     * @param  colorCode カラーコード(#FFFFFF or FFFFFFなど)
+     * @return cocos2d::Color
+     */
+    static cocos2d::Color3B convertToColor(const std::string &colorCode);
 
 
 };

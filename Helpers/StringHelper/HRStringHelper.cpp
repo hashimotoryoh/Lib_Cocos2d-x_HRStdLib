@@ -94,3 +94,23 @@ std::string HRStringHelper::numberFormat(int num)
     
     return (num > 0) ? ret : "-"+ret;
 }
+
+cocos2d::Color3B HRStringHelper::convertToColor(const std::string &colorCode)
+{
+    // #が付いていれば落とす
+    std::string code = (colorCode.length() == 7) ? colorCode.substr(1, 6) : colorCode;
+    
+    std::stringstream codeR, codeG, codeB;
+    int r, g, b;
+    
+    codeR << code.substr(0, 2);
+    codeR >> std::hex >> r;
+    
+    codeG << code.substr(2, 2);
+    codeG >> std::hex >> g;
+    
+    codeB << code.substr(4, 2);
+    codeB >> std::hex >> b;
+    
+    return cocos2d::Color3B(r, g, b);
+}
