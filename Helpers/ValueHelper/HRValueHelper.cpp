@@ -14,7 +14,8 @@ using namespace HR;
 USING_NS_CC;
 
 
-bool HRValueHelper::isEqual(const cocos2d::Value &value1, const cocos2d::Value &value2)
+bool HRValueHelper::isEqual(const cocos2d::Value &value1,
+                            const cocos2d::Value &value2)
 {
     // 型が違えばもう違う
     if (value1.getType() != value2.getType()) return false;
@@ -53,7 +54,7 @@ bool HRValueHelper::isExistsKey(const cocos2d::ValueMapIntKey &map,
 
 
 bool HRValueHelper::isContainsValue(const cocos2d::ValueVector &vector,
-                                    const cocos2d::Value value)
+                                    const cocos2d::Value &value)
 {
     for (Value comparison : vector)
         // 同値が見つかった時点でtrueを返却

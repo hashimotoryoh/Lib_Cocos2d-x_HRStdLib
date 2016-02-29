@@ -96,7 +96,7 @@ public:
      * @return true/false 存在する/しない
      */
     static bool isContainsValue(const cocos2d::ValueVector &vector,
-                                const cocos2d::Value value);
+                                const cocos2d::Value &value);
     static bool isContainsValue(const cocos2d::ValueVector &vector, const cocos2d::ValueMap &mapValue)             { return HRValueHelper::isContainsValue(vector, cocos2d::Value(mapValue));       };
     static bool isContainsValue(const cocos2d::ValueVector &vector, const cocos2d::ValueVector &vectorValue)       { return HRValueHelper::isContainsValue(vector, cocos2d::Value(vectorValue));    };
     static bool isContainsValue(const cocos2d::ValueVector &vector, const cocos2d::ValueMapIntKey &intKeyMapValue) { return HRValueHelper::isContainsValue(vector, cocos2d::Value(intKeyMapValue)); };
