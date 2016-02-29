@@ -38,10 +38,12 @@ public:
     /**
      * @brief  数値を文字列に変換する
      *         to_string()がAndroidで非対応な為
-     * @param  num 数値
+     * @param  num    数値
+     * @param  digits (numの桁数)桁数
      * @return 文字列
      */
-    static std::string intToString(int num);
+    static std::string intToString(int num,
+                                   int digits = -1);
     
     /**
      * @brief  プレースホルダーを指定文字列に置換する

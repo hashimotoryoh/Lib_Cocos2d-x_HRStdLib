@@ -45,11 +45,11 @@ std::string HRStringHelper::format(const char *format, ...)
     return ret;
 }
 
-std::string HRStringHelper::intToString(int num)
+std::string HRStringHelper::intToString(int num,
+                                        int digits /* = -1 */)
 {
-    std::stringstream ss;
-    ss << num;
-    return ss.str();
+    std::string format = (digits == -1) ? "%d" : "%0" + HRStringHelper::format("%d", digits) + "d";
+    return HRStringHelper::format(format.c_str(), num);
 }
 
 std::string HRStringHelper::replacePlaceholder(const std::string &subject,
