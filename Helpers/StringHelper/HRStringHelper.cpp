@@ -54,10 +54,12 @@ std::string HRStringHelper::intToString(int num,
     
     if (digits) {
         // まず指定桁数だけ0を左に付ける
+        // この時点で retの桁数 = numの桁数+digits ∴retの桁数>digits という考え
         int i = digits;
         while (i--)
             ret = "0" + ret;
         
+        // ケツから指定桁切り取る
         ret = ret.substr(ret.length()-digits, digits);
     }
     
@@ -80,7 +82,7 @@ std::string HRStringHelper::replacePlaceholder(const std::string &subject,
 }
 
 std::string HRStringHelper::getDate(std::string format,
-                                    time_t timestamp /* = -1   */)
+                                    time_t timestamp /* = -1 */)
 {
     timestamp = (timestamp == -1) ? time(NULL) : timestamp;
     struct tm *time = localtime(&timestamp);
