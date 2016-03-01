@@ -19,9 +19,8 @@ using namespace HR;
 
 
 std::string HRTimeHelper::getDate(std::string format,
-                                  time_t timestamp /* = -1 */)
+                                  const time_t timestamp /* = time(NULL) */)
 {
-    timestamp = (timestamp == -1) ? time(NULL) : timestamp;
     struct tm *time = localtime(&timestamp);
     
     // フォーマットはPHPのdate()関数を踏襲

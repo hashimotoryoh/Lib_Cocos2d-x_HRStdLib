@@ -26,7 +26,7 @@ public:
      * @return 日付文字列
      */
     static std::string getDate(std::string format,
-                               time_t timestamp = -1);
+                               const time_t timestamp = time(NULL));
     
     /**
      * @brief  2つのUNIXタイムスタンプが表す日付が同日かどうか調べる
