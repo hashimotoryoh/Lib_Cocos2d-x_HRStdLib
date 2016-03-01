@@ -28,6 +28,15 @@ public:
     static std::string getDate(std::string format,
                                time_t timestamp = -1);
     
+    /**
+     * @brief  2つのUNIXタイムスタンプが表す日付が同日かどうか調べる
+     * @param  timestampA UNIXタイムsタンプA
+     * @param  timestampB UNIXタイムスタンプB
+     * @return true/false 同/違
+     */
+    static bool isSameDay(const time_t timestampA,
+                          const time_t timestampB);
+    
     
 };
 

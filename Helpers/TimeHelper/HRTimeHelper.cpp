@@ -66,3 +66,17 @@ std::string HRTimeHelper::getDate(std::string format,
     
     return format;
 }
+
+
+bool HRTimeHelper::isSameDay(const time_t timestampA,
+                             const time_t timestampB)
+{
+    struct tm *timeA = localtime(&timestampA);
+    struct tm *timeB = localtime(&timestampB);
+    
+    const bool isSameYear  = (timeA->tm_year == timeB->tm_year);
+    const bool isSameMonth = (timeA->tm_mon  == timeB->tm_mon);
+    const bool isSameDay   = (timeA->tm_mday == timeB->tm_mday);
+    
+    return (isSameYear && isSameMonth && isSameDay);
+}
