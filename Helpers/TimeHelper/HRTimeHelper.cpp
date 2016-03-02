@@ -79,3 +79,14 @@ bool HRTimeHelper::isSameDay(const time_t timestampA,
     
     return (isSameYear && isSameMonth && isSameDay);
 }
+
+HMSTime HRTimeHelper::convertToTime(const time_t s)
+{
+    HMSTime ret;
+    
+    ret.second = (int)(s % 60);
+    ret.minute = (int)((s % 3600) / 60);
+    ret.hour   = (int)(s / 3600);
+    
+    return ret;
+}

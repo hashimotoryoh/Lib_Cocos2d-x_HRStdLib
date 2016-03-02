@@ -12,6 +12,13 @@
 #include <stdio.h>
 
 
+struct HMSTime {
+    int hour   = 0;
+    int minute = 0;
+    int second = 0;
+};
+
+
 namespace HR {
 
 
@@ -36,6 +43,13 @@ public:
      */
     static bool isSameDay(const time_t timestampA,
                           const time_t timestampB);
+    
+    /**
+     * @brief  秒数を時分秒に変換する
+     * @param  time 秒数[s]
+     * @return 時間構造体 struct tm
+     */
+    static HMSTime convertToTime(const time_t s);
     
     
 };
