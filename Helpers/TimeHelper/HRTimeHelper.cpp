@@ -18,9 +18,11 @@ USING_NS_CC;
 using namespace HR;
 
 
-std::string HRTimeHelper::getDate(std::string format,
-                                  const time_t timestamp /* = time(NULL) */)
+std::string HRTimeHelper::getDate(const std::string &format,
+                                  time_t timestamp /* = time(NULL) */)
 {
+    std::string ret = format;
+    
     struct tm *time = localtime(&timestamp);
     
     // フォーマットはPHPのdate()関数を踏襲
@@ -44,31 +46,31 @@ std::string HRTimeHelper::getDate(std::string format,
     std::string A = (time->tm_hour <= 12) ? "AM" : "PM";                    // 午前/午後 英語 大文字
     
     // !!!: 順番に意味あり
-    format = HRStringHelper::replacePlaceholder(format, "Y", Y);
-    format = HRStringHelper::replacePlaceholder(format, "y", y);
-    format = HRStringHelper::replacePlaceholder(format, "m", m);
-    format = HRStringHelper::replacePlaceholder(format, "n", n);
-    format = HRStringHelper::replacePlaceholder(format, "d", d);
-    format = HRStringHelper::replacePlaceholder(format, "j", j);
-    format = HRStringHelper::replacePlaceholder(format, "H", H);
-    format = HRStringHelper::replacePlaceholder(format, "G", G);
-    format = HRStringHelper::replacePlaceholder(format, "h", h);
-    format = HRStringHelper::replacePlaceholder(format, "g", g);
-    format = HRStringHelper::replacePlaceholder(format, "i", i);
-    format = HRStringHelper::replacePlaceholder(format, "s", s);
-    format = HRStringHelper::replacePlaceholder(format, "a", a);
-    format = HRStringHelper::replacePlaceholder(format, "F", F);
-    format = HRStringHelper::replacePlaceholder(format, "M", M);
-    format = HRStringHelper::replacePlaceholder(format, "l", l);
-    format = HRStringHelper::replacePlaceholder(format, "D", D);
-    format = HRStringHelper::replacePlaceholder(format, "A", A);
+    ret = HRStringHelper::replacePlaceholder(ret, "Y", Y);
+    ret = HRStringHelper::replacePlaceholder(ret, "y", y);
+    ret = HRStringHelper::replacePlaceholder(ret, "m", m);
+    ret = HRStringHelper::replacePlaceholder(ret, "n", n);
+    ret = HRStringHelper::replacePlaceholder(ret, "d", d);
+    ret = HRStringHelper::replacePlaceholder(ret, "j", j);
+    ret = HRStringHelper::replacePlaceholder(ret, "H", H);
+    ret = HRStringHelper::replacePlaceholder(ret, "G", G);
+    ret = HRStringHelper::replacePlaceholder(ret, "h", h);
+    ret = HRStringHelper::replacePlaceholder(ret, "g", g);
+    ret = HRStringHelper::replacePlaceholder(ret, "i", i);
+    ret = HRStringHelper::replacePlaceholder(ret, "s", s);
+    ret = HRStringHelper::replacePlaceholder(ret, "a", a);
+    ret = HRStringHelper::replacePlaceholder(ret, "F", F);
+    ret = HRStringHelper::replacePlaceholder(ret, "M", M);
+    ret = HRStringHelper::replacePlaceholder(ret, "l", l);
+    ret = HRStringHelper::replacePlaceholder(ret, "D", D);
+    ret = HRStringHelper::replacePlaceholder(ret, "A", A);
     
-    return format;
+    return ret;
 }
 
 
-bool HRTimeHelper::isSameDay(const time_t timestampA,
-                             const time_t timestampB)
+bool HRTimeHelper::isSameDay(time_t timestampA,
+                             time_t timestampB)
 {
     struct tm *timeA = localtime(&timestampA);
     struct tm *timeB = localtime(&timestampB);
@@ -80,7 +82,7 @@ bool HRTimeHelper::isSameDay(const time_t timestampA,
     return (isSameYear && isSameMonth && isSameDay);
 }
 
-HMSTime HRTimeHelper::convertToTime(const time_t s)
+HMSTime HRTimeHelper::convertToTime(time_t s)
 {
     HMSTime ret;
     

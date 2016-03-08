@@ -32,8 +32,8 @@ public:
      * @param  timestamp (現在)UNIXタイムスタンプ
      * @return 日付文字列
      */
-    static std::string getDate(std::string format,
-                               const time_t timestamp = time(NULL));
+    static std::string getDate(const std::string &format,
+                               time_t timestamp = time(NULL));
     
     /**
      * @brief  2つのUNIXタイムスタンプが表す日付が同日かどうか調べる
@@ -41,15 +41,15 @@ public:
      * @param  timestampB UNIXタイムスタンプB
      * @return true/false 同/違
      */
-    static bool isSameDay(const time_t timestampA,
-                          const time_t timestampB);
+    static bool isSameDay(time_t timestampA,
+                          time_t timestampB);
     
     /**
      * @brief  秒数を時分秒に変換する
      * @param  time 秒数[s]
      * @return 時間構造体 struct tm
      */
-    static HMSTime convertToTime(const time_t s);
+    static HMSTime convertToTime(time_t s);
     
     
 };

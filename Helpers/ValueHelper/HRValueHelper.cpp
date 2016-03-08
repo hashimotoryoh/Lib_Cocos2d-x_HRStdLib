@@ -64,7 +64,7 @@ bool HRValueHelper::isContainsValue(const cocos2d::ValueVector &vector,
 }
 
 
-const std::string HRValueHelper::translateValueType(const cocos2d::Value::Type type)
+const std::string HRValueHelper::translateValueType(cocos2d::Value::Type type)
 {
     switch (type) {
         case Value::Type::NONE:        return "NONE";
@@ -89,7 +89,7 @@ const std::string HRValueHelper::translateValueType(const cocos2d::Value::Type t
 
 bool HRValueHelper::isEqualVector(const cocos2d::ValueVector vector1,
                                   const cocos2d::ValueVector vector2,
-                                  const bool considerOrder /* = false */)
+                                  bool considerOrder /* = false */)
 {
     // 要素数が違えばもう違う
     if (vector1.size() != vector2.size()) return false;

@@ -24,7 +24,8 @@ public:
      * @param  extension 拡張子を付けるか(デフォルト true)
      * @return ファイル名
      */
-    static std::string getFileNameFromPath(const std::string &path, bool extension = true);
+    static std::string getFileNameFromPath(const std::string &path,
+                                           bool extension = true);
     
     /**
      * @brief  画像のファイルパスからテクスチャを取得する

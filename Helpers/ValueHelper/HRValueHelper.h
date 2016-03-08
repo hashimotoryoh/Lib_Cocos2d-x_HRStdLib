@@ -38,7 +38,7 @@ public:
      */
     static bool isEqual(const cocos2d::ValueVector &vector1,
                         const cocos2d::ValueVector &vector2,
-                        const bool considerOrder = false)
+                        bool considerOrder = false)
     {
         return HRValueHelper::isEqualVector(vector1, vector2, considerOrder);
     };
@@ -85,7 +85,7 @@ public:
      * @return true/false
      */
     static bool isExistsKey(const cocos2d::ValueMapIntKey &map,
-                            const int key);
+                            int key);
     
     
 #pragma mark Check Is Contains Value In Vector
@@ -108,7 +108,7 @@ public:
      * @param  type
      * @return 型名
      */
-    static const std::string translateValueType(const cocos2d::Value::Type type);
+    static const std::string translateValueType(cocos2d::Value::Type type);
     
     
 #pragma mark - Private Methods
@@ -122,7 +122,7 @@ private:
      */
     static bool isEqualVector(const cocos2d::ValueVector vector1,
                               const cocos2d::ValueVector vector2,
-                              const bool considerOrder = false);
+                              bool considerOrder = false);
     
     /**
      * @brief  ValueMapの中身が全て等しいか調べる

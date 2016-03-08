@@ -14,7 +14,8 @@ using namespace HR;
 USING_NS_CC;
 
 
-std::string HRFileHelper::getFileNameFromPath(const std::string &path, bool extension /* = true */)
+std::string HRFileHelper::getFileNameFromPath(const std::string &path,
+                                              bool extension /* = true */)
 {
     std::string fileName;
     size_t current = 0;
