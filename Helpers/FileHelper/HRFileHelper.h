@@ -10,9 +10,10 @@
 #define HRStandardLibrary_HRFileHelper_h
 
 #include "cocos2d.h"
+#include "HRMacros.h"
 
 
-namespace HR {
+HR_NS_BEGIN
 
 
 class HRFileHelper
@@ -38,6 +39,7 @@ public:
 };
 
 
-} // namespace HR
+HR_NS_END
+
 
 #endif

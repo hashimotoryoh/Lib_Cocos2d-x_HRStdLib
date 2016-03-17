@@ -10,7 +10,7 @@
 #include "HRLog.h"
 
 
-using namespace HR;
+USING_NS_HR;
 USING_NS_CC;
 
 

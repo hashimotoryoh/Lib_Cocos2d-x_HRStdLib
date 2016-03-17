@@ -8,7 +8,8 @@
 
 #include "HRJsonHelper.h"
 
-using namespace HR;
+
+USING_NS_HR;
 
 
 cocos2d::Value HRJsonHelper::parseJsonStringToValue(const std::string &jsonString)

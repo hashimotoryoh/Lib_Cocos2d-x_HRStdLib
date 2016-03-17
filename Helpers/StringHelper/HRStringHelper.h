@@ -10,9 +10,10 @@
 #define __HRStandardLibrary__HRStringHelper__
 
 #include "cocos2d.h"
+#include "HRMacros.h"
 
 
-namespace HR {
+HR_NS_BEGIN
 
 
 class HRStringHelper
@@ -100,7 +101,7 @@ public:
 };
 
 
-}
+HR_NS_END
 
 
 #pragma mark - MACROs

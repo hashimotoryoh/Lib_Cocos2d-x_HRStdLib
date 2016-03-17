@@ -10,10 +10,12 @@
 #define HRStandardLibrary_HRJsonHelper_h
 
 #include "cocos2d.h"
+#include "HRMacros.h"
 #include "json/document.h"
 #include "HRLog.h"
 
-namespace HR {
+
+HR_NS_BEGIN
 
     
 enum class JSONType {
@@ -102,6 +104,7 @@ private:
 };
 
 
-} // namespace HR
+HR_NS_END
+
 
 #endif

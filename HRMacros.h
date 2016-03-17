@@ -10,7 +10,9 @@
 #define HRStandardLibrary_HRMacros_h
 
 
-//namespace HR {
+#define HR_NS_BEGIN namespace HR {
+#define HR_NS_END   }
+#define USING_NS_HR using namespace HR
 
 
 /**
@@ -32,9 +34,6 @@ public: virtual void set##funName(varType var){ varName = var; }
  */
 #define HR_DISABLE_SUPER_METHOD(methodType, methodName, ...)\
 private: methodType methodName(__VA_ARGS__) override {};
-
-
-//}
 
 
 #endif

@@ -9,7 +9,7 @@
 #include "HRStringHelper.h"
 
 
-using namespace HR;
+USING_NS_HR;
 
 
 bool HRStringHelper::isEqualChar(const char *char1, const char *char2)

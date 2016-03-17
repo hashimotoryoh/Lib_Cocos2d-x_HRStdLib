@@ -14,8 +14,8 @@ const char *WEEKDAY_EN[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursda
 const char *MONTH_EN[]   = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 
+USING_NS_HR;
 USING_NS_CC;
-using namespace HR;
 
 
 std::string HRTimeHelper::getDate(const std::string &format,

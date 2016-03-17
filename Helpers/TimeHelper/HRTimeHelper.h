@@ -10,6 +10,10 @@
 #define __DevHRStdLib__HRTimeHelper__
 
 #include <stdio.h>
+#include "HRMacros.h"
+
+
+HR_NS_BEGIN
 
 
 struct HMSTime {
@@ -17,9 +21,6 @@ struct HMSTime {
     int minute = 0;
     int second = 0;
 };
-
-
-namespace HR {
 
 
 class HRTimeHelper
@@ -49,13 +50,13 @@ public:
      * @param  time 秒数[s]
      * @return 時間構造体 struct tm
      */
-    static HMSTime convertToTime(time_t s);
+    static HR::HMSTime convertToTime(time_t s);
     
     
 };
 
 
-}
+HR_NS_END
 
 
 #endif /* defined(__DevHRStdLib__HRTimeHelper__) */
