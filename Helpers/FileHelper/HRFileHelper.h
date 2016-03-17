@@ -18,6 +18,11 @@ HR_NS_BEGIN
 
 class HRFileHelper
 {
+    // インスタンス化を禁止
+    HRFileHelper() = delete;
+    
+    
+
 public:
     /**
      * @brief  ファイルパスからファイル名を取得する

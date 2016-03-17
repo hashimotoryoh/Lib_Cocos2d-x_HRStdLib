@@ -18,6 +18,11 @@ HR_NS_BEGIN
 
 class HRStringHelper
 {
+    // インスタンス化を禁止
+    HRStringHelper() = delete;
+    
+    
+
 public:
     /**
      * @brief  char型文字列が同じかどうか比較する

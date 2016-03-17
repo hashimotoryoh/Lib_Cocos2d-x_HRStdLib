@@ -18,6 +18,11 @@ HR_NS_BEGIN
 
 class HRValueHelper
 {
+    // インスタンス化を禁止
+    HRValueHelper() = delete;
+    
+    
+
 #pragma mark - Static Methods
 public:
 #pragma mark Check Is Equal (cocos2d::Value) A and B

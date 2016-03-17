@@ -33,6 +33,11 @@ enum class JSONType {
 
 class HRJsonHelper
 {
+    // インスタンス化を禁止
+    HRJsonHelper() = delete;
+    
+    
+
 public:
     /**
      * @brief  JSON文字列を解析してcocos2d::Valueに落としこむ。

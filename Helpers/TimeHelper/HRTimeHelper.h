@@ -25,6 +25,10 @@ struct HMSTime {
 
 class HRTimeHelper
 {
+    // インスタンス化を禁止
+    HRTimeHelper() = delete;
+    
+    
 public:
     /**
      * @brief  日付を取得する
