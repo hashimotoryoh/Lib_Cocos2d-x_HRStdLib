@@ -27,6 +27,11 @@ public:
      */
     static std::string getOSVersion();
     
+    /**
+     * @brief 端末の名称を取得する
+     */
+    static std::string getDeviceName();
+    
     
 };
 

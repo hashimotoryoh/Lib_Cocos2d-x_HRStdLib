@@ -14,6 +14,11 @@ USING_NS_HR;
 
 std::string HRiOSHelper::getOSVersion()
 {
-    NSString *osVersion = [[UIDevice currentDevice] systemVersion];
-    return [osVersion UTF8String];
+    return [[[UIDevice currentDevice] systemVersion] UTF8String];
+}
+
+
+std::string HRiOSHelper::getDeviceName()
+{
+    return [[[UIDevice currentDevice] name] UTF8String];
 }
