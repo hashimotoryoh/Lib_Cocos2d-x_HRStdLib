@@ -38,6 +38,11 @@ public:
      */
     static cocos2d::ValueMap getNetworkInfo();
     
+    /**
+     * @brief アプリのバージョンを取得する
+     */
+    static std::string getApplicationVersion();
+    
     
 };
 

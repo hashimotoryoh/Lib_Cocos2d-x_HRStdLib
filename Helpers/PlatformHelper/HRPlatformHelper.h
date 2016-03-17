@@ -44,6 +44,11 @@ public:
     static constexpr char *NETWORK_INFO_KEY_ISO_COUNTRY_CODE    = (char*)"ISOCountryCode";
     static constexpr char *NETWORK_INFO_KEY_ALLOWS_VOIP         = (char*)"AllowsVOIP";
     
+    /**
+     * @brief アプリのバージョンを取得する
+     */
+    static std::string getApplicationVersion();
+    
     
 };
 

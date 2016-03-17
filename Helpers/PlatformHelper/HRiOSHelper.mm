@@ -41,3 +41,9 @@ ValueMap HRiOSHelper::getNetworkInfo()
     
     return info;
 }
+
+
+std::string HRiOSHelper::getApplicationVersion()
+{
+    return [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] UTF8String];
+}

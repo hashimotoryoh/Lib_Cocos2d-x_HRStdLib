@@ -50,3 +50,14 @@ ValueMap HRPlatformHelper::getNetworkInfo()
 #endif
     return info;
 }
+
+
+std::string HRPlatformHelper::getApplicationVersion()
+{
+    std::string version = STRING_UNSET;
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+    version = HRiOSHelper::getApplicationVersion();
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#endif
+    return version;
+}
