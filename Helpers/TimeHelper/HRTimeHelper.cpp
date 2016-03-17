@@ -10,12 +10,12 @@
 #include "HRStringHelper.h"
 
 
-const char *WEEKDAY_EN[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-const char *MONTH_EN[]   = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-
-
 USING_NS_HR;
 USING_NS_CC;
+
+
+const char *WEEKDAY_EN[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+const char *MONTH_EN[]   = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 
 std::string HRTimeHelper::getDate(const std::string &format,
