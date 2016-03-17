@@ -7,7 +7,6 @@
 //
 
 #include "HRPlatformHelper.h"
-#include "cocos2d.h"
 #include "HRConfig.h"
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 #include "HRiOSHelper.h"
@@ -17,6 +16,7 @@
 
 
 USING_NS_HR;
+USING_NS_CC;
 
 
 std::string HRPlatformHelper::getOSVersion()
@@ -38,4 +38,15 @@ std::string HRPlatformHelper::getDeviceName()
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #endif
     return deviceName;
+}
+
+
+ValueMap HRPlatformHelper::getNetworkInfo()
+{
+    ValueMap info = ValueMap();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+    info = HRiOSHelper::getNetworkInfo();
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#endif
+    return info;
 }
