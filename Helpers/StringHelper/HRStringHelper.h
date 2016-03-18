@@ -96,9 +96,9 @@ public:
     static std::string numberFormat(int num);
     
     /**
-     * @brief  RGB値のカラーコードをcocos2d::Colorに変換する
+     * @brief  RGB値のカラーコードをcocos2d::Color3Bに変換する
      * @param  colorCode カラーコード(#FFFFFF or FFFFFFなど)
-     * @return cocos2d::Color
+     * @return cocos2d::Color3B
      */
     static cocos2d::Color3B convertToColor(const std::string &colorCode);
 
