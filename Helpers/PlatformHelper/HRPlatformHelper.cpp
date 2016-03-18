@@ -61,3 +61,14 @@ std::string HRPlatformHelper::getApplicationVersion()
 #endif
     return version;
 }
+
+
+std::string HRPlatformHelper::getBuildVersion()
+{
+    std::string version;
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+    version = HRiOSHelper::getBuildVersion();
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#endif
+    return version;
+}

@@ -47,3 +47,9 @@ std::string HRiOSHelper::getApplicationVersion()
 {
     return [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"] UTF8String];
 }
+
+
+std::string HRiOSHelper::getBuildVersion()
+{
+    return [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] UTF8String];
+}

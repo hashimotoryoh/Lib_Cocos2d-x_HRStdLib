@@ -49,6 +49,11 @@ public:
      */
     static std::string getApplicationVersion();
     
+    /**
+     * @brief アプリのビルドバージョンを取得する
+     */
+    static std::string getBuildVersion();
+    
     
 };
 
