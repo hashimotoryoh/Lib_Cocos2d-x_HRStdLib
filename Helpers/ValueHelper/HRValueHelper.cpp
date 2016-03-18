@@ -8,10 +8,18 @@
 
 #include "HRValueHelper.h"
 #include "HRLog.h"
+#include "HRConfig.h"
+#include "HRStringHelper.h"
 
 
 USING_NS_HR;
 USING_NS_CC;
+
+
+void HRValueHelper::valueDump(const cocos2d::Value &value)
+{
+    HRLOG("\n%s", HRValueHelper::getDumpText(value).c_str());
+}
 
 
 bool HRValueHelper::isEqual(const cocos2d::Value &value1,
@@ -162,4 +170,63 @@ bool HRValueHelper::isEqualIntKeyMap(const cocos2d::ValueMapIntKey &map1,
     }
     
     return true;
+}
+
+
+std::string HRValueHelper::getDumpText(const cocos2d::Value &value,
+                                      unsigned int level /* = 1 */)
+{
+    std::string ret = STRING_UNSET;
+    
+    switch (value.getType()) {
+        case Value::Type::NONE:    ret = "NONE,\n";                                                                 break;
+        case Value::Type::BYTE:    ret = StringUtils::format("BYTE(%c),\n",    value.asByte());                     break;
+        case Value::Type::INTEGER: ret = StringUtils::format("INTEGER(%d),\n", value.asInt());                      break;
+        case Value::Type::FLOAT:   ret = StringUtils::format("FLOAT(%f),\n",   value.asFloat());                    break;
+        case Value::Type::DOUBLE:  ret = StringUtils::format("DOUBLE(%f),\n",  value.asDouble());                   break;
+        case Value::Type::BOOLEAN: ret = StringUtils::format("BOOLEAN(%s),\n", value.asBool() ? "true" : "false");  break;
+        case Value::Type::STRING:  ret = StringUtils::format("STRING(%s),\n",  value.asString().c_str());           break;
+            
+        case Value::Type::VECTOR:
+            ret += "VECTOR(" + HRStringHelper::intToString((int)value.asValueVector().size()) + ")(\n";
+            for (Value child : value.asValueVector()) {
+                // 階層によるインデント
+                for (int i=0; i<level; i++) ret += "    ";
+                ret += HRValueHelper::getDumpText(child, level+1);
+            }
+            // 階層によるインデント
+            for (int i=0; i<level-1; i++) ret += "    ";
+            ret += "),\n";
+            break;
+            
+        case Value::Type::MAP:
+            ret += "MAP(" + HRStringHelper::intToString((int)value.asValueMap().size()) + "){\n";
+            for (ValueMap::const_iterator itr = value.asValueMap().begin(); itr != value.asValueMap().end(); itr++) {
+                // 階層によるインデント
+                for (int i=0; i<level; i++) ret += "    ";
+                ret += StringUtils::format("\"%s\": ", (*itr).first.c_str()) + HRValueHelper::getDumpText((*itr).second, level+1);
+            }
+            // 階層によるインデント
+            for (int i=0; i<level-1; i++) ret += "    ";
+            ret += "},\n";
+            break;
+            
+        case Value::Type::INT_KEY_MAP:
+            ret += "INT_KEY_MAP(" + HRStringHelper::intToString((int)value.asIntKeyMap().size()) + "){\n";
+            for (ValueMap::const_iterator itr = value.asValueMap().begin(); itr != value.asValueMap().end(); itr++) {
+                // 階層によるインデント
+                for (int i=0; i<level; i++) ret += "    ";
+                ret += StringUtils::format("\"%s\": ", (*itr).first.c_str()) + HRValueHelper::getDumpText((*itr).second, level+1);
+            }
+            // 階層によるインデント
+            for (int i=0; i<level-1; i++) ret += "    ";
+            ret += "},\n";
+            break;
+            
+        default:
+            HRERROR("引数 value の getType() の値が不正です。: %d", value.getType());
+            break;
+    }
+    
+    return ret;
 }
