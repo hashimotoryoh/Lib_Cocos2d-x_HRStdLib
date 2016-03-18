@@ -53,3 +53,9 @@ std::string HRiOSHelper::getBuildVersion()
 {
     return [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] UTF8String];
 }
+
+
+void HRiOSHelper::copyToClipboard(const std::string &text)
+{
+    [[UIPasteboard generalPasteboard] setString:[NSString stringWithUTF8String:text.c_str()]];
+}

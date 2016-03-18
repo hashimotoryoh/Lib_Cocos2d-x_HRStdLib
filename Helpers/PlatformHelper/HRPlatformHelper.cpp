@@ -7,12 +7,13 @@
 //
 
 #include "HRPlatformHelper.h"
-#include "HRConfig.h"
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 #include "HRiOSHelper.h"
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 //#include "AndroidHelper.h"
 #endif
+#include "HRConfig.h"
+#include "HRLog.h"
 
 
 USING_NS_HR;
@@ -71,4 +72,14 @@ std::string HRPlatformHelper::getBuildVersion()
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 #endif
     return version;
+}
+
+
+void HRPlatformHelper::copyToClipboard(const std::string &text)
+{
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+    HRiOSHelper::copyToClipboard(text);
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#endif
+    HRLOG("文字列[%s]をクリップボードにコピーしました。", text.c_str());
 }

@@ -54,6 +54,11 @@ public:
      */
     static std::string getBuildVersion();
     
+    /**
+     * @brief 文字列をクリップボードにコピーする
+     */
+    static void copyToClipboard(const std::string& text);
+    
     
 };
 
