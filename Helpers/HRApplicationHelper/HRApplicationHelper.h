@@ -1,13 +1,13 @@
 //
-//  HRPlatformHelper.h
+//  HRApplicationHelper.h
 //  DevHRStdLib
 //
 //  Created by c1790 on 2016/03/17.
 //
 //
 
-#ifndef __DevHRStdLib__HRPlatformHelper__
-#define __DevHRStdLib__HRPlatformHelper__
+#ifndef __DevHRStdLib__HRApplicationHelper__
+#define __DevHRStdLib__HRApplicationHelper__
 
 #include "HRMacros.h"
 #include "cocos2d.h"
@@ -16,10 +16,10 @@
 HR_NS_BEGIN
 
 
-class HRPlatformHelper
+class HRApplicationHelper
 {
     // インスタンス化を禁止
-    HRPlatformHelper() = delete;
+    HRApplicationHelper() = delete;
     
     
 public:
@@ -66,4 +66,4 @@ public:
 HR_NS_END
 
 
-#endif /* defined(__DevHRStdLib__HRPlatformHelper__) */
+#endif /* defined(__DevHRStdLib__HRApplicationHelper__) */

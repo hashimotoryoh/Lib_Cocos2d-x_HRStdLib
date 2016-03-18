@@ -9,7 +9,7 @@
 #include "HRiOSHelper.h"
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
-#include "HRPlatformHelper.h"
+#include "HRApplicationHelper.h"
 
 
 USING_NS_HR;
@@ -33,11 +33,11 @@ ValueMap HRiOSHelper::getNetworkInfo()
     CTCarrier* carrier = [[[CTTelephonyNetworkInfo alloc] init] subscriberCellularProvider];
     
     ValueMap info;
-    info[HRPlatformHelper::NETWORK_INFO_KEY_CARRIER_NAME]        = [[carrier carrierName] UTF8String];
-    info[HRPlatformHelper::NETWORK_INFO_KEY_MOBILE_COUNTRY_CODE] = [[carrier mobileCountryCode] UTF8String];
-    info[HRPlatformHelper::NETWORK_INFO_KEY_MOBILE_NETWORK_CODE] = [[carrier mobileNetworkCode] UTF8String];
-    info[HRPlatformHelper::NETWORK_INFO_KEY_ISO_COUNTRY_CODE]    = [[carrier isoCountryCode] UTF8String];
-    info[HRPlatformHelper::NETWORK_INFO_KEY_ALLOWS_VOIP]         = [carrier allowsVOIP];
+    info[HRApplicationHelper::NETWORK_INFO_KEY_CARRIER_NAME]        = [[carrier carrierName] UTF8String];
+    info[HRApplicationHelper::NETWORK_INFO_KEY_MOBILE_COUNTRY_CODE] = [[carrier mobileCountryCode] UTF8String];
+    info[HRApplicationHelper::NETWORK_INFO_KEY_MOBILE_NETWORK_CODE] = [[carrier mobileNetworkCode] UTF8String];
+    info[HRApplicationHelper::NETWORK_INFO_KEY_ISO_COUNTRY_CODE]    = [[carrier isoCountryCode] UTF8String];
+    info[HRApplicationHelper::NETWORK_INFO_KEY_ALLOWS_VOIP]         = [carrier allowsVOIP];
     
     return info;
 }

@@ -1,12 +1,12 @@
 //
-//  HRPlatformHelper.cpp
+//  HRApplicationHelper.cpp
 //  DevHRStdLib
 //
 //  Created by c1790 on 2016/03/17.
 //
 //
 
-#include "HRPlatformHelper.h"
+#include "HRApplicationHelper.h"
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 #include "HRiOSHelper.h"
 #elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
@@ -20,7 +20,7 @@ USING_NS_HR;
 USING_NS_CC;
 
 
-std::string HRPlatformHelper::getOSVersion()
+std::string HRApplicationHelper::getOSVersion()
 {
     std::string version = STRING_UNSET;
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
@@ -31,7 +31,7 @@ std::string HRPlatformHelper::getOSVersion()
 }
 
 
-std::string HRPlatformHelper::getDeviceName()
+std::string HRApplicationHelper::getDeviceName()
 {
     std::string deviceName = STRING_UNSET;
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
@@ -42,7 +42,7 @@ std::string HRPlatformHelper::getDeviceName()
 }
 
 
-ValueMap HRPlatformHelper::getNetworkInfo()
+ValueMap HRApplicationHelper::getNetworkInfo()
 {
     ValueMap info = ValueMap();
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
@@ -53,7 +53,7 @@ ValueMap HRPlatformHelper::getNetworkInfo()
 }
 
 
-std::string HRPlatformHelper::getApplicationVersion()
+std::string HRApplicationHelper::getApplicationVersion()
 {
     std::string version = STRING_UNSET;
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
@@ -64,7 +64,7 @@ std::string HRPlatformHelper::getApplicationVersion()
 }
 
 
-std::string HRPlatformHelper::getBuildVersion()
+std::string HRApplicationHelper::getBuildVersion()
 {
     std::string version;
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
@@ -75,7 +75,7 @@ std::string HRPlatformHelper::getBuildVersion()
 }
 
 
-void HRPlatformHelper::copyToClipboard(const std::string &text)
+void HRApplicationHelper::copyToClipboard(const std::string &text)
 {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
     HRiOSHelper::copyToClipboard(text);
